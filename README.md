@@ -11,7 +11,7 @@
     -   文章页组件`closed`
         - Essay
     -   后台管理页面`countinue`
-        - user
+        - user`countinue`
         - essaylist
         - edit essay
 
