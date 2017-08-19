@@ -9,9 +9,58 @@
     <div class="nav-header container">
       <div class="nav-header-container">
         <!-- route 1 -->
-        <a href="/" class="back-home">Home</a>
+        <a href="/" class="button is-dark is-inverted is-outlined">Home</a>
+        <a class="login button is-dark is-inverted is-outlined" v-on:click="showLoginModal = true">login</a>
       </div>
     </div>
+
+    <!-- login modal -->
+    <div class="modal" v-bind:class="{'is-active': showLoginModal === true}">
+      <div class="modal-background" v-on:click="showLoginModal = false"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Login</p>
+          <button class="delete" aria-label="close" v-on:click="showLoginModal = false"></button>
+        </header>
+        <section class="modal-card-body">
+
+          <!-- username -->
+          <div class="field">
+            <label class="label">Username</label>
+            <div class="control has-icons-left has-icons-right">
+              <input class="input" type="text" v-model="username" autofocus>
+              <span class="icon is-small is-left">
+                <i class="fa fa-user"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fa fa-check"></i>
+              </span>
+            </div>
+            <!-- <p class="help is-success">This username is available</p> -->
+          </div>
+
+          <!-- password -->
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control has-icons-left has-icons-right">
+              <input class="input is-success" type="text" v-model="password">
+              <span class="icon is-small is-left">
+                <i class="fa fa-key"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fa fa-check"></i>
+              </span>
+            </div>
+          </div>
+
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-primary" v-on:click="login()">Login</button>
+          <button class="button" v-on:click="showLoginModal = false">Cancel</button>
+        </footer>
+      </div>
+    </div>
+
 
     <!-- 大标题 -->
     <div class="header-wrap">
@@ -29,10 +78,30 @@
 </template>
 
 <script>
+
+  import userActions from '../actions/userActions';
+
+
   export default {
     data() {
       return {
-
+        showLoginModal: false,
+        username: '',
+        password: ''
+      }
+    },
+    methods: {
+      login: function () {
+        const _self = this;
+        if (_self.username.length !== 0 && _self.password !== 0) {
+          userActions.login(_self.username, _self.password).then(res => {
+            debugger
+          }).catch(err => {
+            console.erro(err);
+          })
+        } else {
+          alert('情输入完整用户账号/密码!');
+        }
       }
     }
   }
@@ -83,40 +152,20 @@
     font-family: exoregular;
     position: relative;
   }
-  .nav-header .nav-header-container a {
-    display: inline-block;
-    border: 1px solid hsla(0, 0%, 100%, .8);
-    color: hsla(0,0%,100%,.8);
-    font-size: 14px;
-    padding: 3px 12px;
-    border-radius: 3px;
-    margin-right: 8px;
-    text-decoration: none;
-  }
-  /* .nav-header .nav-header-container .dropdown-menu, .nav-header .nav-header-container .dropdown-menu a{
-    color: #000;
-  }
-  .nav-header .nav-header-container .dropdown-menu, .nav-header .nav-header-container .dropdown-menu a:hover {
-    color: #000;
-  } */
-  .nav-header .nav-header-container a:hover {
-    color: #fff;
-    border-color: #fff;
-  }
 
-  /* .nav-header .nav-header-container .login {
+  .nav-header .nav-header-container .login {
     position: absolute;
     right: 0px;
-  } */
+  }
 
-  /* .nav-header .nav-header-container .tips {
+  .nav-header .nav-header-container .tips {
     position: absolute;
     right: 110px;
     color: #fff;
     font-size: 16px;
-  } */
+  }
 
-  /* .nav-header .nav-header-container .signUp {
+  .nav-header .nav-header-container .signUp {
     position: absolute;
     right: 80px;
   }
@@ -124,7 +173,7 @@
   .nav-header .nav-header-container .logout {
     position: absolute;
     right: 0px;
-  } */
+  }
 
   .header-wrap {
     position: relative;
