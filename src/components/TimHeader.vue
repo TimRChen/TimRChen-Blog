@@ -1,9 +1,9 @@
 <template>
   <header id="header" class="banner-mask">
-    <div id="barbg">
+    <!-- <div id="barbg"> -->
       <!-- 进度条 -->
-      <div id="bar"></div>
-    </div>
+      <!-- <div id="bar"></div> -->
+    <!-- </div> -->
 
     <!-- 导航栏 -->
     <div class="nav-header container">
@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <!-- signUp modal todo: 注册完后需要删除!!! -->
+    <!-- signUp modal todo: 注册完后需要将相关注册逻辑隐藏!!! -->
     <div class="modal" v-bind:class="{'is-active': showSignUpModal === true}">
       <div class="modal-background" v-on:click="showSignUpModal = false"></div>
       <div class="modal-card">
@@ -44,7 +44,7 @@
           <div class="field">
             <label class="label">Password</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input is-success" type="text" v-model="password">
+              <input class="input is-success" type="password" name="password" v-model="password">
               <span class="icon is-small is-left">
                 <i class="fa fa-key"></i>
               </span>
@@ -134,22 +134,34 @@
   export default {
     data() {
       return {
-        // todo: 注册完后需要删除!!!
+        // todo: 注册完后需要将相关注册逻辑隐藏!!!
         showSignUpModal: false,
         showLoginModal: false,
         username: '',
-        password: ''
+        password: '',
+        token: ''
       }
     },
+    // initial
+    beforeCreate: function () {
+      const _self = this;
+      // 登录状态持久化验证
+      _self.token = window.localStorage.getItem('Authorizaion');
+    },
     methods: {
-      // todo: 注册完后需要删除!!!
+      // todo: 注册完后需要将相关注册逻辑隐藏!!!
       signUp: function () {
         const _self = this;
-        if (_self.username.length !== 0 && _self.password !== 0) {
-          debugger
-          userActions.signUp(_self.username, _self.password).then(res => {
-            debugger
+        let username = _self.username;
+        let password = _self.password;
+        if (username.length !== 0 && password !== 0) {
+          userActions.signUp(username, password).then(res => {
+            if (res.ok) {
+              alert(res.body.message);
+              _self.showSignUpModal = false;
+            }
           }).catch(err => {
+            alert(err.body.message);
             console.error(err);
           })
         } else {
@@ -158,11 +170,20 @@
       },
       login: function () {
         const _self = this;
-        if (_self.username.length !== 0 && _self.password !== 0) {
-          debugger
-          userActions.login(_self.username, _self.password).then(res => {
+        let username = _self.username;
+        let password = _self.password;
+        if (username.length !== 0 && password !== 0) {
+          userActions.login(username, password).then(res => {
+            if (res.ok) {
+              alert(res.body.message);
+              _self.showLoginModal = false;
+              // 设置持久登录token
+              _self.token = res.body.token;
+              window.localStorage.setItem('Authorizaion', JSON.stringify(res.body.token));
+            }
             debugger
           }).catch(err => {
+            alert(err.body.message);
             console.error(err);
           })
         } else {

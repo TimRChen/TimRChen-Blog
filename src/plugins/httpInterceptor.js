@@ -6,7 +6,7 @@
 const httpInterceptor = {
   install(Vue, options) {
     Vue.http.interceptors.push((...args) => {
-    options.operation(...args);
+      options.operation(...args);
     });
   }
 };

@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import userAPIs from '../apis/userAPIs';
 
+
+
 /**
  * Signup
  */
@@ -13,7 +15,6 @@ const signUp = function (username, password) {
     }
   );
 };
-
 
 /**
  * Login
