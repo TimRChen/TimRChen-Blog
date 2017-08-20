@@ -1,18 +1,67 @@
 <template>
   <header id="header" class="banner-mask">
-    <div id="barbg">
+    <!-- <div id="barbg"> -->
       <!-- 进度条 -->
-      <div id="bar"></div>
-    </div>
+      <!-- <div id="bar"></div> -->
+    <!-- </div> -->
 
     <!-- 导航栏 -->
     <div class="nav-header container">
       <div class="nav-header-container">
         <!-- route 1 -->
         <a href="/" class="button is-dark is-inverted is-outlined">Home</a>
+        <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true">signUp</a>        
         <a class="login button is-dark is-inverted is-outlined" v-on:click="showLoginModal = true">login</a>
       </div>
     </div>
+
+    <!-- signUp modal todo: 注册完后需要将相关注册逻辑隐藏!!! -->
+    <div class="modal" v-bind:class="{'is-active': showSignUpModal === true}">
+      <div class="modal-background" v-on:click="showSignUpModal = false"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">signUp</p>
+          <button class="delete" aria-label="close" v-on:click="showSignUpModal = false"></button>
+        </header>
+        <section class="modal-card-body">
+
+          <!-- username -->
+          <div class="field">
+            <label class="label">Username</label>
+            <div class="control has-icons-left has-icons-right">
+              <input class="input" type="text" v-model="username" autofocus>
+              <span class="icon is-small is-left">
+                <i class="fa fa-user"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fa fa-check"></i>
+              </span>
+            </div>
+            <!-- <p class="help is-success">This username is available</p> -->
+          </div>
+
+          <!-- password -->
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control has-icons-left has-icons-right">
+              <input class="input is-success" type="password" name="password" v-model="password">
+              <span class="icon is-small is-left">
+                <i class="fa fa-key"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fa fa-check"></i>
+              </span>
+            </div>
+          </div>
+
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-primary" v-on:click="signUp()">signUp</button>
+          <button class="button" v-on:click="showSignUpModal = false">Cancel</button>
+        </footer>
+      </div>
+    </div>
+
 
     <!-- login modal -->
     <div class="modal" v-bind:class="{'is-active': showLoginModal === true}">
@@ -85,19 +134,57 @@
   export default {
     data() {
       return {
+        // todo: 注册完后需要将相关注册逻辑隐藏!!!
+        showSignUpModal: false,
         showLoginModal: false,
         username: '',
-        password: ''
+        password: '',
+        token: ''
       }
     },
+    // initial
+    beforeCreate: function () {
+      const _self = this;
+      // 登录状态持久化验证
+      _self.token = window.localStorage.getItem('Authorizaion');
+    },
     methods: {
+      // todo: 注册完后需要将相关注册逻辑隐藏!!!
+      signUp: function () {
+        const _self = this;
+        let username = _self.username;
+        let password = _self.password;
+        if (username.length !== 0 && password !== 0) {
+          userActions.signUp(username, password).then(res => {
+            if (res.ok) {
+              alert(res.body.message);
+              _self.showSignUpModal = false;
+            }
+          }).catch(err => {
+            alert(err.body.message);
+            console.error(err);
+          })
+        } else {
+          alert('情输入完整用户账号/密码!');
+        }
+      },
       login: function () {
         const _self = this;
-        if (_self.username.length !== 0 && _self.password !== 0) {
-          userActions.login(_self.username, _self.password).then(res => {
+        let username = _self.username;
+        let password = _self.password;
+        if (username.length !== 0 && password !== 0) {
+          userActions.login(username, password).then(res => {
+            if (res.ok) {
+              alert(res.body.message);
+              _self.showLoginModal = false;
+              // 设置持久登录token
+              _self.token = res.body.token;
+              window.localStorage.setItem('Authorizaion', JSON.stringify(res.body.token));
+            }
             debugger
           }).catch(err => {
-            console.erro(err);
+            alert(err.body.message);
+            console.error(err);
           })
         } else {
           alert('情输入完整用户账号/密码!');
