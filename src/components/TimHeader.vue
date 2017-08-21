@@ -92,7 +92,7 @@
           <div class="field">
             <label class="label">Password</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input is-success" type="text" v-model="password">
+              <input class="input is-success" type="password" name="password" v-model="password">
               <span class="icon is-small is-left">
                 <i class="fa fa-key"></i>
               </span>
@@ -145,8 +145,23 @@
     // initial
     beforeCreate: function () {
       const _self = this;
+
+      userActions.getAuth().then(res => {
+        debugger
+      }).catch(err => {
+        console.error(err);
+      });
+
+      userActions.getUserInfo().then(res => {
+        debugger
+        window.localStorage.setItem('Authorizaion', JSON.stringify(res.body.token));
+      }).catch(err => {
+        console.error(err);
+      });
+
+
       // 登录状态持久化验证
-      _self.token = window.localStorage.getItem('Authorizaion');
+      // _self.token = window.localStorage.getItem('Authorizaion');
     },
     methods: {
       // todo: 注册完后需要将相关注册逻辑隐藏!!!
@@ -158,10 +173,14 @@
           userActions.signUp(username, password).then(res => {
             if (res.ok) {
               alert(res.body.message);
+              _self.username = '';
+              _self.password = '';
               _self.showSignUpModal = false;
             }
           }).catch(err => {
             alert(err.body.message);
+            _self.username = '';
+            _self.password = '';
             console.error(err);
           })
         } else {
@@ -176,14 +195,18 @@
           userActions.login(username, password).then(res => {
             if (res.ok) {
               alert(res.body.message);
+              _self.username = '';
+              _self.password = '';
               _self.showLoginModal = false;
               // 设置持久登录token
-              _self.token = res.body.token;
-              window.localStorage.setItem('Authorizaion', JSON.stringify(res.body.token));
+              debugger
+              // _self.token = res.body.token;
             }
             debugger
           }).catch(err => {
             alert(err.body.message);
+            _self.username = '';
+            _self.password = '';
             console.error(err);
           })
         } else {
