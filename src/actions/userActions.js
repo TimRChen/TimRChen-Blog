@@ -3,20 +3,11 @@ import userAPIs from '../apis/userAPIs';
 
 
 /**
- * JWT
+ * 验证JWT是否有效
  */
-const getAuth = function () {
+const getAuth = function (token) {
   return Vue.http.get(
     userAPIs.GET_AUTH
-  );
-};
-
-/**
- * get UserInfo
- */
-const getUserInfo = function () {
-  return Vue.http.get(
-    userAPIs.GET_USERINFO
   );
 };
 
@@ -48,7 +39,6 @@ const login = function (username, password) {
 
 export default ({
   getAuth,
-  getUserInfo,
   signUp,
   login
 });
