@@ -12,17 +12,18 @@ Vue.config.productionTip = false;
 
 Vue.use(VueResource);
 
-
+/**
+ * http拦截器插件
+ */
 Vue.use(httpInterceptor, {
   operation: (...args) => {
     const [request, next] = args;
-    debugger
     request.headers.map.Authorization = [localStorage.getItem('Authorization') || ''];
     next((response) => {
       if (typeof response.headers.map.Authorization === 'object') {
         localStorage.setItem('Authorization', response.headers.map.Authorization[0]);
       } else if (typeof response.headers.map.authorization === 'object') {
-        localStorage.setItem('Authorization', response.headers.map.authorization[0]);
+        localStorage.setItem('Authorization', response.headers.map.Authorization[0]);
       }
       return response;
     });

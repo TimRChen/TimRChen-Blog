@@ -10,8 +10,9 @@
       <div class="nav-header-container">
         <!-- route 1 -->
         <a href="/" class="button is-dark is-inverted is-outlined">Home</a>
-        <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true">signUp</a>        
-        <a class="login button is-dark is-inverted is-outlined" v-on:click="showLoginModal = true">login</a>
+        <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true" v-if="loginStatus === 'noLogged'">SignUp</a>        
+        <a class="login button is-dark is-inverted is-outlined" v-on:click="showLoginModal = true" v-if="loginStatus === 'noLogged'">Login</a>
+        <a class="login button is-dark is-inverted is-outlined" v-on:click="logout()" v-if="loginStatus === 'logged'">Logout</a>
       </div>
     </div>
 
@@ -44,7 +45,7 @@
           <div class="field">
             <label class="label">Password</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input is-success" type="password" name="password" v-model="password">
+              <input class="input" type="password" name="password" v-model="password">
               <span class="icon is-small is-left">
                 <i class="fa fa-key"></i>
               </span>
@@ -92,7 +93,7 @@
           <div class="field">
             <label class="label">Password</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input is-success" type="password" name="password" v-model="password">
+              <input class="input" type="password" name="password" v-model="password">
               <span class="icon is-small is-left">
                 <i class="fa fa-key"></i>
               </span>
@@ -139,29 +140,22 @@
         showLoginModal: false,
         username: '',
         password: '',
-        token: ''
+        loginStatus: 'noLogged',
       }
     },
     // initial
     beforeCreate: function () {
       const _self = this;
 
+      // 初始化验证身份
       userActions.getAuth().then(res => {
-        debugger
+        if (res.ok) {
+          _self.loginStatus = res.body.state;
+        }
       }).catch(err => {
         console.error(err);
       });
 
-      userActions.getUserInfo().then(res => {
-        debugger
-        window.localStorage.setItem('Authorizaion', JSON.stringify(res.body.token));
-      }).catch(err => {
-        console.error(err);
-      });
-
-
-      // 登录状态持久化验证
-      // _self.token = window.localStorage.getItem('Authorizaion');
     },
     methods: {
       // todo: 注册完后需要将相关注册逻辑隐藏!!!
@@ -198,9 +192,17 @@
               _self.username = '';
               _self.password = '';
               _self.showLoginModal = false;
-              // 设置持久登录token
-              debugger
-              // _self.token = res.body.token;
+              // 返回 JWT Token
+              window.localStorage.setItem('Authorization', `Bearer ${res.body.token}`);
+
+              // jwt 验证身份，获取登录状态
+              userActions.getAuth().then(res => {
+                if (res.ok) {
+                  _self.loginStatus = res.body.state;
+                }
+              }).catch(err => {
+                console.error(err);
+              });
             }
             debugger
           }).catch(err => {
@@ -212,6 +214,9 @@
         } else {
           alert('情输入完整用户账号/密码!');
         }
+      },
+      logout: function () {
+        
       }
     }
   }
