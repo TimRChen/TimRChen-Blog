@@ -3,6 +3,12 @@
 ## 技术栈
 >   Vue + Express + MongoDB
 
+### 0.0.2v
+
+-   完善前后端JWT验证机制
+    -   注销登录 `continue`
+
+
 ### 0.0.1v
 
 -   开发前端界面

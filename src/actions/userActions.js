@@ -2,6 +2,14 @@ import Vue from 'vue';
 import userAPIs from '../apis/userAPIs';
 
 
+/**
+ * 验证JWT是否有效
+ */
+const getAuth = function (token) {
+  return Vue.http.get(
+    userAPIs.GET_AUTH
+  );
+};
 
 /**
  * Signup
@@ -30,6 +38,7 @@ const login = function (username, password) {
 };
 
 export default ({
+  getAuth,
   signUp,
   login
 });
