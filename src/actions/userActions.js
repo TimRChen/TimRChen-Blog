@@ -11,6 +11,17 @@ const getAuth = function (token) {
   );
 };
 
+
+/**
+ * Logout
+ */
+const logout = function () {
+  return Vue.http.get(
+    userAPIs.GET_LOGOUT
+  );
+};
+
+
 /**
  * Signup
  */
@@ -39,6 +50,7 @@ const login = function (username, password) {
 
 export default ({
   getAuth,
+  logout,
   signUp,
   login
 });

@@ -3,10 +3,18 @@
 ## 技术栈
 >   Vue + Express + MongoDB
 
+
+## Todo
+
+-   新建文章组件`markdown || 其他富文本插件`
+-   文章管理页`Table`
+-   首页文章列表渲染`待文章存储接口写好再做`
+
+
 ### 0.0.2v
 
 -   完善前后端JWT验证机制
-    -   注销登录 `continue`
+    -   注销登录 `closed`
 
 
 ### 0.0.1v

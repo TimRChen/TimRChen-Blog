@@ -216,7 +216,16 @@
         }
       },
       logout: function () {
-        
+        const _self = this;
+        userActions.logout().then(res => {
+          if (res.ok) {
+            alert(res.body.message);
+            _self.loginStatus = res.body.state;
+            window.localStorage.removeItem('Authorization');
+          }
+        }).catch(err => {
+          console.error(err);
+        });
       }
     }
   }
