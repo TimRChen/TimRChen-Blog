@@ -9,7 +9,8 @@
     <div class="nav-header container">
       <div class="nav-header-container">
         <!-- route 1 -->
-        <a href="/" class="button is-dark is-inverted is-outlined">Home</a>
+        <a href="#/" class="button is-dark is-inverted is-outlined">Home</a>
+        <a href="#/edit" class="button is-dark is-inverted is-outlined" v-if="loginStatus === 'logged'">Edit</a>
         <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true" v-if="loginStatus === 'noLogged'">SignUp</a>        
         <a class="login button is-dark is-inverted is-outlined" v-on:click="showLoginModal = true" v-if="loginStatus === 'noLogged'">Login</a>
         <a class="login button is-dark is-inverted is-outlined" v-on:click="logout()" v-if="loginStatus === 'logged'">Logout</a>
