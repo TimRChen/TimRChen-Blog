@@ -21,7 +21,7 @@
     <div class="field">
       <label class="upload-img label">文章图片</label>
       <div class="control">
-        <input type="file" />
+        <input type="text" class="input" placeholder="请输入图片位于图床的URL" v-model="picUrl" />
       </div>
     </div>
     <br>
@@ -54,7 +54,9 @@
           picUrl: _self.picUrl
         };
         essayActions.newEssay(essayInfo).then(res => {
-          debugger
+          if (res.status === 200) {
+            alert(res.body.message);
+          }
         }).catch(err => {
           console.error(err);
         });
