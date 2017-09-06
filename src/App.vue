@@ -22,11 +22,8 @@
 
 <style>
   * {
-    margin: 0;
-    padding: 0;
-    list-style: none;
     text-decoration: none!important;
-    font-family: freight-display-pro,serif;
+    /* font-family: freight-display-pro,serif; */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
