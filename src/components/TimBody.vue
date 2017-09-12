@@ -4,20 +4,21 @@
     <div class="content-area container">
       <div class="site-content">
         <!-- need v-for -->
-        <article class="post-item">
+        <article class="post-item" v-for="(essay, key) in essayObj" v-bind:key="key">
           <!-- image -->
-          <div class="post-image">
+          <div class="post-image" v-bind:style="{ background: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
             <div class="info-mask">
               <div class="mask-wrapper">
 
                 <h2 class="post-title">
                   <!-- route 2 -->
-                  <router-link to="/essay">Test</router-link>
+                  <router-link v-bind:to="`/essay/${essay._id}`">{{ essay.title }}</router-link>
                 </h2>
 
                 <div class="post-info">
                   <span class="post-time">
-                    show time
+                    发表于
+                    {{ essay.meta.createAt }}
                   </span>
                 </div>
 
@@ -33,11 +34,27 @@
 </template>
 
 <script>
+
+  import essayActions from '../actions/essayActions';
+
   export default {
     data() {
       return {
-        
+        essayObj: {}
       }
+    },
+    beforeCreate: function () {
+      const _self = this;
+      essayActions.getEssayList().then(res => {
+        if (res.status === 200) {
+          _self.essayObj = res.body.essays;
+        }
+      }).catch(err => {
+        console.error(err);
+      });
+    },
+    methods: {
+
     }
   }
 </script>
@@ -57,9 +74,9 @@
   .post-image {
     display: block;
     height: 340px;
-    background: url('../assets/camera.jpg');
-    background-size: cover;
-    background-position: 50%;
+    /* background: url('../assets/camera.jpg'); */
+    /* background-size: cover; */
+    /* background-position: 50%; */
     position: relative;
   }
 
