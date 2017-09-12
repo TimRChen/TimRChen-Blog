@@ -25,10 +25,29 @@ const getEssayList = function () {
     essayAPIs.GET_ESSAY_LIST
   );
 };
+
+
+/**
+ * GET - 获取文章详细内容
+ * @param {String} essayId - 文章Id
+ */
+const getEssayDetails = function (essayId) {
+  return Vue.http.get(
+    essayAPIs.GET_ESSAY_DETAILS,
+    {
+      "params": {
+        "essayId": essayId
+      }
+    }
+  )
+
+}
+
  
 
 
 export default ({
   newEssay,
-  getEssayList
+  getEssayList,
+  getEssayDetails
 });

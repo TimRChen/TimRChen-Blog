@@ -5,12 +5,12 @@
 
           <section class="post-content">
             <div class="single-post-inner grap">
-              essay content
+              {{ essayDetails.content }}
             </div>
           </section>
           <div class="postDesc">
             <!-- 阅读量pv计算 -->
-            {{`posted @TimRChen 阅读量(0)`}}
+            {{`posted @TimRChen 阅读量(${ essayDetails.pv })`}}
           </div>
 
           <div class="author-field u-textAlignCenter">
@@ -26,12 +26,47 @@
 </template>
 
 <script>
+
+  import essayActions from '../../actions/essayActions';
+  import Bus from '../../plugins/bus';
+
   export default {
+    data() {
+      return {
+        essayDetails: {}
+      }
+    },
+    beforeCreate: function () {
+      const _self = this;
+
+      Bus.$on('get-essay-details', function (essayDetails, essayId) {
+        window.sessionStorage.setItem('essayId', essayId);
+        _self.essayDetails = essayDetails;
+      });
+
+      const essayId = window.sessionStorage.getItem('essayId');
+
+      if (essayId) {
+        // 当页面刷新时，单独获取当页数据
+        essayActions.getEssayDetails(essayId).then(res => {
+          if (res.status === 200) {
+            _self.essayDetails = res.body.essay;
+          }
+        }).catch(err => {
+          console.error(err);
+        });
+      }
+
+    },
 
   }
 </script>
 
 <style>
+
+  .site-content {
+    padding-top: 50px;
+  }
 
   .postDesc {
       text-align: right;

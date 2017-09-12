@@ -3,16 +3,13 @@
 
     <div class="content-area container">
       <div class="site-content">
-        <!-- need v-for -->
         <article class="post-item" v-for="(essay, key) in essayObj" v-bind:key="key">
-          <!-- image -->
           <div class="post-image" v-bind:style="{ background: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
             <div class="info-mask">
               <div class="mask-wrapper">
 
                 <h2 class="post-title">
-                  <!-- route 2 -->
-                  <router-link v-bind:to="`/essay/${essay._id}`">{{ essay.title }}</router-link>
+                  <router-link to="/essay" v-on:click.native="getEssayDetails(essay._id)" >{{ essay.title }}</router-link>
                 </h2>
 
                 <div class="post-info">
@@ -36,6 +33,7 @@
 <script>
 
   import essayActions from '../actions/essayActions';
+  import Bus from '../plugins/bus';
 
   export default {
     data() {
@@ -54,6 +52,20 @@
       });
     },
     methods: {
+      // 获取文章详细信息
+      getEssayDetails: function (essayId) {
+        const _self = this;
+        essayActions.getEssayDetails(essayId).then(res => {
+          if (res.status === 200) {
+            var essayDetails = res.body.essay;
+            // 触发get-essay-details事件
+            Bus.$emit('get-essay-details', essayDetails, essayId);
+          }
+        }).catch(err => {
+          console.error(err);
+        });
+
+      }
 
     }
   }
