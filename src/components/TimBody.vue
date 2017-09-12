@@ -3,21 +3,19 @@
 
     <div class="content-area container">
       <div class="site-content">
-        <!-- need v-for -->
-        <article class="post-item">
-          <!-- image -->
-          <div class="post-image">
+        <article class="post-item" v-for="(essay, key) in essayObj" v-bind:key="key">
+          <div class="post-image" v-bind:style="{ background: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
             <div class="info-mask">
               <div class="mask-wrapper">
 
                 <h2 class="post-title">
-                  <!-- route 2 -->
-                  <router-link to="/essay">Test</router-link>
+                  <router-link to="/essay" v-on:click.native="getEssayDetails(essay._id)" >{{ essay.title }}</router-link>
                 </h2>
 
                 <div class="post-info">
                   <span class="post-time">
-                    show time
+                    发表于
+                    {{ essay.meta.createAt }}
                   </span>
                 </div>
 
@@ -33,11 +31,42 @@
 </template>
 
 <script>
+
+  import essayActions from '../actions/essayActions';
+  import Bus from '../plugins/bus';
+
   export default {
     data() {
       return {
-        
+        essayObj: {}
       }
+    },
+    beforeCreate: function () {
+      const _self = this;
+      essayActions.getEssayList().then(res => {
+        if (res.status === 200) {
+          _self.essayObj = res.body.essays;
+        }
+      }).catch(err => {
+        console.error(err);
+      });
+    },
+    methods: {
+      // 获取文章详细信息
+      getEssayDetails: function (essayId) {
+        const _self = this;
+        essayActions.getEssayDetails(essayId).then(res => {
+          if (res.status === 200) {
+            var essayDetails = res.body.essay;
+            // 触发get-essay-details事件
+            Bus.$emit('get-essay-details', essayDetails, essayId);
+          }
+        }).catch(err => {
+          console.error(err);
+        });
+
+      }
+
     }
   }
 </script>
@@ -57,9 +86,9 @@
   .post-image {
     display: block;
     height: 340px;
-    background: url('../assets/camera.jpg');
-    background-size: cover;
-    background-position: 50%;
+    /* background: url('../assets/camera.jpg'); */
+    /* background-size: cover; */
+    /* background-position: 50%; */
     position: relative;
   }
 
