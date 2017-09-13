@@ -41,9 +41,10 @@
     beforeCreate: function () {
       const _self = this;
 
+      // 第一次点击列表进入详情页时，监听事件
       Bus.$on('get-essay-details', function (essayDetails, essayId) {
-        window.sessionStorage.setItem('essayId', essayId);
-        _self.essayDetails = essayDetails;
+        _self.essayContent = md.render(essayDetails.content);
+        _self.pv = essayDetails.pv;
       });
 
       const essayId = window.sessionStorage.getItem('essayId');
@@ -52,8 +53,8 @@
         // 当页面刷新时，单独获取当页数据
         essayActions.getEssayDetails(essayId).then(res => {
           if (res.status === 200) {
-            _self.pv = res.body.essay.pv;
             _self.essayContent = md.render(res.body.essay.content);
+            _self.pv = res.body.essay.pv;
           }
         }).catch(err => {
           console.error(err);

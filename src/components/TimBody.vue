@@ -55,9 +55,11 @@
       // 获取文章详细信息
       getEssayDetails: function (essayId) {
         const _self = this;
+        window.sessionStorage.removeItem('essayId');
         essayActions.getEssayDetails(essayId).then(res => {
           if (res.status === 200) {
             var essayDetails = res.body.essay;
+            window.sessionStorage.setItem('essayId', essayId);
             // 触发get-essay-details事件
             Bus.$emit('get-essay-details', essayDetails, essayId);
           }
