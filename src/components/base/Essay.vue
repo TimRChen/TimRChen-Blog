@@ -51,6 +51,22 @@
     beforeCreate: function () {
       const _self = this;
 
+      // 进入页面时，自动置最顶
+      const scrollHeight = window.scrollY,
+            scrollStep = Math.PI / ( 1000 / 15 ),
+            cosParameter = scrollHeight / 2;
+      let scrollCount = 0,
+          scrollMargin,
+          scrollInterval = setInterval(function () {
+            if ( window.scrollY != 0 ) {
+              scrollCount = scrollCount + 1;  
+              scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
+              window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
+            } else {
+              clearInterval(scrollInterval);
+            }
+          }, 15);
+
       // 第一次点击列表进入详情页时，监听事件
       Bus.$on('get-essay-details', function (essayDetails, essayId) {
         _self.picUrl = essayDetails.picUrl;
@@ -127,10 +143,11 @@
 
   .post-essay-title {
     position: absolute;
-    top: 33%;
-    color: #000;
+    top: 30%;
+    color: #fff;
     font-size: 60px;
-    left: 6%;
+    font-weight: 200!important;
+    left: 2%;
     z-index: 1;
   }
 
@@ -139,7 +156,8 @@
     top: 42%;
     color: #fff;
     font-size: 20px;
-    left: 6%;
+    font-weight: 300!important;
+    left: 2%;
     z-index: 1;
   }
 
@@ -158,7 +176,7 @@
     -moz-filter: grayscale(100%);
     -ms-filter: grayscale(100%);
     -o-filter: grayscale(100%);
-    filter: grayscale(100%);
+    filter: grayscale(100%) blur(1px);
   }
 
   .text-display {
