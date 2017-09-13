@@ -238,19 +238,19 @@
       // return to top
       scrollToTop: function (scrollDuration) {
         const scrollHeight = window.scrollY,
-        scrollStep = Math.PI / ( scrollDuration / 15 ),
-        cosParameter = scrollHeight / 2;
+              scrollStep = Math.PI / ( scrollDuration / 15 ),
+              cosParameter = scrollHeight / 2;
         let scrollCount = 0,
-        scrollMargin,
-        scrollInterval = setInterval(function () {
-          if ( window.scrollY != 0 ) {
-            scrollCount = scrollCount + 1;  
-            scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
-            window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
-          } else {
-            clearInterval(scrollInterval);
-          }
-        }, 15);
+            scrollMargin,
+            scrollInterval = setInterval(function () {
+              if ( window.scrollY != 0 ) {
+                scrollCount = scrollCount + 1;  
+                scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
+                window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
+              } else {
+                clearInterval(scrollInterval);
+              }
+            }, 15);
       }
 
     }
@@ -341,6 +341,11 @@
   }
   .header-wrap h2 {
     font-size: 42px!important;
+    font-weight: 200!important;
+  }
+
+  .header-wrap h3 {
+    font-weight: 200!important;
   }
 
   .return-top-btn {

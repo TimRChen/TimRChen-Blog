@@ -4,8 +4,8 @@
     <div class="content-area container">
       <div class="site-content">
         <article
+          class="post-item"
           v-scroll-show        
-          class="post-item "
           v-for="(essay, key) in essayObj"
           v-bind:key="key"
         >
@@ -19,8 +19,7 @@
 
                 <div class="post-info">
                   <span class="post-time">
-                    发表于
-                    {{ essay.meta.createAt }}
+                    {{ new Date(essay.meta.createAt).toUTCString() }}
                   </span>
                 </div>
 
@@ -39,6 +38,8 @@
 
   import essayActions from '../actions/essayActions';
   import Bus from '../plugins/bus';
+
+  const ctx = '@@ctx'; // 用于标记el元素的key值
 
   export default {
     data() {
@@ -81,16 +82,21 @@
     directives: {
         scrollShow: {
             bind: (el) => {
-              window.addEventListener('scroll', () => {
-                if (document.body.scrollTop > el.offsetTop) {
+              const listenScroll = function (e) {
+                if (document.body.scrollTop + 340 > el.offsetTop) {
+                  console.log('listening Scroll...');
                   el.style.animation = 'comeIn 1s ease-in-out';
                 }
-              });
+              }
+
+              el[ctx] = {
+                listenScroll
+              };
+
+              window.addEventListener('scroll', listenScroll);
             },
-            unbind: (el) => { // Todo: 目前组件销毁并不会 移除scroll监听事件
-              window.removeEventListener('scroll', () => {
-                console.log('remove scroll is done.')
-              });
+            unbind: (el) => { // 移除scroll监听事件
+              window.removeEventListener('scroll', el[ctx].listenScroll);
             }
         }
     }
@@ -103,7 +109,7 @@
   /* 列表动画 */
   @keyframes comeIn {
     from {
-      margin-left: 60%;
+      margin-left: 10%;
       filter: blur(20px);
     }
     to {
@@ -160,6 +166,7 @@
 
   .mask-wrapper .post-title {
     font-size: 36px;
+    font-weight: 200!important;
     line-height: 1.4;
     color: #fff;
   }
