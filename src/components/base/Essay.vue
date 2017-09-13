@@ -4,6 +4,12 @@
         <div class="site-content">
 
           <section class="post-content">
+            <h1 class="post-essay-title">{{ essayTitle }}</h1>
+            <h2 class="post-create-time">{{ createTime }}</h2>
+            <div
+              class="pic-header"
+              v-bind:style="{ backgroundImage: `url(${ picUrl })`, backgroundSize: 'cover', backgroundPosition: '50%' }">
+            </div>
             <div class="single-post-inner text-display" v-html="essayContent"></div>
           </section>
           <div class="postDesc">
@@ -27,6 +33,7 @@
 
   import essayActions from '../../actions/essayActions';
   import Bus from '../../plugins/bus';
+  import Moment from 'moment';
   import MarkdownIt from 'markdown-it';
   const md = new MarkdownIt();
 
@@ -34,7 +41,10 @@
   export default {
     data() {
       return {
+        picUrl: '',
+        essayTitle: '',
         essayContent: '',
+        createTime: '',
         pv: ''
       }
     },
@@ -43,7 +53,10 @@
 
       // 第一次点击列表进入详情页时，监听事件
       Bus.$on('get-essay-details', function (essayDetails, essayId) {
+        _self.picUrl = essayDetails.picUrl;
+        _self.essayTitle = essayDetails.title;
         _self.essayContent = md.render(essayDetails.content);
+        _self.createTime = Moment(essayDetails.meta.createAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
         _self.pv = essayDetails.pv;
       });
 
@@ -53,7 +66,10 @@
         // 当页面刷新时，单独获取当页数据
         essayActions.getEssayDetails(essayId).then(res => {
           if (res.status === 200) {
+            _self.picUrl = res.body.essay.picUrl;
+            _self.essayTitle = res.body.essay.title;
             _self.essayContent = md.render(res.body.essay.content);
+            _self.createTime = Moment(res.body.essay.meta.createAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
             _self.pv = res.body.essay.pv;
           }
         }).catch(err => {
@@ -109,11 +125,51 @@
       padding: 0 30px;
   }
 
+  .post-essay-title {
+    position: absolute;
+    top: 33%;
+    color: #000;
+    font-size: 60px;
+    left: 6%;
+    z-index: 1;
+  }
 
+  .post-create-time {
+    position: absolute;
+    top: 42%;
+    color: #fff;
+    font-size: 20px;
+    left: 6%;
+    z-index: 1;
+  }
 
+  .post-create-time:hover {
+    color: #bc403e;
+  }
 
-  .text-display h1, h2, h3, h4, h5, h6 {
+  .pic-header {
+    height: 340px;
+    border-radius: 10px;
+    /* -webkit-filter: blur(4px);
+    -moz-filter: blur(4px);
+    -ms-filter: blur(4px);
+    filter: blur(4px); */
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+
+  .text-display {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    /* box-shadow: 10px 10px 5px #888888; */
+  }
+
+  .text-display h1, .text-display h2, .text-display h3, .text-display h4, .text-display h5, .text-display h6 {
       font-weight: bold;
+      text-align: center;
   }
 
   .text-display h1 {
