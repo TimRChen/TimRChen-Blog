@@ -118,12 +118,18 @@
       <div class="container">
         <div class="home-info-container">
           <a href="/">
-            <h2>TimRChen</h2>
+            <h2>Timrchen</h2>
           </a>
           <h3>Life is Art.</h3>
         </div>
       </div>
     </div>
+
+    <div class="return-top-btn">
+      <button class="button is-danger is-inverted" v-on:click="scrollToTop(1000)">Top</button>
+    </div>
+
+
 
   </header>
 </template>
@@ -227,7 +233,26 @@
         }).catch(err => {
           console.error(err);
         });
+      },
+
+      // return to top
+      scrollToTop: function (scrollDuration) {
+        const scrollHeight = window.scrollY,
+        scrollStep = Math.PI / ( scrollDuration / 15 ),
+        cosParameter = scrollHeight / 2;
+        let scrollCount = 0,
+        scrollMargin,
+        scrollInterval = setInterval(function () {
+          if ( window.scrollY != 0 ) {
+            scrollCount = scrollCount + 1;  
+            scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
+            window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
+          } else {
+            clearInterval(scrollInterval);
+          }
+        }, 15);
       }
+
     }
   }
 </script>
@@ -302,10 +327,12 @@
 
   .header-wrap {
     position: relative;
-    /*text-align: center;*/
+    text-align: center;
     color: #fff;
-    font-family: exoregular;
+    text-align: center;
+    margin-top: 6%;
   }
+
   .home-info-container a {
     color: inherit;
   }
@@ -313,8 +340,14 @@
     color:#fff;
   }
   .header-wrap h2 {
-    font-size: 42px;
-    margin-top: 130px;
+    font-size: 42px!important;
   }
+
+  .return-top-btn {
+    position: fixed;
+    right: 2%;
+    bottom: 10%;   
+  }
+
 
 </style>

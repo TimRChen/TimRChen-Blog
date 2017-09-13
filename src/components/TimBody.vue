@@ -3,8 +3,13 @@
 
     <div class="content-area container">
       <div class="site-content">
-        <article class="post-item" v-for="(essay, key) in essayObj" v-bind:key="key">
-          <div class="post-image" v-bind:style="{ background: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
+        <article
+          v-scroll-show        
+          class="post-item "
+          v-for="(essay, key) in essayObj"
+          v-bind:key="key"
+        >
+          <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
             <div class="info-mask">
               <div class="mask-wrapper">
 
@@ -43,6 +48,8 @@
     },
     beforeCreate: function () {
       const _self = this;
+
+      // 获取文章列表
       essayActions.getEssayList().then(res => {
         if (res.status === 200) {
           _self.essayObj = res.body.essays;
@@ -66,14 +73,44 @@
         }).catch(err => {
           console.error(err);
         });
+      },
 
-      }
+    },
 
+    // 注册自定义指令 v-scroll-show 监听滚动条
+    directives: {
+        scrollShow: {
+            bind: (el) => {
+              window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > el.offsetTop) {
+                  el.style.animation = 'comeIn 1s ease-in-out';
+                }
+              });
+            },
+            unbind: (el) => { // Todo: 目前组件销毁并不会 移除scroll监听事件
+              window.removeEventListener('scroll', () => {
+                console.log('remove scroll is done.')
+              });
+            }
+        }
     }
+
   }
 </script>
 
 <style>
+
+  /* 列表动画 */
+  @keyframes comeIn {
+    from {
+      margin-left: 60%;
+      filter: blur(20px);
+    }
+    to {
+      margin-left: 0%;
+    }
+  }
+
 
   .site-content {
     padding-top: 50px;
@@ -88,9 +125,6 @@
   .post-image {
     display: block;
     height: 340px;
-    /* background: url('../assets/camera.jpg'); */
-    /* background-size: cover; */
-    /* background-position: 50%; */
     position: relative;
   }
 
@@ -104,9 +138,11 @@
     background: transparent linear-gradient(180deg,transparent 0,rgba(0,0,0,.4)) repeat scroll 0 0;
   }
 
+
   .info-mask {
     display: block;
     padding: 30px;
+    box-shadow: 10px 10px 5px #888888;
   }
   
   .post-item:hover .info-mask {
@@ -140,5 +176,6 @@
     font-size: 14px;
     font-family: exoregular;
   }
+  
 
 </style>
