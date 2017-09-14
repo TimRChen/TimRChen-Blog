@@ -109,11 +109,15 @@
   /* 列表动画 */
   @keyframes comeIn {
     from {
-      margin-left: 10%;
-      filter: blur(20px);
+      /* margin-left: 10%; */
+      /* filter: blur(20px); */
+      opacity: 0.4;
+      transform: translate3d(100px, 0, 0);
     }
     to {
-      margin-left: 0%;
+      /* margin-left: 0%; */
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
     }
   }
 
@@ -126,6 +130,7 @@
     position: relative;
     margin-bottom: 30px;
     background-color: #fff;
+    box-shadow: 10px 10px 5px #888888;
   }
 
   .post-image {
@@ -148,7 +153,6 @@
   .info-mask {
     display: block;
     padding: 30px;
-    box-shadow: 10px 10px 5px #888888;
   }
   
   .post-item:hover .info-mask {

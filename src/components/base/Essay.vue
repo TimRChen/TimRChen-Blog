@@ -182,7 +182,9 @@
   .text-display {
     margin-top: 5%;
     margin-bottom: 5%;
-    /* box-shadow: 10px 10px 5px #888888; */
+    padding: 20px;
+    box-shadow: 10px 10px 5px #888888;
+    border-radius: 15px;
   }
 
   .text-display h1, .text-display h2, .text-display h3, .text-display h4, .text-display h5, .text-display h6 {
@@ -191,31 +193,34 @@
   }
 
   .text-display h1 {
-      color: #000000;
+      color: #666464;
       font-size: 28px;
   }
 
   .text-display h2 {
       border-bottom: 2px solid #CCCCCC;
-      color: #000000;
+      color: #666464;
       font-size: 24px;
   }
 
   .text-display h3 {
       border-bottom: 2px solid #CCCCCC;
+      color: #666464;
       font-size: 18px;
   }
 
   .text-display h4 {
+      color: #666464;
       font-size: 16px;
   }
 
   .text-display h5 {
+      color: #666464;
       font-size: 14px;
   }
 
   .text-display h6 {
-      color: #777777;
+      color: #666464;
       background-color: inherit;
       font-size: 14px;
   }
