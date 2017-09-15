@@ -4,8 +4,8 @@
     <div class="content-area container">
       <div class="site-content">
         <article
+          class="post-item"
           v-scroll-show        
-          class="post-item "
           v-for="(essay, key) in essayObj"
           v-bind:key="key"
         >
@@ -19,8 +19,7 @@
 
                 <div class="post-info">
                   <span class="post-time">
-                    发表于
-                    {{ essay.meta.createAt }}
+                    {{ new Date(essay.meta.createAt).toUTCString() }}
                   </span>
                 </div>
 
@@ -39,6 +38,8 @@
 
   import essayActions from '../actions/essayActions';
   import Bus from '../plugins/bus';
+
+  const ctx = '@@ctx'; // 用于标记el元素的key值
 
   export default {
     data() {
@@ -81,16 +82,21 @@
     directives: {
         scrollShow: {
             bind: (el) => {
-              window.addEventListener('scroll', () => {
-                if (document.body.scrollTop > el.offsetTop) {
+              const listenScroll = function (e) {
+                if (document.body.scrollTop + 340 > el.offsetTop) {
+                  console.log('listening Scroll...');
                   el.style.animation = 'comeIn 1s ease-in-out';
                 }
-              });
+              }
+
+              el[ctx] = {
+                listenScroll
+              };
+
+              window.addEventListener('scroll', listenScroll);
             },
-            unbind: (el) => { // Todo: 目前组件销毁并不会 移除scroll监听事件
-              window.removeEventListener('scroll', () => {
-                console.log('remove scroll is done.')
-              });
+            unbind: (el) => { // 移除scroll监听事件
+              window.removeEventListener('scroll', el[ctx].listenScroll);
             }
         }
     }
@@ -103,11 +109,15 @@
   /* 列表动画 */
   @keyframes comeIn {
     from {
-      margin-left: 60%;
-      filter: blur(20px);
+      /* margin-left: 10%; */
+      /* filter: blur(20px); */
+      opacity: 0.4;
+      transform: translate3d(100px, 0, 0);
     }
     to {
-      margin-left: 0%;
+      /* margin-left: 0%; */
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
     }
   }
 
@@ -120,6 +130,7 @@
     position: relative;
     margin-bottom: 30px;
     background-color: #fff;
+    box-shadow: 10px 10px 5px #888888;
   }
 
   .post-image {
@@ -142,7 +153,6 @@
   .info-mask {
     display: block;
     padding: 30px;
-    box-shadow: 10px 10px 5px #888888;
   }
   
   .post-item:hover .info-mask {
@@ -160,6 +170,7 @@
 
   .mask-wrapper .post-title {
     font-size: 36px;
+    font-weight: 200!important;
     line-height: 1.4;
     color: #fff;
   }

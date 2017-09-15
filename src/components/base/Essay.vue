@@ -51,6 +51,22 @@
     beforeCreate: function () {
       const _self = this;
 
+      // 进入页面时，自动置最顶
+      const scrollHeight = window.scrollY,
+            scrollStep = Math.PI / ( 1000 / 15 ),
+            cosParameter = scrollHeight / 2;
+      let scrollCount = 0,
+          scrollMargin,
+          scrollInterval = setInterval(function () {
+            if ( window.scrollY != 0 ) {
+              scrollCount = scrollCount + 1;  
+              scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
+              window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
+            } else {
+              clearInterval(scrollInterval);
+            }
+          }, 15);
+
       // 第一次点击列表进入详情页时，监听事件
       Bus.$on('get-essay-details', function (essayDetails, essayId) {
         _self.picUrl = essayDetails.picUrl;
@@ -127,10 +143,11 @@
 
   .post-essay-title {
     position: absolute;
-    top: 33%;
-    color: #000;
+    top: 30%;
+    color: #fff;
     font-size: 60px;
-    left: 6%;
+    font-weight: 200!important;
+    left: 2%;
     z-index: 1;
   }
 
@@ -139,7 +156,8 @@
     top: 42%;
     color: #fff;
     font-size: 20px;
-    left: 6%;
+    font-weight: 300!important;
+    left: 2%;
     z-index: 1;
   }
 
@@ -158,13 +176,15 @@
     -moz-filter: grayscale(100%);
     -ms-filter: grayscale(100%);
     -o-filter: grayscale(100%);
-    filter: grayscale(100%);
+    filter: grayscale(100%) blur(1px);
   }
 
   .text-display {
     margin-top: 5%;
     margin-bottom: 5%;
-    /* box-shadow: 10px 10px 5px #888888; */
+    padding: 20px;
+    box-shadow: 10px 10px 5px #888888;
+    border-radius: 15px;
   }
 
   .text-display h1, .text-display h2, .text-display h3, .text-display h4, .text-display h5, .text-display h6 {
@@ -173,31 +193,34 @@
   }
 
   .text-display h1 {
-      color: #000000;
+      color: #666464;
       font-size: 28px;
   }
 
   .text-display h2 {
       border-bottom: 2px solid #CCCCCC;
-      color: #000000;
+      color: #666464;
       font-size: 24px;
   }
 
   .text-display h3 {
       border-bottom: 2px solid #CCCCCC;
+      color: #666464;
       font-size: 18px;
   }
 
   .text-display h4 {
+      color: #666464;
       font-size: 16px;
   }
 
   .text-display h5 {
+      color: #666464;
       font-size: 14px;
   }
 
   .text-display h6 {
-      color: #777777;
+      color: #666464;
       background-color: inherit;
       font-size: 14px;
   }

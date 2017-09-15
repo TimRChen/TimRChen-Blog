@@ -1,10 +1,15 @@
 import _ from 'lodash';
+import domains from './domains';
+const addDomain = domain => path => domain + path;
+const { timDomain } = domains;
 
 const APIs = {
-  GET_AUTH: 'http://127.0.0.1:3000/api/auth',
-  GET_LOGOUT: 'http://127.0.0.1:3000/logout',
-  POST_LOGIN: 'http://127.0.0.1:3000/login',
-  POST_SIGNUP: 'http://127.0.0.1:3000/signup'
+  GET_AUTH: '/api/auth',
+  GET_LOGOUT: '/logout',
+  POST_LOGIN: '/login',
+  POST_SIGNUP: '/signup'
 };
 
-export default APIs;
+export default _.each(APIs, (path, key) => {
+  APIs[key] = addDomain(timDomain)(path);
+});
