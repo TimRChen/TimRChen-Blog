@@ -20,7 +20,7 @@ module.exports = {
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report,
-    timDomain: 'http://172.17.100.244:3000' // Todo: 待上线测试确认地址
+    timDomain: 'http://47.93.191.225:3000' // Todo: 待上线测试确认地址
   },
   dev: {
     env: require('./dev.env'),
