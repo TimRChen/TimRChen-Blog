@@ -1,9 +1,5 @@
 <template>
-  <header id="header" class="banner-mask">
-    <!-- <div id="barbg"> -->
-      <!-- 进度条 -->
-      <!-- <div id="bar"></div> -->
-    <!-- </div> -->
+  <header id="header" class="banner-mask" v-bind:style="{ backgroundImage: `url(${'http://picture-store.oss-cn-beijing.aliyuncs.com/images/banner.jpeg?Expires=1505877259&OSSAccessKeyId=TMP.AQHzFKebyfPR89UrwAQ3n4FUppj7dhKf0bmu_LTt0-IHXYiq1gNyDaPyhtP9MC4CFQCVinjkqRdQaHHN_i5DMzDuLTJYFAIVAM9COZOqRyV0XjGNT2V1zu-4ZI2A&Signature=KFzXx73SBlSfoeoVA%2Fh15IrQu%2FE%3D'})`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
 
     <!-- 导航栏 -->
     <div class="nav-header container">
@@ -260,9 +256,9 @@
 <style>
 
   .banner-mask {
-    background: url('../assets/banner.jpeg');
-    background-position: 50%;
-    background-size: cover;
+    /* background: url('../assets/banner.jpeg'); */
+    /* background-position: 50%;
+    background-size: cover; */
     position: relative;
     padding: 20px 0;
     height: 360px;
@@ -278,24 +274,11 @@
     right: 0;
   }
 
-  /* #barbg {
-    position: absolute;
-    top: 0px;
-    height: 5px;
-    background: rgb(224,224,224);
-  } */
-
-  /* #barbg #bar {
-    width: 0px;
-    height: 5px;
-    background: rgb(245,0,87);
-  } */
-
   .container {
-    max-width: 900px;
-    margin-right: auto;
-    margin-left: auto;
-    width: 90%;
+    max-width: 900px!important;
+    margin-right: auto!important;
+    margin-left: auto!important;
+    width: 90%!important;
   }
   .nav-header {
     padding-top: 30px;
