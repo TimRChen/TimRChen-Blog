@@ -1,5 +1,5 @@
 <template>
-  <header id="header" class="banner-mask">
+  <header id="header" class="banner-mask" v-bind:style="{ backgroundImage: `url(${'http://picture-store.oss-cn-beijing.aliyuncs.com/images/banner.jpeg?Expires=1505877259&OSSAccessKeyId=TMP.AQHzFKebyfPR89UrwAQ3n4FUppj7dhKf0bmu_LTt0-IHXYiq1gNyDaPyhtP9MC4CFQCVinjkqRdQaHHN_i5DMzDuLTJYFAIVAM9COZOqRyV0XjGNT2V1zu-4ZI2A&Signature=KFzXx73SBlSfoeoVA%2Fh15IrQu%2FE%3D'})`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
     <!-- <div id="barbg"> -->
       <!-- 进度条 -->
       <!-- <div id="bar"></div> -->
@@ -260,9 +260,9 @@
 <style>
 
   .banner-mask {
-    background: url('../assets/banner.jpeg');
-    background-position: 50%;
-    background-size: cover;
+    /* background: url('../assets/banner.jpeg'); */
+    /* background-position: 50%;
+    background-size: cover; */
     position: relative;
     padding: 20px 0;
     height: 360px;
