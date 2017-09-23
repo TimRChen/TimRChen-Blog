@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import App from '@/App';
-import TimBody from '@/components/TimBody.vue';
+import TimBody from '@/components/TimBody';
+import Admin from '@/components/base/Admin';
 import Essay from '@/components/base/Essay';
 import EditEssay from '@/components/base/EditEssay';
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/edit',
       name: 'edit',
       component: EditEssay
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin
     }
   ]
 });
