@@ -1,12 +1,34 @@
 <template>
-  <header id="header" class="banner-mask" v-bind:style="{ backgroundImage: `url(${'http://picture-store.oss-cn-beijing.aliyuncs.com/images/banner.jpeg?Expires=1505877259&OSSAccessKeyId=TMP.AQHzFKebyfPR89UrwAQ3n4FUppj7dhKf0bmu_LTt0-IHXYiq1gNyDaPyhtP9MC4CFQCVinjkqRdQaHHN_i5DMzDuLTJYFAIVAM9COZOqRyV0XjGNT2V1zu-4ZI2A&Signature=KFzXx73SBlSfoeoVA%2Fh15IrQu%2FE%3D'})`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
+  <header id="header" class="banner-mask">
 
     <!-- 导航栏 -->
     <div class="nav-header container">
       <div class="nav-header-container">
         <!-- route 1 -->
         <a href="#/" class="button is-dark is-inverted is-outlined">Home</a>
-        <a href="#/edit" class="button is-dark is-inverted is-outlined" v-if="loginStatus === 'logged'">Edit</a>
+
+        <div class="dropdown is-hoverable" v-if="loginStatus === 'logged'">
+          <div class="dropdown-trigger">
+            <button class="button is-dark is-inverted is-outlined" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span>Drop</span>
+              <span class="icon is-small">
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <div class="dropdown-item">
+                <p><strong>欢迎您，超级管理员.</strong></p>
+              </div>
+              <a href="#/edit" class="dropdown-item" v-if="loginStatus === 'logged'">Edit</a>
+              <hr class="dropdown-divider">
+              <a href="#/admin" class="dropdown-item" v-if="loginStatus === 'logged'">Admin</a>
+            </div>
+          </div>
+        </div>
+        <!-- Todo: 关于我介绍页 -->
+        <a href="#/about" class="button is-dark is-inverted is-outlined">About</a>
         <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true" v-if="loginStatus === 'noLogged'">SignUp</a>        
         <a class="login button is-dark is-inverted is-outlined" v-on:click="showLoginModal = true" v-if="loginStatus === 'noLogged'">Login</a>
         <a class="login button is-dark is-inverted is-outlined" v-on:click="logout()" v-if="loginStatus === 'logged'">Logout</a>
@@ -111,13 +133,9 @@
 
     <!-- 大标题 -->
     <div class="header-wrap">
-      <div class="container">
-        <div class="home-info-container">
-          <a href="/">
-            <h2>Timrchen</h2>
-          </a>
-          <h3>Life is Art.</h3>
-        </div>
+      <div class="home-info-container">
+        <h2>Timrchen</h2>
+        <h3>Life is Art.</h3>
       </div>
     </div>
 
@@ -143,7 +161,7 @@
         showLoginModal: false,
         username: '',
         password: '',
-        loginStatus: 'noLogged',
+        loginStatus: 'noLogged'
       }
     },
     // initial
@@ -256,9 +274,9 @@
 <style>
 
   .banner-mask {
-    /* background: url('../assets/banner.jpeg'); */
-    /* background-position: 50%;
-    background-size: cover; */
+    background: url('../assets/banner.jpeg');
+    background-position: 50%;
+    background-size: cover;
     position: relative;
     padding: 20px 0;
     height: 360px;
