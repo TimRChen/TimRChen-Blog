@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import App from '@/App';
 import TimBody from '@/components/TimBody';
 import Admin from '@/components/base/Admin';
+import About from '@/components/base/About';
 import Essay from '@/components/base/Essay';
 import EditEssay from '@/components/base/EditEssay';
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: Admin
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: About
     }
   ]
 });
