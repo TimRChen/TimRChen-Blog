@@ -1,8 +1,15 @@
 <template>
 
-  <div class="container admin">
-    <!-- 隐藏的表单域，用于存储文章的id -->
-    <!-- <input type="hidden" name="_id" value="essay._id"> -->
+  <div class="container edit-essay">
+    <section class="hero is-dark is-bold">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="subtitle">
+            新建一篇简单而精致的美文.
+          </h2>
+        </div>
+      </div>
+    </section>
     <br>
     <div class="field">
       <label class="essay-title-tip label">文章标题</label>
@@ -81,6 +88,10 @@
 </script>
 
 <style>
+
+  .edit-essay {
+    margin-top: 5%;
+  }
 
   .textarea-custom {
     background-color:transparent;
