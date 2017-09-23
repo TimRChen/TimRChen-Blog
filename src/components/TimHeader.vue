@@ -260,7 +260,7 @@
               } else {
                 clearInterval(scrollInterval);
               }
-            }, 15);
+            }, 1);
       }
 
     }
@@ -327,7 +327,7 @@
     text-align: center;
     color: #fff;
     text-align: center;
-    margin-top: 6%;
+    margin-top: 4%;
   }
 
   .home-info-container a {
