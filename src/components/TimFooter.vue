@@ -1,6 +1,6 @@
 <template>
   <footer class="site-footer clearfix u-textAlignCenter">
-    Copyright ©2017 TimRChen
+    Copyright © 2017 TimRChen - Just relax in here.
   </footer>
 </template>
 

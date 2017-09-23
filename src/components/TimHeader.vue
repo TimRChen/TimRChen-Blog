@@ -29,14 +29,14 @@
         </div>
         <!-- Todo: 关于我介绍页 -->
         <a href="#/about" class="button is-dark is-inverted is-outlined">About</a>
-        <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true" v-if="loginStatus === 'noLogged'">SignUp</a>        
+        <!-- <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true" v-if="loginStatus === 'noLogged'">SignUp</a> -->
         <a class="login button is-dark is-inverted is-outlined" v-on:click="showLoginModal = true" v-if="loginStatus === 'noLogged'">Login</a>
         <a class="login button is-dark is-inverted is-outlined" v-on:click="logout()" v-if="loginStatus === 'logged'">Logout</a>
       </div>
     </div>
 
     <!-- signUp modal todo: 注册完后需要将相关注册逻辑隐藏!!! -->
-    <div class="modal" v-bind:class="{'is-active': showSignUpModal === true}">
+    <!-- <div class="modal" v-bind:class="{'is-active': showSignUpModal === true}">
       <div class="modal-background" v-on:click="showSignUpModal = false"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -45,7 +45,6 @@
         </header>
         <section class="modal-card-body">
 
-          <!-- username -->
           <div class="field">
             <label class="label">Username</label>
             <div class="control has-icons-left has-icons-right">
@@ -57,10 +56,8 @@
                 <i class="fa fa-check"></i>
               </span>
             </div>
-            <!-- <p class="help is-success">This username is available</p> -->
           </div>
 
-          <!-- password -->
           <div class="field">
             <label class="label">Password</label>
             <div class="control has-icons-left has-icons-right">
@@ -80,7 +77,7 @@
           <button class="button" v-on:click="showSignUpModal = false">Cancel</button>
         </footer>
       </div>
-    </div>
+    </div> -->
 
 
     <!-- login modal -->
@@ -105,7 +102,6 @@
                 <i class="fa fa-check"></i>
               </span>
             </div>
-            <!-- <p class="help is-success">This username is available</p> -->
           </div>
 
           <!-- password -->
@@ -157,7 +153,7 @@
     data() {
       return {
         // todo: 注册完后需要将相关注册逻辑隐藏!!!
-        showSignUpModal: false,
+        // showSignUpModal: false,
         showLoginModal: false,
         username: '',
         password: '',
@@ -180,28 +176,28 @@
     },
     methods: {
       // todo: 注册完后需要将相关注册逻辑隐藏!!!
-      signUp: function () {
-        const _self = this;
-        let username = _self.username;
-        let password = _self.password;
-        if (username.length !== 0 && password !== 0) {
-          userActions.signUp(username, password).then(res => {
-            if (res.ok) {
-              alert(res.body.message);
-              _self.username = '';
-              _self.password = '';
-              _self.showSignUpModal = false;
-            }
-          }).catch(err => {
-            alert(err.body.message);
-            _self.username = '';
-            _self.password = '';
-            console.error(err);
-          })
-        } else {
-          alert('情输入完整用户账号/密码!');
-        }
-      },
+      // signUp: function () {
+      //   const _self = this;
+      //   let username = _self.username;
+      //   let password = _self.password;
+      //   if (username.length !== 0 && password !== 0) {
+      //     userActions.signUp(username, password).then(res => {
+      //       if (res.ok) {
+      //         alert(res.body.message);
+      //         _self.username = '';
+      //         _self.password = '';
+      //         _self.showSignUpModal = false;
+      //       }
+      //     }).catch(err => {
+      //       alert(err.body.message);
+      //       _self.username = '';
+      //       _self.password = '';
+      //       console.error(err);
+      //     })
+      //   } else {
+      //     alert('情输入完整用户账号/密码!');
+      //   }
+      // },
       login: function () {
         const _self = this;
         let username = _self.username;
@@ -264,7 +260,7 @@
               } else {
                 clearInterval(scrollInterval);
               }
-            }, 15);
+            }, 1);
       }
 
     }
@@ -331,7 +327,7 @@
     text-align: center;
     color: #fff;
     text-align: center;
-    margin-top: 6%;
+    margin-top: 4%;
   }
 
   .home-info-container a {
