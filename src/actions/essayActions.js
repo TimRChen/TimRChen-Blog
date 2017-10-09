@@ -9,6 +9,7 @@ const newEssay = function (essayInfo) {
   return Vue.http.post(
     essayAPIs.POST_NEW_ESSAY,
     {
+      "essayId": essayInfo.essayId,
       "title": essayInfo.title,
       "content": essayInfo.content,
       "picUrl": essayInfo.picUrl
@@ -39,15 +40,29 @@ const getEssayDetails = function (essayId) {
         "essayId": essayId
       }
     }
-  )
+  );
+};
 
-}
 
- 
+/**
+ * DELETE - 删除文章
+ * @param {String} essayId - 文章Id
+ */
+const deleteEssay = function (essayId) {
+  return Vue.http.delete(
+    essayAPIs.DELETE_ESSAY,
+    {
+      "params": {
+        "essayId": essayId
+      }
+    }
+  );
+};
 
 
 export default ({
   newEssay,
   getEssayList,
-  getEssayDetails
+  getEssayDetails,
+  deleteEssay
 });
