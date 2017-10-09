@@ -71,10 +71,12 @@
         const _self = this;
 
         if (essayId) {
-          essayActions.deleteEssay(essayId).then(res => {
-            _self.essayList = _self.essayList.filter(essay => essay._id !== essayId);
-            alert(res.body.message);
-          });
+          if (confirm('确定删除文章?')) {
+            essayActions.deleteEssay(essayId).then(res => {
+              _self.essayList = _self.essayList.filter(essay => essay._id !== essayId);
+              alert(res.body.message);
+            });
+          }
         } else {
           alert('Error: essayId not found.')
         }
