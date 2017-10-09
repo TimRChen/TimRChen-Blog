@@ -34,7 +34,7 @@
           <td class="content-abstract">{{ essay.content }}</td>
           <td>{{ new Date(essay.meta.createAt).toLocaleDateString() }}</td>
           <td>
-            <button class="button is-info">前往编辑</button>
+            <router-link to="/edit" v-on:click.native="editEssay(essay._id)">编辑</router-link>
           </td>
           <td>
             <button class="button is-danger" v-on:click="deleteEssay(essay._id)">删除</button>
@@ -53,6 +53,7 @@
 <script>
 
   import essayActions from '@/actions/essayActions';
+  import Bus from '@/plugins/bus';
 
   export default {
     data() {
@@ -74,8 +75,15 @@
             _self.essayList = _self.essayList.filter(essay => essay._id !== essayId);
             alert(res.body.message);
           });
+        } else {
+          alert('Error: essayId not found.')
         }
 
+      },
+      editEssay: function (essayId) {
+        const _self = this;
+        window.sessionStorage.removeItem('essayId');
+        window.sessionStorage.setItem('essayId', essayId);
       }
     }
   };

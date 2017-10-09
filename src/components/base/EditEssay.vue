@@ -50,11 +50,32 @@
   export default {
     data() {
       return {
-        title: "",
-        content: "",
-        picUrl: "",
-        displayText: "<h1>编辑内容显示在此处</h1>"
+        title: '',
+        content: '',
+        picUrl: '',
+        essayId: 'undefined',
+        displayText: '<h1>编辑内容显示在此处</h1>'
       };
+    },
+    beforeCreate: function () {
+      const _self = this;
+
+      const essayId = window.sessionStorage.getItem('essayId');
+
+      if (essayId) {
+        essayActions.getEssayDetails(essayId).then(res => {
+          if (res.status === 200) {
+            const essayObj = res.body.essay;
+            _self.essayId = essayObj._id;
+            _self.picUrl = essayObj.picUrl;
+            _self.title = essayObj.title;
+            _self.content = essayObj.content;
+          }
+        }).catch(err => {
+          console.error(err);
+        });
+      }
+
     },
     methods: {
       sendEssay: function () {
@@ -63,6 +84,7 @@
           alert('请输入完整的标题、内容以及图片链接!');
         } else if (_self.title.length > 0) {
           let essayInfo = {
+            essayId: _self.essayId,
             title: _self.title,
             content: _self.content,
             picUrl: _self.picUrl
@@ -81,6 +103,9 @@
     beforeUpdate: function () {
       const _self = this;
       _self.displayText = md.render(_self.content);
+    },
+    destroyed: function () {
+      window.sessionStorage.removeItem('essayId');
     }
   };
 

@@ -37,7 +37,6 @@
 <script>
 
   import essayActions from '../actions/essayActions';
-  import Bus from '../plugins/bus';
 
   const ctx = '@@ctx'; // 用于标记el元素的key值
 
@@ -64,16 +63,7 @@
       getEssayDetails: function (essayId) {
         const _self = this;
         window.sessionStorage.removeItem('essayId');
-        essayActions.getEssayDetails(essayId).then(res => {
-          if (res.status === 200) {
-            var essayDetails = res.body.essay;
-            window.sessionStorage.setItem('essayId', essayId);
-            // 触发get-essay-details事件
-            Bus.$emit('get-essay-details', essayDetails, essayId);
-          }
-        }).catch(err => {
-          console.error(err);
-        });
+        window.sessionStorage.setItem('essayId', essayId);
       },
 
     },

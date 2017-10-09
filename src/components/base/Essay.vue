@@ -32,7 +32,6 @@
 <script>
 
   import essayActions from '../../actions/essayActions';
-  import Bus from '../../plugins/bus';
   import Moment from 'moment';
   import MarkdownIt from 'markdown-it';
   const md = new MarkdownIt();
@@ -67,26 +66,17 @@
             }
           }, 15);
 
-      // 第一次点击列表进入详情页时，监听事件
-      Bus.$on('get-essay-details', function (essayDetails, essayId) {
-        _self.picUrl = essayDetails.picUrl;
-        _self.essayTitle = essayDetails.title;
-        _self.essayContent = md.render(essayDetails.content);
-        _self.createTime = Moment(essayDetails.meta.createAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
-        _self.pv = essayDetails.pv;
-      });
-
-      const essayId = window.sessionStorage.getItem('essayId');
+      const essayId = window.sessionStorage.getItem('essayId'); // 页面刷新亦能获取当页数据
 
       if (essayId) {
-        // 当页面刷新时，单独获取当页数据
         essayActions.getEssayDetails(essayId).then(res => {
           if (res.status === 200) {
-            _self.picUrl = res.body.essay.picUrl;
-            _self.essayTitle = res.body.essay.title;
-            _self.essayContent = md.render(res.body.essay.content);
-            _self.createTime = Moment(res.body.essay.meta.createAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
-            _self.pv = res.body.essay.pv;
+            const essayObj = res.body.essay;
+            _self.picUrl = essayObj.picUrl;
+            _self.essayTitle = essayObj.title;
+            _self.essayContent = md.render(essayObj.content);
+            _self.createTime = Moment(essayObj.meta.createAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
+            _self.pv = essayObj.pv;
           }
         }).catch(err => {
           console.error(err);
@@ -94,7 +84,9 @@
       }
 
     },
-
+    destroyed: function () {
+      window.sessionStorage.removeItem('essayId');
+    }
   }
 </script>
 
