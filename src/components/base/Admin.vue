@@ -22,13 +22,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>前往编辑</td>
-          <td>删除</td>
-          <td></td>
+        <tr
+          v-for="(essay, key) in essayList"
+          v-bind:key="key"
+        >
+          <td>
+            <span class="tag is-medium is-dark">
+              {{ essay.title }}
+            </span>
+          </td>
+          <td class="content-abstract">{{ essay.content }}</td>
+          <td>{{ new Date(essay.meta.createAt).toLocaleDateString() }}</td>
+          <td>
+            <button class="button is-info">前往编辑</button>
+          </td>
+          <td>
+            <button class="button is-danger">删除</button>
+          </td>
+          <td>
+            <span class="tag is-success is-medium">
+              {{ essay.pv }}
+            </span>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -37,13 +52,19 @@
 
 <script>
 
+  import essayActions from '@/actions/essayActions';
+
   export default {
     data() {
       return {
-
+        essayList: {}
       }
     },
-
+    beforeCreate: function () {
+      const _self = this;
+      // 获取文章列表
+      essayActions.getEssayList().then(res => _self.essayList = res.body.essays);
+    },
     methods: {
 
     }
