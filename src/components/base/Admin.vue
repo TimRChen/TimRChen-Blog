@@ -37,7 +37,7 @@
             <button class="button is-info">前往编辑</button>
           </td>
           <td>
-            <button class="button is-danger">删除</button>
+            <button class="button is-danger" v-on:click="deleteEssay(essay._id)">删除</button>
           </td>
           <td>
             <span class="tag is-success is-medium">
@@ -66,7 +66,17 @@
       essayActions.getEssayList().then(res => _self.essayList = res.body.essays);
     },
     methods: {
+      deleteEssay: function (essayId) {
+        const _self = this;
 
+        if (essayId) {
+          essayActions.deleteEssay(essayId).then(res => {
+            _self.essayList = _self.essayList.filter(essay => essay._id !== essayId);
+            alert(res.body.message);
+          });
+        }
+
+      }
     }
   };
 
