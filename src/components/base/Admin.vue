@@ -99,6 +99,13 @@
     margin-top: 5%;
   }
 
+  .content-abstract {
+    width: 100%;
+    display: -webkit-box;
+    overflow: auto;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+  }
 
 
 </style>

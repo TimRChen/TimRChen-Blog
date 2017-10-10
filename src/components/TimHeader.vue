@@ -330,6 +330,17 @@
     margin-top: 4%;
   }
 
+  /* 竖屏 */
+  @media screen and (orientation:portrait) and (max-width: 720px) {
+    .header-wrap {
+      position: relative;
+      text-align: center;
+      color: #fff;
+      text-align: center;
+      margin-top: 20%;
+    }
+  }
+
   .home-info-container a {
     color: inherit;
   }
@@ -348,7 +359,15 @@
   .return-top-btn {
     position: fixed;
     right: 2%;
-    bottom: 10%;   
+    bottom: 10%;
+    z-index: 999;
+  }
+
+  /* 竖屏 */
+  @media screen and (orientation:portrait) and (max-width: 720px) {
+    .return-top-btn {
+      display: none;
+    }
   }
 
 
