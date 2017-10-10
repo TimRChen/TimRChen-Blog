@@ -111,6 +111,13 @@
     }
   }
 
+  .container {
+    max-width: 900px!important;
+    margin-right: auto!important;
+    margin-left: auto!important;
+    width: 90%!important;
+  }
+
 
   .site-content {
     padding-top: 50px;
@@ -120,7 +127,7 @@
     position: relative;
     margin-bottom: 30px;
     background-color: #fff;
-    box-shadow: 10px 10px 5px #888888;
+    box-shadow: 10px 10px 14px #888888;
   }
 
   .post-image {

@@ -1,6 +1,6 @@
 <template>
     <div class="page-detail">
-      <div class="content-area container">
+      <div class="content-area detail-container">
         <div class="site-content">
 
           <section class="post-content">
@@ -92,15 +92,22 @@
 
 <style>
 
+  .detail-container {
+    max-width: 900px!important;
+    margin-right: auto!important;
+    margin-left: auto!important;
+    width: 90%!important;
+  }
+
   .site-content {
     padding-top: 50px;
   }
 
   .postDesc {
-      text-align: right;
-      padding: 5px 0px;
-      color: #999999;
-      font-size: 12px;
+    text-align: right;
+    padding: 5px 0px;
+    color: #999999;
+    font-size: 12px;
   }
 
   /* --author */
@@ -133,9 +140,13 @@
       padding: 0 30px;
   }
 
+  .post-content {
+    position: relative;
+  }
+
   .post-essay-title {
     position: absolute;
-    top: 30%;
+    top: 11%;
     color: #fff;
     font-size: 60px;
     font-weight: 200!important;
@@ -145,7 +156,7 @@
 
   .post-create-time {
     position: absolute;
-    top: 42%;
+    top: 15%;
     color: #fff;
     font-size: 20px;
     font-weight: 300!important;
@@ -153,13 +164,36 @@
     z-index: 1;
   }
 
+  /* 竖屏 */
+  @media screen and (orientation:portrait) and (max-width: 720px) {
+    .post-essay-title {
+      position: absolute;
+      top: 7%;
+      color: #fff;
+      font-size: 50px;
+      font-weight: 200!important;
+      left: 2%;
+      z-index: 1;
+    }
+    .post-create-time {
+      position: absolute;
+      top: 9%;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 300!important;
+      left: 2%;
+      z-index: 1;
+    }
+  }
+
+
   .post-create-time:hover {
     color: #bc403e;
   }
 
   .pic-header {
     height: 340px;
-    border-radius: 10px;
+    border-radius: 4px;
     /* -webkit-filter: blur(4px);
     -moz-filter: blur(4px);
     -ms-filter: blur(4px);
@@ -168,15 +202,15 @@
     -moz-filter: grayscale(100%);
     -ms-filter: grayscale(100%);
     -o-filter: grayscale(100%);
-    filter: grayscale(100%) blur(1px);
+    filter: grayscale(100%);
   }
 
   .text-display {
     margin-top: 5%;
     margin-bottom: 5%;
     padding: 20px;
-    box-shadow: 10px 10px 5px #888888;
-    border-radius: 15px;
+    box-shadow: 0px 0px 15px #888888;
+    border-radius: 4px;
   }
 
   .text-display h1, .text-display h2, .text-display h3, .text-display h4, .text-display h5, .text-display h6 {
