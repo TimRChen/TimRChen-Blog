@@ -40,7 +40,7 @@
 
   /* Vue 多组件切换过渡动画 */
   .component-fade-enter-active, .component-fade-leave-active {
-    transition: opacity .3s ease-in;
+    transition: opacity .3s ease-in-out;
   }
   .component-fade-enter, .component-fade-leave-to
   /* .component-fade-leave-active for below version 2.1.8 */ {

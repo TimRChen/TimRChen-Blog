@@ -8,24 +8,23 @@
           v-scroll-show        
           v-for="(essay, key) in essayObj"
           v-bind:key="key"
+          v-bind:class="{'scrollAnimate': scrollListen}"
         >
-          <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
-            <div class="info-mask">
-              <div class="mask-wrapper">
+          <router-link to="/essay" v-on:click.native="getEssayDetails(essay._id)" >
+            <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
+              <div class="info-mask">
+                <div class="mask-wrapper">
+                  <h2 class="post-title">{{ essay.title }}</h2>
+                  <div class="post-info">
+                    <span class="post-time">
+                      {{ new Date(essay.meta.createAt).toUTCString() }}
+                    </span>
+                  </div>
 
-                <h2 class="post-title">
-                  <router-link to="/essay" v-on:click.native="getEssayDetails(essay._id)" >{{ essay.title }}</router-link>
-                </h2>
-
-                <div class="post-info">
-                  <span class="post-time">
-                    {{ new Date(essay.meta.createAt).toUTCString() }}
-                  </span>
                 </div>
-
               </div>
             </div>
-          </div>
+          </router-link>
         </article>
 
       </div>
@@ -40,14 +39,18 @@
 
   const ctx = '@@ctx'; // 用于标记el元素的key值
 
+  let component; // 申请 component 变量用于存储 组件 this 变量
+
   export default {
     data() {
       return {
+        scrollListen: false,
         essayObj: {}
       }
     },
     beforeCreate: function () {
       const _self = this;
+      component = this;
 
       // 获取文章列表
       essayActions.getEssayList().then(res => {
@@ -72,10 +75,10 @@
     directives: {
         scrollShow: {
             bind: (el) => {
-              const listenScroll = function (e) {
-                if (document.body.scrollTop + 340 > el.offsetTop) {
+              let listenScroll = function (e) {
+                if (document.body.scrollTop + 340 > el.offsetTop && component.scrollListen === false) {
                   console.log('listening Scroll...');
-                  el.style.animation = 'comeIn 1s ease-in-out';
+                  component.scrollListen = true;
                 }
               }
 
@@ -87,6 +90,7 @@
             },
             unbind: (el) => { // 移除scroll监听事件
               window.removeEventListener('scroll', el[ctx].listenScroll);
+              component = null; // 释放 component 变量
             }
         }
     }
@@ -109,6 +113,10 @@
       opacity: 1;
       transform: translate3d(0, 0, 0);
     }
+  }
+
+  .scrollAnimate {
+    animation: comeIn .5s ease-in-out;
   }
 
   .container {
@@ -172,11 +180,11 @@
     color: #fff;
   }
 
-  .mask-wrapper .post-title a:hover {
+  .post-item:hover .info-mask .mask-wrapper .post-title {
     color: #bc403e;
   }
 
-  .mask-wrapper .post-title a {
+  .mask-wrapper .post-title {
     color: inherit;
   }
 
