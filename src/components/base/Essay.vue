@@ -148,7 +148,8 @@
 
   .essay-info {
     position: absolute;
-    top: 200px;
+    top: 300px;
+    left: 3%;
   }
 
   .post-essay-title {
@@ -156,7 +157,6 @@
     color: #fff;
     font-size: 60px;
     font-weight: 200!important;
-    left: 2%;
     z-index: 1;
   }
 
@@ -165,28 +165,21 @@
     color: #fff;
     font-size: 20px;
     font-weight: 300!important;
-    left: 2%;
     z-index: 1;
   }
 
   /* 竖屏 */
   @media screen and (orientation:portrait) and (max-width: 720px) {
     .post-essay-title {
-      position: absolute;
-      top: 7%;
       color: #fff;
       font-size: 50px;
       font-weight: 200!important;
-      left: 2%;
       z-index: 1;
     }
     .post-create-time {
-      position: absolute;
-      top: 9%;
       color: #fff;
       font-size: 14px;
       font-weight: 300!important;
-      left: 2%;
       z-index: 1;
     }
   }
@@ -197,7 +190,7 @@
   }
 
   .pic-header {
-    height: 340px;
+    height: 440px;
     border-radius: 4px;
     /* -webkit-filter: blur(4px);
     -moz-filter: blur(4px);
