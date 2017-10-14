@@ -13,8 +13,7 @@
 <style>
 /* footer.pug */
   .site-footer {
-    margin-bottom: 30px;
-    padding: 30px 0 0 0;
+    padding: 30px 0 30px 0;
     font-family: exoregular;
     color: rgba(0,0,0,.44);
   }
@@ -25,9 +24,8 @@
   /* 竖屏 */
   @media screen and (orientation:portrait) and (max-width: 720px) {
     .site-footer {
-      margin-bottom: 30px;
       font-size: 14px;
-      padding: 30px 0 0 0;
+      padding: 30px 0 30px 0;
       font-family: exoregular;
       color: rgba(0,0,0,.44);
     }
