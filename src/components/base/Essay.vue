@@ -4,8 +4,10 @@
         <div class="site-content">
 
           <section class="post-content">
-            <h1 class="post-essay-title">{{ essayTitle }}</h1>
-            <h2 class="post-create-time">{{ createTime }}</h2>
+            <div class="essay-info">
+              <h1 class="post-essay-title">{{ essayTitle }}</h1>
+              <h2 class="post-create-time">{{ createTime }}</h2>
+            </div>
             <div
               class="pic-header"
               v-bind:style="{ backgroundImage: `url(${ picUrl })`, backgroundSize: 'cover', backgroundPosition: '50%' }">
@@ -144,9 +146,13 @@
     position: relative;
   }
 
-  .post-essay-title {
+  .essay-info {
     position: absolute;
-    top: 11%;
+    top: 200px;
+  }
+
+  .post-essay-title {
+    position: relative;
     color: #fff;
     font-size: 60px;
     font-weight: 200!important;
@@ -155,8 +161,7 @@
   }
 
   .post-create-time {
-    position: absolute;
-    top: 15%;
+    position: relative;
     color: #fff;
     font-size: 20px;
     font-weight: 300!important;

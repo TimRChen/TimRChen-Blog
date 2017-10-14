@@ -108,7 +108,7 @@
           <div class="field">
             <label class="label">Password</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input" type="password" name="password" v-model="password">
+              <input class="input" type="password" name="password" v-model="password" v-on:keyup.enter="login">
               <span class="icon is-small is-left">
                 <i class="fa fa-key"></i>
               </span>
@@ -120,7 +120,10 @@
 
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-primary" v-on:click="login()">Login</button>
+          <button
+            class="button is-primary"
+            v-on:click="login"
+          >Login</button>
           <button class="button" v-on:click="showLoginModal = false">Cancel</button>
         </footer>
       </div>
@@ -221,7 +224,6 @@
                 console.error(err);
               });
             }
-            debugger
           }).catch(err => {
             alert(err.body.message);
             _self.username = '';
