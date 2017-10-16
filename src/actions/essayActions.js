@@ -27,6 +27,18 @@ const getEssayList = function () {
   );
 };
 
+/**
+ * POST - 获取某页文章列表
+ */
+const getPage = function (nextPage) {
+  return Vue.http.post(
+    essayAPIs.POST_ESSAY_PAGE,
+    {
+      "nextPage": nextPage
+    }
+  );
+};
+
 
 /**
  * GET - 获取文章详细内容
@@ -63,6 +75,7 @@ const deleteEssay = function (essayId) {
 export default ({
   newEssay,
   getEssayList,
+  getPage,
   getEssayDetails,
   deleteEssay
 });

@@ -2,14 +2,15 @@
   <div id="main" class="content homepage">
 
     <div class="content-area container">
+
+      <!-- 文章列表 -->
       <div class="site-content">
         <article
           class="post-item"
-          v-scroll-show        
+          v-scroll-show
           v-for="(essay, key) in essayObj"
           v-bind:key="key"
-          v-bind:class="{'scrollAnimate': scrollListen}"
-        >
+          v-bind:class="{'scrollAnimate': scrollListen}">
           <router-link to="/essay" v-on:click.native="getEssayDetails(essay._id)" >
             <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
               <div class="info-mask">
@@ -20,14 +21,30 @@
                       {{ new Date(essay.meta.createAt).toUTCString() }}
                     </span>
                   </div>
-
                 </div>
               </div>
             </div>
           </router-link>
         </article>
-
       </div>
+
+      <!-- 分页组件 -->
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <a class="pagination-previous" v-on:click="getPreviousPage">Previous</a>
+        <a class="pagination-next" v-on:click="getNextPage">Next page</a>
+        <ul class="pagination-list">
+          <li v-for="(page, key) in totalPages" v-bind:key="key">
+            <a
+              class="pagination-link"
+              v-bind:class="{ 'is-current': page === currentPage }"
+              v-on:click="getPage(page)">
+                {{ page }}
+            </a>
+          </li>
+          <!-- <li><span class="pagination-ellipsis">&hellip;</span></li> -->
+        </ul>
+      </nav>
+
     </div>
 
   </div>
@@ -45,7 +62,9 @@
     data() {
       return {
         scrollListen: false,
-        essayObj: {}
+        essayObj: {},
+        totalPages: "", // 总页数
+        currentPage: 1  // 记录当前点击页码
       }
     },
     beforeCreate: function () {
@@ -55,7 +74,9 @@
       // 获取文章列表
       essayActions.getEssayList().then(res => {
         if (res.status === 200) {
+          let essaySum = res.body.essaySum;
           _self.essayObj = res.body.essays;
+          _self.totalPages = Math.ceil(essaySum / 4);
         }
       }).catch(err => {
         console.error(err);
@@ -68,9 +89,57 @@
         window.sessionStorage.removeItem('essayId');
         window.sessionStorage.setItem('essayId', essayId);
       },
+      getPage: function (nextPage) {  // 获取页面列表函数
+        const _self = this;
 
+        _self.scrollToTop(1000); // 跳回顶部
+
+        _self.currentPage = nextPage; // 记录当前点击页码
+
+        essayActions.getPage(nextPage).then(res => {
+          let essaySum = res.body.essaySum;
+          _self.essayObj = res.body.essays;
+          _self.totalPages = Math.ceil(essaySum / 4); // 当新增文章时，更新总页数
+        }).catch(err => {
+          err.body.message ? alert(err.body.message) : console.error(err);
+        });
+      },
+      getNextPage: function () {
+        const _self = this;
+        let currentPage = _self.currentPage;
+        let totalPages =  _self.totalPages;
+        let nextPage = (currentPage + 1) <= totalPages ? currentPage + 1 : totalPages;
+
+        _self.getPage(nextPage);
+      },
+      getPreviousPage: function () {
+        const _self = this;
+        let currentPage = _self.currentPage;
+        let nextPage = (currentPage - 1 > 0) ? currentPage - 1 : 1;
+
+        _self.getPage(nextPage);
+      },
+      // return to top
+      scrollToTop: function (scrollDuration) {
+        const scrollHeight = window.scrollY,
+              scrollStep = Math.PI / ( scrollDuration / 15 ),
+              cosParameter = scrollHeight / 2;
+        let scrollCount = 0,
+            scrollMargin,
+            scrollInterval = setInterval(function () {
+              if ( window.scrollY != 0 ) {
+                scrollCount = scrollCount + 1;  
+                scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
+                window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
+              } else {
+                clearInterval(scrollInterval);
+              }
+            }, 1);
+      }
     },
-
+    updated: function () {
+      component = this; // 组件更新时，保证component不丢失
+    },
     // 注册自定义指令 v-scroll-show 监听滚动条
     directives: {
         scrollShow: {
@@ -193,5 +262,10 @@
     font-family: exoregular;
   }
   
+
+  .pagination-list li {
+    list-style: none;
+  }
+
 
 </style>
