@@ -172,7 +172,7 @@
   @media screen and (orientation:portrait) and (max-width: 720px) {
     .post-essay-title {
       color: #fff;
-      font-size: 50px;
+      font-size: 38px;
       font-weight: 200!important;
       z-index: 1;
     }
