@@ -21,7 +21,7 @@
     <div class="card">
       <div class="card-image">
         <figure class="image is-1by1">
-          <img src="../../assets/meShadow.jpeg" alt="Placeholder image">
+          <img src="../../assets/me.jpeg" alt="Placeholder image">
         </figure>
       </div>
       <div class="card-content">
