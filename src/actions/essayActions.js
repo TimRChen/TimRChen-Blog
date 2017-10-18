@@ -27,6 +27,17 @@ const getEssayList = function () {
   );
 };
 
+
+/**
+ * GET - 获取管理文章列表
+ */
+const getAdminList = function () {
+  return Vue.http.get(
+    essayAPIs.GET_ADMIN_LIST
+  );
+};
+
+
 /**
  * POST - 获取某页文章列表
  */
@@ -75,6 +86,7 @@ const deleteEssay = function (essayId) {
 export default ({
   newEssay,
   getEssayList,
+  getAdminList,
   getPage,
   getEssayDetails,
   deleteEssay
