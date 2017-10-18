@@ -7,6 +7,12 @@
           <h2 class="subtitle">
             欢迎来访小站，个人的一亩三分地，辛苦耕耘，谢谢关注.
           </h2>
+          <a class="button is-dark is-inverted is-outlined" href="https://github.com/TimRChen/TimRChen-Blog" target="_blank">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+            <span>Star</span>
+          </a>
         </div>
       </div>
     </section>
