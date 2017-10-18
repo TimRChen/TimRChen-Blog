@@ -10,7 +10,7 @@
       </div>
     </section>
     <br>
-    <table class="table is-bordered is-striped is-narrow is-fullwidth">
+    <table class="table is-bordered">
       <thead>
         <tr>
           <th>标题</th>
@@ -26,11 +26,7 @@
           v-for="(essay, key) in essayList"
           v-bind:key="key"
         >
-          <td>
-            <span class="tag is-medium is-dark">
-              {{ essay.title }}
-            </span>
-          </td>
+          <td>{{ essay.title }}</td>
           <td class="content-abstract">{{ essay.content }}</td>
           <td>{{ new Date(essay.meta.createAt).toLocaleDateString() }}</td>
           <td>
@@ -64,7 +60,7 @@
     beforeCreate: function () {
       const _self = this;
       // 获取文章列表
-      essayActions.getEssayList().then(res => _self.essayList = res.body.essays);
+      essayActions.getAdminList().then(res => _self.essayList = res.body.essays);
     },
     methods: {
       deleteEssay: function (essayId) {
@@ -102,6 +98,7 @@
   .content-abstract {
     width: 100%;
     display: -webkit-box;
+    min-height: 100px;
     overflow: auto;
     -webkit-line-clamp: 8;
     -webkit-box-orient: vertical;

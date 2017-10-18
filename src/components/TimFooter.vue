@@ -1,6 +1,9 @@
 <template>
   <footer class="site-footer clearfix u-textAlignCenter">
-    Copyright © 2017 TimRChen - Just relax in here
+    <p class="copyright">Copyright © 2017 TimRChen - Just relax in here</p>
+    <a href="http://www.miitbeian.gov.cn/" target="_blank">
+      <span class="tag is-black">京ICP备17058358号-1</span>
+    </a>
   </footer>
 </template>
 
@@ -19,6 +22,10 @@
   }
   .u-textAlignCenter {
     text-align: center;
+  }
+
+  .copyright {
+    margin-bottom: 10px;
   }
 
   /* 竖屏 */

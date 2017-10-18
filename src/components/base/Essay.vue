@@ -23,6 +23,12 @@
             <img src="../../assets/timrchen.jpeg" class="avatar avatar-64 photo">
             <h3>timrchen</h3>
             <p>年轻的意志</p>
+            <a class="button is-dark" href="https://github.com/TimRChen/TimRChen-Blog" target="_blank">
+              <span class="icon">
+                <i class="fa fa-github"></i>
+              </span>
+              <span>Star</span>
+            </a>
           </div>
 
         </div>
