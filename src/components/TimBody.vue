@@ -11,7 +11,7 @@
           v-for="(essay, key) in essayObj"
           v-bind:key="key"
           v-bind:class="{'scrollAnimate': scrollListen}">
-          <router-link to="/essay" v-on:click.native="getEssayDetails(essay._id)" >
+          <router-link v-bind:to="{name: 'essay', params: {id: essay._id}}">
             <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
               <div class="info-mask">
                 <div class="mask-wrapper">
@@ -83,12 +83,6 @@
       });
     },
     methods: {
-      // 获取文章详细信息
-      getEssayDetails: function (essayId) {
-        const _self = this;
-        window.sessionStorage.removeItem('essayId');
-        window.sessionStorage.setItem('essayId', essayId);
-      },
       getPage: function (nextPage) {  // 获取页面列表函数
         const _self = this;
 

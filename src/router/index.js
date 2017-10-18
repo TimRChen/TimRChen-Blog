@@ -17,7 +17,7 @@ export default new Router({
       component: TimBody
     },
     {
-      path: '/essay',
+      path: '/essay/:id',
       name: 'essay',
       component: Essay
     },

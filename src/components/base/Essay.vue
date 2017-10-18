@@ -74,7 +74,7 @@
             }
           }, 15);
 
-      const essayId = window.sessionStorage.getItem('essayId'); // 页面刷新亦能获取当页数据
+      const essayId = _self.$route.params.id; // 通过router params获取文章id
 
       if (essayId) {
         essayActions.getEssayDetails(essayId).then(res => {
@@ -91,9 +91,6 @@
         });
       }
 
-    },
-    destroyed: function () {
-      window.sessionStorage.removeItem('essayId');
     }
   }
 </script>
