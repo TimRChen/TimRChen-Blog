@@ -215,8 +215,8 @@
   }
 
   .text-display h1, .text-display h2, .text-display h3, .text-display h4, .text-display h5, .text-display h6 {
-      font-weight: bold;
-      text-align: center;
+      /* font-weight: bold; */
+      /* text-align: center; */
   }
 
   .text-display h1 {
