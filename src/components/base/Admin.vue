@@ -92,7 +92,7 @@
 <style>
 
   .admin-essay-list {
-    margin-top: 5%;
+    margin-top: 5%!important;
   }
 
   .content-abstract {
