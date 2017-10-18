@@ -21,26 +21,24 @@
     <div class="card">
       <div class="card-image">
         <figure class="image is-1by1">
-          <img src="../../assets/stars.jpg" alt="Placeholder image">
+          <img src="../../assets/meShadow.jpeg" alt="Placeholder image">
         </figure>
       </div>
       <div class="card-content">
         <p class="title">
-          “这世上有许多许多美好的事物等待去发现，你看这些大佬，膜拜吧，少年，没事儿少瞎想”
-        </p>
-        <p class="subtitle">
-          Jiandong Huang
+          “永远相信，美好的事即将发生...”
         </p>
         <div class="content">
-          <p>Sex: <a>male</a></p>
-          <p>Age: <a>22</a></p>
-          <p>Emotion: <a>single dog</a></p>
-          <p>Current Status: <a>Busy</a></p>
-          <p>Love to do: guitar - <a>if you are interested in it then contact me.</a></p>
-          <p>Dream: <a>Free do anything.</a></p>
-          <p>Emain: <a>timrchen@foxmail.com</a></p>
-          <p>GitHub: <a href="https://github.com/TimRChen" target="_blank">https://github.com/TimRChen</a></p>
-          <p>Update: <a>22:22 PM - 23 Sep 2017</a></p>
+          <p>Name: <a class="tag">黄健东</a></p>
+          <p>Sex: <a class="tag is-dark">male</a></p>
+          <p>Age: <a class="tag is-dark">22</a></p>
+          <p>Emotion: <a class="tag is-dark">single dog</a></p>
+          <p>Current Status: <a class="tag is-dark">Busy</a></p>
+          <p>Hobit: <a class="tag is-dark">guitar - contact me</a></p>
+          <p>Dream: <a class="tag is-dark">do anything.</a></p>
+          <p>Email: <a class="tag is-info">timrchen@foxmail.com</a></p>
+          <p>GitHub: <a class="tag is-info" href="https://github.com/TimRChen" target="_blank">https://github.com/TimRChen</a></p>
+          <p>Update: <a class="tag is-info">2017.10.18</a></p>
           <p>
             <strong>"Programming is the art of telling another human what one wants the computer to do."</strong>
           </p>
@@ -57,7 +55,7 @@
 
 <style>
   .about-me {
-    margin-top: 5%;
+    margin-top: 5%!important;
   }
 
 
