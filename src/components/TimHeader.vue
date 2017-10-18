@@ -139,7 +139,7 @@
     </div>
 
     <div class="return-top-btn">
-      <button class="button is-large is-primary is-inverted" v-on:click="scrollToTop(1000)">TOP</button>
+      <button class="button is-large is-primary" v-on:click="scrollToTop(1000)">TOP</button>
     </div>
 
 
