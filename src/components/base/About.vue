@@ -32,17 +32,17 @@
           Jiandong Huang
         </p>
         <div class="content">
-          <p>Sex: <a>male</a></p>
-          <p>Age: <a>22</a></p>
-          <p>Emotion: <a>single dog</a></p>
-          <p>Current Status: <a>Busy</a></p>
-          <p>Love to do: guitar - <a>if you are interested in it then contact me.</a></p>
-          <p>Dream: <a>Free do anything.</a></p>
-          <p>Emain: <a>timrchen@foxmail.com</a></p>
-          <p>GitHub: <a href="https://github.com/TimRChen" target="_blank">https://github.com/TimRChen</a></p>
-          <p>Update: <a>22:22 PM - 23 Sep 2017</a></p>
+          <p>Sex: <a class="tag is-dark">male</a></p>
+          <p>Age: <a class="tag is-dark">22</a></p>
+          <p>Emotion: <a class="tag is-dark">single dog</a></p>
+          <p>Current Status: <a class="tag is-dark">Busy</a></p>
+          <p>Love to do: guitar - <a class="tag is-dark">if you are interested in it then contact me.</a></p>
+          <p>Dream: <a class="tag is-dark">Free do anything.</a></p>
+          <p>Emain: <a class="tag is-dark">timrchen@foxmail.com</a></p>
+          <p>GitHub: <a class="tag is-dark" href="https://github.com/TimRChen" target="_blank">https://github.com/TimRChen</a></p>
+          <p>Update: <a class="tag is-dark">22:22 PM - 23 Sep 2017</a></p>
           <p>
-            <strong>"Programming is the art of telling another human what one wants the computer to do."</strong>
+            <strong class="tag is-dark">"Programming is the art of telling another human what one wants the computer to do."</strong>
           </p>
         </div>
       </div>
