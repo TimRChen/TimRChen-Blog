@@ -23,13 +23,13 @@
                 <input class="input" type="text" placeholder="输入将要缩短的长网址" v-model="longUrl">
               </div>
               <div class="control">
-                <a class="button is-info" v-on:click="makeShortUrl">
+                <a class="button is-info" v-on:click="generateShortUrl">
                   生成短链
                 </a>
               </div>
             </div>
-            <div class="show-short-url">{{ shorUrl }}</div>
-            <span class="tag is-dark">该短链服务api由 <a href="http://suo.im/">http://suo.im/</a> 提供</span>
+            <span class="tag is-dark show-short-url" v-show="shorUrl.length > 0">{{ shorUrl }}</span>
+            <span class="tag is-dark">短链服务api为 <a href="http://suo.im/">http://suo.im/</a> 提供</span>
           </div>
         </div>
       </div>
@@ -40,15 +40,11 @@
 
 <script>
 
-  import Vue from 'vue';
-
   /**
    * 短链生成 API
    * request: queryString:  url=urlencode('输入链接');
    */
-  // const shortUrlAPI = 'http://suo.im/api.php?url=';
-  const shortUrlAPI = 'http://6du.in/?is_api=1&lurl=';
-
+  const shortUrlAPI = 'http://suo.im/api.php?format=jsonp&url=';
 
   export default {
     data() {
@@ -58,19 +54,21 @@
       }
     },
     methods: {
-      makeShortUrl: function () {
+      generateShortUrl: function () {
         const _self = this;
-        let longUrl = _self.longUrl;
-        _self.generateShortUrl(longUrl).then(res => {
-          debugger
-        });
-      },
-      generateShortUrl: function (longUrl) {
-        const _self = this;
+        const longUrl = _self.longUrl;
         if (longUrl) {
-          return Vue.http.get(
-            `${shortUrlAPI}${longUrl}`
-          );
+          _self.$http.jsonp(
+            shortUrlAPI + longUrl,
+            {
+              jsonp: 'callback',
+              jsonpCallback: "jsonPCallback"
+            }
+          ).then((data) => {
+            let url = data.body.url;
+            _self.shorUrl = url;
+            alert('短链接已生成，感谢使用服务!')
+          })
         }
       }
     }
