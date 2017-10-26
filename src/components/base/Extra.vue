@@ -59,15 +59,22 @@
         const longUrl = _self.longUrl;
         if (longUrl) {
           _self.$http.jsonp(
-            shortUrlAPI + longUrl,
+            shortUrlAPI + encodeURIComponent(longUrl), // encodeURIComponent可将 # 号进行编码，这样就能将 # 传入服务器中
             {
               jsonp: 'callback',
               jsonpCallback: "jsonPCallback"
             }
           ).then((data) => {
             let url = data.body.url;
-            _self.shorUrl = url;
-            alert('短链接已生成，感谢使用服务!')
+            let err = data.body.err;
+            if (url) {
+              _self.shorUrl = url;
+              alert('短链接已生成，感谢使用服务!');
+               _self.longUrl = '';
+            } else if (err) {
+              alert(err);
+              _self.longUrl = '';
+            }
           })
         }
       }
