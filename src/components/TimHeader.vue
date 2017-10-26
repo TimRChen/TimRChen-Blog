@@ -27,8 +27,12 @@
             </div>
           </div>
         </div>
-        <!-- Todo: 关于我介绍页 -->
+        <!-- 关于介绍页 -->
         <a href="#/about" class="button is-dark is-inverted is-outlined">About</a>
+
+        <!-- 额外功能页 -->
+        <a href="#/extra" class="button is-dark is-inverted is-outlined">Extra</a>
+
         <!-- <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true" v-if="loginStatus === 'noLogged'">SignUp</a> -->
         <a class="login button is-dark is-inverted is-outlined" v-on:click="showLoginModal = true" v-if="loginStatus === 'noLogged'">Login</a>
         <a class="login button is-dark is-inverted is-outlined" v-on:click="logout()" v-if="loginStatus === 'logged'">Logout</a>

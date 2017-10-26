@@ -6,6 +6,7 @@ import Admin from '@/components/base/Admin';
 import About from '@/components/base/About';
 import Essay from '@/components/base/Essay';
 import EditEssay from '@/components/base/EditEssay';
+import Extra from '@/components/base/Extra';
 
 Vue.use(Router);
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About
+    },
+    {
+      path: '/extra',
+      name: 'extra',
+      component: Extra
     }
   ]
 });
