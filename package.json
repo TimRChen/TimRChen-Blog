@@ -12,6 +12,8 @@
   "dependencies": {
     "bulma": "^0.5.1",
     "font-awesome": "^4.7.0",
+    "js-base64": "^2.3.2",
+    "js-md5": "^0.6.1",
     "markdown-it": "^8.4.0",
     "moment": "^2.18.1",
     "vue": "^2.3.3",
