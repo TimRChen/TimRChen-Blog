@@ -4,10 +4,9 @@
 >   Vue + Express + MongoDB
 
 
-## Todo
+### 1.0.2
 
--   优化分页切换效果
-
+-   增加网站favicon小图标
 
 ### 1.0.1
 
