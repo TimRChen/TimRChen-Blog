@@ -1,5 +1,5 @@
-import Vue from 'vue';
-import essayAPIs from '../apis/essayAPIs';
+import Vue from 'vue'
+import essayAPIs from '../apis/essayAPIs'
 
 /**
  * POST
@@ -9,14 +9,13 @@ const newEssay = function (essayInfo) {
   return Vue.http.post(
     essayAPIs.POST_NEW_ESSAY,
     {
-      "essayId": essayInfo.essayId,
-      "title": essayInfo.title,
-      "content": essayInfo.content,
-      "picUrl": essayInfo.picUrl
+      'essayId': essayInfo.essayId,
+      'title': essayInfo.title,
+      'content': essayInfo.content,
+      'picUrl': essayInfo.picUrl
     }
-  );
-};
-
+  )
+}
 
 /**
  * GET - 获取文章列表
@@ -24,9 +23,8 @@ const newEssay = function (essayInfo) {
 const getEssayList = function () {
   return Vue.http.get(
     essayAPIs.GET_ESSAY_LIST
-  );
-};
-
+  )
+}
 
 /**
  * GET - 获取管理文章列表
@@ -34,9 +32,8 @@ const getEssayList = function () {
 const getAdminList = function () {
   return Vue.http.get(
     essayAPIs.GET_ADMIN_LIST
-  );
-};
-
+  )
+}
 
 /**
  * POST - 获取某页文章列表
@@ -45,11 +42,10 @@ const getPage = function (nextPage) {
   return Vue.http.post(
     essayAPIs.POST_ESSAY_PAGE,
     {
-      "nextPage": nextPage
+      'nextPage': nextPage
     }
-  );
-};
-
+  )
+}
 
 /**
  * GET - 获取文章详细内容
@@ -59,13 +55,12 @@ const getEssayDetails = function (essayId) {
   return Vue.http.get(
     essayAPIs.GET_ESSAY_DETAILS,
     {
-      "params": {
-        "essayId": essayId
+      'params': {
+        'essayId': essayId
       }
     }
-  );
-};
-
+  )
+}
 
 /**
  * DELETE - 删除文章
@@ -75,13 +70,12 @@ const deleteEssay = function (essayId) {
   return Vue.http.delete(
     essayAPIs.DELETE_ESSAY,
     {
-      "params": {
-        "essayId": essayId
+      'params': {
+        'essayId': essayId
       }
     }
-  );
-};
-
+  )
+}
 
 export default ({
   newEssay,
@@ -90,4 +84,4 @@ export default ({
   getPage,
   getEssayDetails,
   deleteEssay
-});
+})

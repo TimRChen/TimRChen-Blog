@@ -4,11 +4,11 @@
  * @params { object } options - 关于在此拦截器中的一些配置参以及执行逻辑
  **/
 const httpInterceptor = {
-  install(Vue, options) {
+  install (Vue, options) {
     Vue.http.interceptors.push((...args) => {
-      options.operation(...args);
-    });
+      options.operation(...args)
+    })
   }
-};
+}
 
-export default httpInterceptor;
+export default httpInterceptor
