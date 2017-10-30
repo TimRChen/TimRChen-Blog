@@ -172,23 +172,6 @@
     z-index: 1;
   }
 
-  /* 竖屏 */
-  @media screen and (orientation:portrait) and (max-width: 720px) {
-    .post-essay-title {
-      color: #fff;
-      font-size: 38px;
-      font-weight: 200!important;
-      z-index: 1;
-    }
-    .post-create-time {
-      color: #fff;
-      font-size: 14px;
-      font-weight: 300!important;
-      z-index: 1;
-    }
-  }
-
-
   .post-create-time:hover {
     color: #bc403e;
   }
@@ -207,6 +190,28 @@
     filter: grayscale(100%);
   }
 
+  /* 竖屏 */
+  @media screen and (orientation:portrait) and (max-width: 720px) {
+    .detail-container {
+      width: 100%!important;
+    }
+    .post-essay-title {
+      color: #fff;
+      font-size: 38px;
+      font-weight: 200!important;
+      z-index: 1;
+    }
+    .post-create-time {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 300!important;
+      z-index: 1;
+    }
+    .text-display {
+      margin-top: 0!important;
+    }
+  }
+
   .text-display {
     margin-top: 5%;
     margin-bottom: 5%;
@@ -215,49 +220,44 @@
     border-radius: 4px;
   }
 
-  .text-display h1, .text-display h2, .text-display h3, .text-display h4, .text-display h5, .text-display h6 {
-      /* font-weight: bold; */
-      /* text-align: center; */
-  }
-
   .text-display h1 {
-      color: #666464;
-      font-size: 28px;
+    color: #666464;
+    font-size: 28px;
   }
 
   .text-display h2 {
-      border-bottom: 2px solid #CCCCCC;
-      color: #666464;
-      font-size: 24px;
+    border-bottom: 1px solid #CCCCCC;
+    margin-bottom: 4px;
+    color: #666464;
+    font-size: 24px;
   }
 
   .text-display h3 {
-      border-bottom: 2px solid #CCCCCC;
-      color: #666464;
-      font-size: 18px;
+    border-bottom: 1px solid #CCCCCC;
+    color: #666464;
+    font-size: 18px;
   }
 
   .text-display h4 {
-      color: #666464;
-      font-size: 16px;
+    color: #666464;
+    font-size: 16px;
   }
 
   .text-display h5 {
-      color: #666464;
-      font-size: 14px;
+    color: #666464;
+    font-size: 14px;
   }
 
   .text-display h6 {
-      color: #666464;
-      background-color: inherit;
-      font-size: 14px;
+    color: #666464;
+    background-color: inherit;
+    font-size: 14px;
   }
 
   .text-display hr {
-      height: 0.2em;
-      border: 0;
-      color: #CCCCCC;
-      background-color: #CCCCCC;
+    border: 0;
+    color: #CCCCCC;
+    background-color: #CCCCCC;
   }
 
   .text-display ul {
@@ -265,40 +265,40 @@
   }
 
   .text-display p, .text-display blockquote, .text-display ul, .text-display ol, .text-display dl, .text-display li, .text-display table, .text-display pre {
-      margin: 15px 0;
+    margin: 15px 0;
   }
 
   .text-display p{
-      margin:1em 0;
+    margin: 1em 0;
   }
 
   .text-display pre { 
-      background-color: #F8F8F8;    
-      border: 1px solid #CCCCCC;
-      border-radius: 3px;
-      overflow: auto;
-      padding: 5px;
+    background-color: #F8F8F8;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    overflow: auto;
+    padding: 5px;
   }
 
   .text-display pre code {
-      background-color: #F8F8F8;
-      border: none;    
-      padding: 0;
+    background-color: #F8F8F8;
+    border: none;
+    padding: 0;
   }
 
   .text-display code {
-      font-family: Consolas, Monaco, Andale Mono, monospace;
-      background-color:#F8F8F8;
-      border: 1px solid #CCCCCC;
-      border-radius: 3px;
-      padding: 0 0.2em;
-      line-height: 1;
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    background-color:#F8F8F8;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    padding: 0 0.2em;
+    line-height: 1;
   }
 
   .text-display pre > code {
-      border: 0;
-      margin: 0;
-      padding: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
   }
 
 
@@ -316,10 +316,10 @@
   .text-display a::selection{background:rgba(255,255,0,0.3);color:#0645ad}
 
   .text-display blockquote{
-      color:#666666;
-      margin:0;
-      padding-left: 3em;
-      border-left: 0.5em #EEE solid;
+    color:#666666;
+    margin:0;
+    padding-left: 1em;
+    border-left: 0.5em #EEE solid;
   }
 
   .text-display ul, .text-display ol { margin: 1em 0; padding: 0 0 0 2em; }
@@ -332,11 +332,11 @@
   .text-display td { vertical-align: top; }
 
   @media only screen and (min-width: 480px) {
-      body{font-size:14px;}
+    body{font-size:14px;}
   }
 
   @media only screen and (min-width: 768px) {
-      body{font-size:16px;}
+    body{font-size:16px;}
   } 
 
 
