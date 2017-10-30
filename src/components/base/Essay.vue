@@ -19,8 +19,8 @@
             {{`posted @TimRChen 阅读量(${ pv })`}}
           </div>
 
-          <div class="author-field u-textAlignCenter">
-            <img src="../../assets/timrchen.jpeg" class="avatar avatar-64 photo">
+          <div class="author-field">
+            <img src="../../assets/timrchen_head.jpeg" class="avatar avatar-64 photo">
             <h3>timrchen</h3>
             <p>年轻的意志</p>
             <a class="button is-dark" href="https://github.com/TimRChen/TimRChen-Blog" target="_blank">
@@ -118,6 +118,7 @@
   /* --author */
   .author-field {
       font-family: exoregular;
+      text-align: center;
       border-top: 1px solid #eee;
       margin-bottom: 25px;
       padding-top: 25px;
