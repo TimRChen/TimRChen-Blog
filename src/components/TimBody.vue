@@ -179,7 +179,7 @@
   }
 
   .scrollAnimate {
-    animation: comeIn .5s ease-in-out;
+    animation: comeIn .3s ease-out;
   }
 
   .container {
