@@ -54,7 +54,7 @@
                 </a>
               </div>
             </div>
-            <span class="tag is-dark">快递查询服务为 <a href="https://m.kuaidi100.com/" target="_blank">快递查询</a> 友情提供</span>
+            <span class="tag is-dark">快递查询服务为 <a>快递网</a> 友情提供</span>
           </div>
         </div>
       </div>
