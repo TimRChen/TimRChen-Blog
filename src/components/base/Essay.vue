@@ -30,29 +30,15 @@
                   </p>
                 </header>
                 <div class="card-content">
-                  <div class="content">
+                  <div class="content" v-for="(comment, key) in commentInfo" v-bind:key="key">
                     <div class="comment-box">
                       <div class="comment-info">
-                        <span class="create-man">who</span>
+                        <span class="create-man">{{ comment.name }}</span>
                       </div>
                       <p class="comment-content">
-                        是哈哈哈
-                        <br>
+                        {{ comment.content }}
                       </p>
-                      <time class="create-time" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                    </div>
-                  </div>
-                  <div class="content">
-                    <div class="comment-box">
-                      <div class="comment-info">
-                        <span class="create-man">who</span>
-                      </div>
-                      <p class="comment-content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                        <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
-                        <br>
-                      </p>
-                      <time class="create-time" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                      <time class="create-time" datetime="2016-1-1">{{ comment.meta.createAt }}</time>
                     </div>
                   </div>
                 </div>
@@ -66,7 +52,7 @@
               <div class="field">
                 <label class="label">Username</label>
                 <div class="control has-icons-left has-icons-right">
-                  <input class="input" type="text" placeholder="起个属于你的个性网名" v-model="commentNickName">
+                  <input class="input" type="text" placeholder="起个属于你的个性网名，一次性的哦" v-model="commentNickName">
                   <span class="icon is-small is-left">
                     <i class="fa fa-user"></i>
                   </span>
@@ -74,7 +60,8 @@
                     <i class="fa fa-check"></i>
                   </span>
                 </div>
-                <p class="help is-success" v-show="commentNickName.length > 0">名字貌似可用.</p>
+                <p class="help is-success" v-show="nameStatus === true">名字貌似可用.</p>
+                <p class="help is-success" v-show="commentNickName.length > 0 && nameStatus === false">名字已存在.</p>
                 <p class="help is-info" v-show="commentNickName.length === 0">起个名字吧.</p>
               </div>        
               <div class="field">
@@ -88,7 +75,7 @@
               </div>
               <div class="field is-grouped is-grouped-right">
                 <p class="control">
-                  <a class="button is-primary" v-on:click="submitComment">
+                  <a class="button is-primary" v-on:click="preSubmit">
                     Submit
                   </a>
                 </p>
@@ -124,10 +111,13 @@
 <script>
 
   import essayActions from '../../actions/essayActions';
+  import commentActions from '../../actions/commentActions';
   import Moment from 'moment';
   import MarkdownIt from 'markdown-it';
   const md = new MarkdownIt();
-
+  // 敏感字列表 分两次过滤，第一次为词组，第二次为单字
+  const filterList = ['傻逼', 'sb', '逼', '草', '艹', '丑', 'shit', 'fuck', '妈的', '妈', '共产党', '国家', '政府'];
+  const filterDoubleList = ['傻', '逼', '草', '艹', '丑', '妈', '共', '产', '党', '国', '家', '政', '府'];
 
   export default {
     data() {
@@ -136,7 +126,17 @@
         essayTitle: '',
         essayContent: '',
         createTime: '',
+        essayId: '',
         pv: '',
+        commentInfo: [{
+          name: '黄睿晨',
+          content: '宇宙第一无敌吉他手，（看到这个时，说明评论加载失败了，请刷新页面重新加载）',
+          meta: {
+            createAt: '2017/10/30'
+          }
+        }],
+        existName: [], // 昵称列表
+        nameStatus: false, // 昵称存在状态，false - 不存在， true - 已存在
         commentEdit: false,
         commentNickName: '',
         commentContent: '',
@@ -162,6 +162,7 @@
           }, 15);
 
       const essayId = _self.$route.params.id; // 通过router params获取文章id
+      _self.essayId = essayId;
 
       if (essayId) {
         essayActions.getEssayDetails(essayId).then(res => {
@@ -179,10 +180,127 @@
       }
 
     },
-    methods: {
-      submitComment: function () {
+    mounted: function () {
+      const _self = this;
+      let essayId = _self.$route.params.id;
+      
+      // if (essayId) {
+      //   commentActions.getCommentList(essayId).then(res => {
+      //     debugger
 
-        // Todo..
+      //     const comments = res.body.comments;
+      //     const commentSum = res.body.commentSum;
+
+      //     _self.commentInfo = comments;
+
+          // 记录评论昵称
+          let existName = [];
+          _self.commentInfo.forEach(comment => {
+            existName.push(comment.name);
+          });
+          _self.existName = existName;
+
+
+      //   }).catch(err => {
+      //     console.error(err);
+      //   });
+      // }
+
+    },
+    watch: {
+      commentNickName: function (val, oldVal) {
+        const _self = this;
+        let name = val;
+        let existName = _self.existName;
+
+        if (existName.indexOf(name)) { // 比对 输入昵称是否与已存在昵称相同
+          _self.nameStatus = true;
+        } else {
+          _self.nameStatus = false;
+        }
+
+        if (name.length === 0) _self.nameStatus = false;
+
+      }
+    },
+    methods: {
+      splitStringToArray: function (originalString) { // 将字符串分离成数组
+        let splitArray = [];
+        for(let i = 0; i < originalString.length; i++) {
+          splitArray.push(originalString[i].toLowerCase());
+        }
+        return Array.from(new Set(splitArray));
+      },
+      preSubmit: function () { // 提交前预处理评论
+        const _self = this;
+        let commentNickName = _self.commentNickName;
+        let commentContent = _self.commentContent;
+
+        // 先将输入内容进行筛选看是否有违规词汇
+        if (filterList.indexOf(commentNickName.toLowerCase()) !== -1 || filterList.indexOf(commentContent.toLowerCase()) !== -1 ) {
+          alert('您输入的昵称中有违规词汇，请重新输入!');
+          _self.commentNickName = '';
+          _self.commentContent = '';
+          return;
+        }
+
+        // 拆解字符串为数组
+        let to_filter_commentNickName = _self.splitStringToArray(commentNickName);
+        let to_filter_commentContent = _self.splitStringToArray(commentContent);
+  
+        // 使用单字规则表再次排查违规字
+        let evilNameWordAmonut = 0,
+            evilContentWordAmonut = 0;
+
+        to_filter_commentNickName.forEach(name => {
+          if (filterDoubleList.indexOf(name) !== -1) {
+            evilNameWordAmonut += 1;
+          }
+        });
+        to_filter_commentContent.forEach(name => {
+          if (filterDoubleList.indexOf(name) !== -1) {
+            evilContentWordAmonut += 1;
+          }
+        });
+
+        if (evilNameWordAmonut > 0 || evilContentWordAmonut > 0) {
+          alert('您输入的昵称中有违规词汇，请重新输入!');
+          _self.commentNickName = '';
+          _self.commentContent = '';
+          return;
+        } else {
+          _self.submitComment();
+        }
+        
+      },
+      submitComment: function () { // 提交评论
+        const _self = this;
+        // 请求参数
+        let essayId = _self.essayId;
+        let commentNickName = _self.commentNickName;
+        let commentContent = _self.commentContent;
+        // 功能变量
+        let nameStatus = _self.nameStatus;
+
+        if (commentNickName.length > 0 && commentContent.length >= 3 && nameStatus === true) {
+          let commentInfo = {
+            'essayId': essayId,
+            'name': commentNickName,
+            'content': commentContent,
+          };
+          commentActions.createComment(commentInfo).then(res => {
+            debugger
+          }).catch(err => {
+            console.error(err);
+            alert('出错了');
+          });
+        } else if (commentNickName.length === 0) {
+          alert('您似乎忘了姓名?');
+        } else if (commentContent.length < 3) {
+          alert('评论最少3个字以上~');
+        } else if (nameStatus === false) {
+          alert('您起的名字在评论中已使用过，请重新输入~');
+        }
 
       }
     }
