@@ -19,6 +19,90 @@
             {{`posted @TimRChen 阅读量(${ pv })`}}
           </div>
 
+          <!-- 评论 -->
+          <div class="comment-area">
+
+            <div class="comment-list">
+              <div class="card">
+                <header class="card-header">
+                  <p class="card-header-title">
+                    评论
+                  </p>
+                </header>
+                <div class="card-content">
+                  <div class="content">
+                    <div class="comment-box">
+                      <div class="comment-info">
+                        <span class="create-man">who</span>
+                      </div>
+                      <p class="comment-content">
+                        是哈哈哈
+                        <br>
+                      </p>
+                      <time class="create-time" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                    </div>
+                  </div>
+                  <div class="content">
+                    <div class="comment-box">
+                      <div class="comment-info">
+                        <span class="create-man">who</span>
+                      </div>
+                      <p class="comment-content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                        <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
+                        <br>
+                      </p>
+                      <time class="create-time" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                    </div>
+                  </div>
+                </div>
+                <footer class="card-footer">
+                  <a class="card-footer-item" v-on:click="commentEdit = !commentEdit">写下您的评论</a>
+                </footer>
+              </div>
+            </div>
+
+            <div class="comment-edit" v-show="commentEdit === true">
+              <div class="field">
+                <label class="label">Username</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input class="input" type="text" placeholder="起个属于你的个性网名" v-model="commentNickName">
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-user"></i>
+                  </span>
+                  <span class="icon is-small is-right">
+                    <i class="fa fa-check"></i>
+                  </span>
+                </div>
+                <p class="help is-success" v-show="commentNickName.length > 0">名字貌似可用.</p>
+                <p class="help is-info" v-show="commentNickName.length === 0">起个名字吧.</p>
+              </div>        
+              <div class="field">
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <textarea class="textarea" placeholder="请输入您的评论" v-model="commentContent"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-grouped is-grouped-right">
+                <p class="control">
+                  <a class="button is-primary" v-on:click="submitComment">
+                    Submit
+                  </a>
+                </p>
+                <p class="control">
+                  <a class="button is-light" v-on:click="commentEdit = false">
+                    Cancel
+                  </a>
+                </p>
+              </div>
+            </div>            
+
+          </div>
+
+          <!-- Star -->
           <div class="author-field">
             <img src="../../assets/timrchen_head.jpeg" class="avatar avatar-64 photo">
             <h3>timrchen</h3>
@@ -52,7 +136,10 @@
         essayTitle: '',
         essayContent: '',
         createTime: '',
-        pv: ''
+        pv: '',
+        commentEdit: false,
+        commentNickName: '',
+        commentContent: '',
       }
     },
     beforeCreate: function () {
@@ -91,6 +178,13 @@
         });
       }
 
+    },
+    methods: {
+      submitComment: function () {
+
+        // Todo..
+
+      }
     }
   }
 </script>
@@ -113,6 +207,32 @@
     padding: 5px 0px;
     color: #999999;
     font-size: 12px;
+  }
+
+  .comment-box {
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #fffffc;
+    /* background-color: #fffff0; */
+  }
+
+  .comment-box .comment-info {
+    border-bottom: 1px solid #e2e2e2;
+  }
+
+  .comment-box .comment-info .create-man {
+    font-size: 22px;
+    color: #4093c6;
+    /* font-style: italic; */
+  }
+
+  /* .comment-box .create-time {
+    color: #ccc;
+  } */
+
+  .comment-edit {
+    margin-top: 10px;
   }
 
   /* --author */
@@ -209,6 +329,9 @@
     }
     .text-display {
       margin-top: 0!important;
+    }
+    .comment-edit {
+      padding: 0 12px 0 12px;
     }
   }
 
