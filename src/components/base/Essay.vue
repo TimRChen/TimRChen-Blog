@@ -32,13 +32,16 @@
                 <div class="card-content">
                   <div class="content" v-for="(comment, key) in commentInfo" v-bind:key="key">
                     <div class="comment-box">
+                      <div class="comment-index">
+                        {{ `#${key + 1}` }}
+                      </div>
                       <div class="comment-info">
-                        <span class="create-man">{{ comment.name }}</span>
+                        <span class="create-man">{{ `${comment.name}:` }}</span>
                       </div>
                       <p class="comment-content">
                         {{ comment.content }}
                       </p>
-                      <time class="create-time" datetime="2016-1-1">{{ comment.meta.createAt }}</time>
+                      <time class="create-time" datetime="2016-1-1">{{ formatCommentTime(comment.meta.createAt) }}</time>
                     </div>
                   </div>
                 </div>
@@ -60,9 +63,10 @@
                     <i class="fa fa-check"></i>
                   </span>
                 </div>
-                <p class="help is-success" v-show="nameStatus === true">名字貌似可用.</p>
-                <p class="help is-success" v-show="commentNickName.length > 0 && nameStatus === false">名字已存在.</p>
-                <p class="help is-info" v-show="commentNickName.length === 0">起个名字吧.</p>
+                <p class="help is-success" v-show="nameStatus === true">昵称可用.</p>
+                <p class="help is-danger" v-show="commentNickName.length > 8 && nameStatus === false">昵称长度超过规定长度.</p>
+                <p class="help is-danger" v-show="commentNickName.length > 0 && commentNickName.length <= 8 && nameStatus === false">昵称已存在.</p>
+                <p class="help is-info" v-show="commentNickName.length === 0">起个昵称吧.</p>
               </div>        
               <div class="field">
                 <div class="field-body">
@@ -117,7 +121,7 @@
   const md = new MarkdownIt();
   // 敏感字列表 分两次过滤，第一次为词组，第二次为单字，确保不漏关键字
   const filterList = ['垃圾', '变态', '碧池', '傻逼', '恶心', '智障', '鄙视', '放屁', '狗屎', '下三滥', '草你妈', '艹你妈', '妈的', '吗的', '妈逼', '妈的逼', '抄袭', '台独', '藏独', '共产党', '国家', '政府', 'sb', 'shit', 'fuck', 'slut', 'bitch'];
-  const filterDoubleList = ['垃', '圾', '操', '傻', '抄', '狗', '屎', '坏', '恶', '尿', '屁', '袭', '死', '亡', '逼', '草', '艹', '丑', '臭', '拟', '妈', '共', '产', '党', '国', '家', '政', '府'];
+  const filterDoubleList = ['垃', '圾', '操', '傻', '抄', '狗', '屎', '坏', '恶', '尿', '屁', '袭', '死', '亡', '逼', '草', '艹', '丑', '臭', '拟', '妈', '共', '产', '党', '政', '府'];
 
   export default {
     data() {
@@ -126,7 +130,6 @@
         essayTitle: '',
         essayContent: '',
         createTime: '',
-        essayId: '',
         pv: '',
         commentInfo: [{
           name: '黄睿晨',
@@ -162,7 +165,6 @@
           }, 15);
 
       const essayId = _self.$route.params.id; // 通过router params获取文章id
-      _self.essayId = essayId;
 
       if (essayId) {
         essayActions.getEssayDetails(essayId).then(res => {
@@ -182,30 +184,7 @@
     },
     mounted: function () {
       const _self = this;
-      let essayId = _self.$route.params.id;
-      
-      // if (essayId) {
-      //   commentActions.getCommentList(essayId).then(res => {
-      //     debugger
-
-      //     const comments = res.body.comments;
-      //     const commentSum = res.body.commentSum;
-
-      //     _self.commentInfo = comments;
-
-          // 记录评论昵称
-          let existName = [];
-          _self.commentInfo.forEach(comment => {
-            existName.push(comment.name);
-          });
-          _self.existName = existName;
-
-
-      //   }).catch(err => {
-      //     console.error(err);
-      //   });
-      // }
-
+      _self.getCommentList();
     },
     watch: {
       commentNickName: function (val, oldVal) {
@@ -213,17 +192,22 @@
         let name = val;
         let existName = _self.existName;
 
-        if (existName.indexOf(name)) { // 比对 输入昵称是否与已存在昵称相同
-          _self.nameStatus = true;
-        } else {
+        if (existName.indexOf(name) !== -1) { // 比对 输入昵称是否与已存在昵称相同
           _self.nameStatus = false;
+        } else {
+          _self.nameStatus = true; // 昵称可用
         }
 
         if (name.length === 0) _self.nameStatus = false;
 
+        if (name.length > 8) _self.nameStatus = false;
+
       }
     },
     methods: {
+      formatCommentTime: function (time) { // 格式化评论时间
+        return Moment(time).format('ddd, YYYY/MM/DD, h:mm:ss a');
+      },
       splitStringToArray: function (originalString) { // 将字符串分离成数组
         let splitArray = [];
         for(let i = 0; i < originalString.length; i++) {
@@ -231,14 +215,39 @@
         }
         return Array.from(new Set(splitArray));
       },
+      getCommentList: function () { // 获取评论列表
+        const _self = this;
+        let essayId = _self.$route.params.id;
+        
+        if (essayId) {
+          commentActions.getCommentList(essayId).then(res => {
+            const comments = res.body.comments;
+            const commentSum = res.body.commentSum;
+
+            if (comments.length !== 0) {
+              _self.commentInfo = comments;
+              // 记录评论昵称
+              let existName = [];
+              comments.forEach(comment => {
+                existName.push(comment.name);
+              });
+              _self.existName = existName;
+            }
+
+          }).catch(err => {
+            console.error(err);
+          });
+        }
+      },
       preSubmit: function () { // 提交前预处理评论
         const _self = this;
+        let nameStatus = _self.nameStatus;
         let commentNickName = _self.commentNickName;
         let commentContent = _self.commentContent;
 
         // 先将输入内容进行筛选看是否有违规词汇
         if (filterList.indexOf(commentNickName.toLowerCase()) !== -1 || filterList.indexOf(commentContent.toLowerCase()) !== -1 ) {
-          alert('您输入的昵称中有违规词汇，请重新输入!');
+          alert('您输入的评论/昵称中有违规词汇，请重新输入!');
           _self.commentNickName = '';
           _self.commentContent = '';
           return;
@@ -264,44 +273,43 @@
         });
 
         if (evilNameWordAmonut > 0 || evilContentWordAmonut > 0) {
-          alert('您输入的昵称中有违规词汇，请重新输入!');
-          _self.commentNickName = '';
-          _self.commentContent = '';
+          alert('您输入的评论/昵称中有违规词汇，请重新输入!');
           return;
         } else {
-          _self.submitComment();
+          if (commentNickName.length > 0 && commentNickName.length <= 8 && commentContent.length >= 3 && nameStatus === true) {
+            _self.submitComment();
+          } else if (commentNickName.length === 0) {
+            alert('您似乎忘了姓名?');
+          } else if (commentNickName.length > 8) {
+            alert('昵称最多8个字哦~');
+          } else if (commentContent.length < 3) {
+            alert('评论最少3个字以上~');
+          } else if (nameStatus === false) {
+            alert('您起的昵称在评论中已使用过，请重新输入~');
+          }
         }
         
       },
       submitComment: function () { // 提交评论
         const _self = this;
-        // 请求参数
-        let essayId = _self.essayId;
+        let essayId = _self.$route.params.id;
         let commentNickName = _self.commentNickName;
         let commentContent = _self.commentContent;
-        // 功能变量
-        let nameStatus = _self.nameStatus;
-
-        if (commentNickName.length > 0 && commentContent.length >= 3 && nameStatus === true) {
-          let commentInfo = {
-            'essayId': essayId,
-            'name': commentNickName,
-            'content': commentContent,
-          };
-          commentActions.createComment(commentInfo).then(res => {
-            debugger
-          }).catch(err => {
-            console.error(err);
-            alert('出错了');
-          });
-        } else if (commentNickName.length === 0) {
-          alert('您似乎忘了姓名?');
-        } else if (commentContent.length < 3) {
-          alert('评论最少3个字以上~');
-        } else if (nameStatus === false) {
-          alert('您起的名字在评论中已使用过，请重新输入~');
-        }
-
+        let commentInfo = { // 请求参数
+          'essayId': essayId,
+          'name': commentNickName,
+          'content': commentContent,
+        };
+        commentActions.createComment(commentInfo).then(res => {
+          _self.commentNickName = '';
+          _self.commentContent = '';
+          _self.commentEdit = false; // 关闭编辑界面
+          alert(res.body.message);
+          _self.getCommentList();
+        }).catch(err => {
+          console.error(err);
+          alert('出错了');
+        });
       }
     }
   }
@@ -335,19 +343,29 @@
     /* background-color: #fffff0; */
   }
 
+  .comment-box .comment-index {
+    color: #808080;
+  }
+
   .comment-box .comment-info {
     border-bottom: 1px solid #e2e2e2;
   }
 
   .comment-box .comment-info .create-man {
-    font-size: 22px;
+    font-size: 18px;
     color: #4093c6;
     /* font-style: italic; */
   }
 
-  /* .comment-box .create-time {
-    color: #ccc;
-  } */
+  .comment-box .comment-content {
+    padding: 10px;
+  }
+
+
+  .comment-box .create-time {
+    color: #808080;
+    font-size: 14px;
+  }
 
   .comment-edit {
     margin-top: 10px;
