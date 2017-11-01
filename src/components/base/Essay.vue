@@ -19,6 +19,81 @@
             {{`posted @TimRChen 阅读量(${ pv })`}}
           </div>
 
+          <!-- 评论 -->
+          <div class="comment-area">
+
+            <div class="comment-list">
+              <div class="card">
+                <header class="card-header">
+                  <p class="card-header-title">
+                    评论
+                  </p>
+                </header>
+                <div class="card-content">
+                  <div class="content" v-for="(comment, key) in commentInfo" v-bind:key="key">
+                    <div class="comment-box">
+                      <div class="comment-index">
+                        {{ `#${key + 1}` }}
+                      </div>
+                      <div class="comment-info">
+                        <span class="create-man">{{ `${comment.name}:` }}</span>
+                      </div>
+                      <p class="comment-content">
+                        {{ comment.content }}
+                      </p>
+                      <time class="create-time" datetime="2016-1-1">{{ formatCommentTime(comment.meta.createAt) }}</time>
+                    </div>
+                  </div>
+                </div>
+                <footer class="card-footer">
+                  <a class="card-footer-item" v-on:click="commentEdit = !commentEdit">写下您的评论</a>
+                </footer>
+              </div>
+            </div>
+
+            <div class="comment-edit" v-show="commentEdit === true">
+              <div class="field">
+                <label class="label">Username</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input class="input" type="text" placeholder="起个属于你的个性网名，一次性的哦" v-model="commentNickName">
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-user"></i>
+                  </span>
+                  <span class="icon is-small is-right">
+                    <i class="fa fa-check"></i>
+                  </span>
+                </div>
+                <p class="help is-success" v-show="nameStatus === true">昵称可用.</p>
+                <p class="help is-danger" v-show="commentNickName.length > 8 && nameStatus === false">昵称长度超过规定长度.</p>
+                <p class="help is-danger" v-show="commentNickName.length > 0 && commentNickName.length <= 8 && nameStatus === false">昵称已存在.</p>
+                <p class="help is-info" v-show="commentNickName.length === 0">起个昵称吧.</p>
+              </div>        
+              <div class="field">
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <textarea class="textarea" placeholder="请输入您的评论" v-model="commentContent"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-grouped is-grouped-right">
+                <p class="control">
+                  <a class="button is-primary" v-on:click="preSubmit">
+                    Submit
+                  </a>
+                </p>
+                <p class="control">
+                  <a class="button is-light" v-on:click="commentEdit = false">
+                    Cancel
+                  </a>
+                </p>
+              </div>
+            </div>            
+
+          </div>
+
+          <!-- Star -->
           <div class="author-field">
             <img src="../../assets/timrchen_head.jpeg" class="avatar avatar-64 photo">
             <h3>timrchen</h3>
@@ -40,10 +115,13 @@
 <script>
 
   import essayActions from '../../actions/essayActions';
+  import commentActions from '../../actions/commentActions';
   import Moment from 'moment';
   import MarkdownIt from 'markdown-it';
   const md = new MarkdownIt();
-
+  // 敏感字列表 分两次过滤，第一次为词组，第二次为单字，确保不漏关键字
+  const filterList = ['垃圾', '变态', '碧池', '傻逼', '恶心', '智障', '鄙视', '放屁', '狗屎', '下三滥', '草你妈', '艹你妈', '妈的', '吗的', '妈逼', '妈的逼', '抄袭', '台独', '藏独', '共产党', '国家', '政府', 'sb', 'shit', 'fuck', 'slut', 'bitch'];
+  const filterDoubleList = ['垃', '圾', '操', '傻', '抄', '狗', '屎', '坏', '恶', '尿', '屁', '袭', '死', '亡', '逼', '草', '艹', '丑', '臭', '拟', '妈', '共', '产', '党', '政', '府'];
 
   export default {
     data() {
@@ -52,7 +130,19 @@
         essayTitle: '',
         essayContent: '',
         createTime: '',
-        pv: ''
+        pv: '',
+        commentInfo: [{
+          name: '黄睿晨',
+          content: '宇宙第一无敌吉他手，（看到这个时，说明评论加载失败了，请刷新页面重新加载）',
+          meta: {
+            createAt: '2017/10/30'
+          }
+        }],
+        existName: [], // 昵称列表
+        nameStatus: false, // 昵称存在状态，false - 不存在， true - 已存在
+        commentEdit: false,
+        commentNickName: '',
+        commentContent: '',
       }
     },
     beforeCreate: function () {
@@ -91,6 +181,136 @@
         });
       }
 
+    },
+    mounted: function () {
+      const _self = this;
+      _self.getCommentList();
+    },
+    watch: {
+      commentNickName: function (val, oldVal) {
+        const _self = this;
+        let name = val;
+        let existName = _self.existName;
+
+        if (existName.indexOf(name) !== -1) { // 比对 输入昵称是否与已存在昵称相同
+          _self.nameStatus = false;
+        } else {
+          _self.nameStatus = true; // 昵称可用
+        }
+
+        if (name.length === 0) _self.nameStatus = false;
+
+        if (name.length > 8) _self.nameStatus = false;
+
+      }
+    },
+    methods: {
+      formatCommentTime: function (time) { // 格式化评论时间
+        return Moment(time).format('ddd, YYYY/MM/DD, h:mm:ss a');
+      },
+      splitStringToArray: function (originalString) { // 将字符串分离成数组
+        let splitArray = [];
+        for(let i = 0; i < originalString.length; i++) {
+          splitArray.push(originalString[i].toLowerCase());
+        }
+        return Array.from(new Set(splitArray));
+      },
+      getCommentList: function () { // 获取评论列表
+        const _self = this;
+        let essayId = _self.$route.params.id;
+        
+        if (essayId) {
+          commentActions.getCommentList(essayId).then(res => {
+            const comments = res.body.comments;
+            const commentSum = res.body.commentSum;
+
+            if (comments.length !== 0) {
+              _self.commentInfo = comments;
+              // 记录评论昵称
+              let existName = [];
+              comments.forEach(comment => {
+                existName.push(comment.name);
+              });
+              _self.existName = existName;
+            }
+
+          }).catch(err => {
+            console.error(err);
+          });
+        }
+      },
+      preSubmit: function () { // 提交前预处理评论
+        const _self = this;
+        let nameStatus = _self.nameStatus;
+        let commentNickName = _self.commentNickName;
+        let commentContent = _self.commentContent;
+
+        // 先将输入内容进行筛选看是否有违规词汇
+        if (filterList.indexOf(commentNickName.toLowerCase()) !== -1 || filterList.indexOf(commentContent.toLowerCase()) !== -1 ) {
+          alert('您输入的评论/昵称中有违规词汇，请重新输入!');
+          _self.commentNickName = '';
+          _self.commentContent = '';
+          return;
+        }
+
+        // 拆解字符串为数组
+        let to_filter_commentNickName = _self.splitStringToArray(commentNickName);
+        let to_filter_commentContent = _self.splitStringToArray(commentContent);
+  
+        // 使用单字规则表再次排查违规字
+        let evilNameWordAmonut = 0,
+            evilContentWordAmonut = 0;
+
+        to_filter_commentNickName.forEach(name => {
+          if (filterDoubleList.indexOf(name) !== -1) {
+            evilNameWordAmonut += 1;
+          }
+        });
+        to_filter_commentContent.forEach(name => {
+          if (filterDoubleList.indexOf(name) !== -1) {
+            evilContentWordAmonut += 1;
+          }
+        });
+
+        if (evilNameWordAmonut > 0 || evilContentWordAmonut > 0) {
+          alert('您输入的评论/昵称中有违规词汇，请重新输入!');
+          return;
+        } else {
+          if (commentNickName.length > 0 && commentNickName.length <= 8 && commentContent.length >= 3 && nameStatus === true) {
+            _self.submitComment();
+          } else if (commentNickName.length === 0) {
+            alert('您似乎忘了姓名?');
+          } else if (commentNickName.length > 8) {
+            alert('昵称最多8个字哦~');
+          } else if (commentContent.length < 3) {
+            alert('评论最少3个字以上~');
+          } else if (nameStatus === false) {
+            alert('您起的昵称在评论中已使用过，请重新输入~');
+          }
+        }
+        
+      },
+      submitComment: function () { // 提交评论
+        const _self = this;
+        let essayId = _self.$route.params.id;
+        let commentNickName = _self.commentNickName;
+        let commentContent = _self.commentContent;
+        let commentInfo = { // 请求参数
+          'essayId': essayId,
+          'name': commentNickName,
+          'content': commentContent,
+        };
+        commentActions.createComment(commentInfo).then(res => {
+          _self.commentNickName = '';
+          _self.commentContent = '';
+          _self.commentEdit = false; // 关闭编辑界面
+          alert(res.body.message);
+          _self.getCommentList();
+        }).catch(err => {
+          console.error(err);
+          alert('出错了');
+        });
+      }
     }
   }
 </script>
@@ -113,6 +333,42 @@
     padding: 5px 0px;
     color: #999999;
     font-size: 12px;
+  }
+
+  .comment-box {
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #fffffc;
+    /* background-color: #fffff0; */
+  }
+
+  .comment-box .comment-index {
+    color: #808080;
+  }
+
+  .comment-box .comment-info {
+    border-bottom: 1px solid #e2e2e2;
+  }
+
+  .comment-box .comment-info .create-man {
+    font-size: 18px;
+    color: #4093c6;
+    /* font-style: italic; */
+  }
+
+  .comment-box .comment-content {
+    padding: 10px;
+  }
+
+
+  .comment-box .create-time {
+    color: #808080;
+    font-size: 14px;
+  }
+
+  .comment-edit {
+    margin-top: 10px;
   }
 
   /* --author */
@@ -209,6 +465,9 @@
     }
     .text-display {
       margin-top: 0!important;
+    }
+    .comment-edit {
+      padding: 0 12px 0 12px;
     }
   }
 

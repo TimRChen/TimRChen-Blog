@@ -135,48 +135,52 @@
   }
 
 
-  .editor-text-display h1, h2, h3, h4, h5, h6 {
-      /* font-weight: bold; */
+  .editor-text-display {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 20px;
+    box-shadow: 0px 0px 15px #888888;
+    border-radius: 4px;
   }
 
   .editor-text-display h1 {
-      color: #666464;
-      font-size: 28px;
+    color: #666464;
+    font-size: 28px;
   }
 
   .editor-text-display h2 {
-      border-bottom: 2px solid #CCCCCC;
-      color: #666464;
-      font-size: 24px;
+    border-bottom: 1px solid #CCCCCC;
+    margin-bottom: 4px;
+    color: #666464;
+    font-size: 24px;
   }
 
   .editor-text-display h3 {
-      border-bottom: 2px solid #CCCCCC;
-      color: #666464;
-      font-size: 18px;
+    border-bottom: 1px solid #CCCCCC;
+    color: #666464;
+    font-size: 18px;
   }
 
   .editor-text-display h4 {
-      color: #666464;
-      font-size: 16px;
+    color: #666464;
+    font-size: 16px;
   }
 
   .editor-text-display h5 {
-      color: #666464;
-      font-size: 14px;
+    color: #666464;
+    font-size: 14px;
   }
 
   .editor-text-display h6 {
-      color: #666464;
-      background-color: inherit;
-      font-size: 14px;
+    color: #666464;
+    background-color: inherit;
+    font-size: 14px;
   }
 
   .editor-text-display hr {
-      height: 0.2em;
-      border: 0;
-      color: #CCCCCC;
-      background-color: #CCCCCC;
+    border: 0;
+    color: #CCCCCC;
+    background-color: #CCCCCC;
   }
 
   .editor-text-display ul {
@@ -184,40 +188,40 @@
   }
 
   .editor-text-display p, .editor-text-display blockquote, .editor-text-display ul, .editor-text-display ol, .editor-text-display dl, .editor-text-display li, .editor-text-display table, .editor-text-display pre {
-      margin: 15px 0;
+    margin: 15px 0;
   }
 
   .editor-text-display p{
-      margin:1em 0;
+    margin: 1em 0;
   }
 
   .editor-text-display pre { 
-      background-color: #F8F8F8;    
-      border: 1px solid #CCCCCC;
-      border-radius: 3px;
-      overflow: auto;
-      padding: 5px;
+    background-color: #F8F8F8;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    overflow: auto;
+    padding: 5px;
   }
 
   .editor-text-display pre code {
-      background-color: #F8F8F8;
-      border: none;    
-      padding: 0;
+    background-color: #F8F8F8;
+    border: none;
+    padding: 0;
   }
 
   .editor-text-display code {
-      font-family: Consolas, Monaco, Andale Mono, monospace;
-      background-color:#F8F8F8;
-      border: 1px solid #CCCCCC;
-      border-radius: 3px;
-      padding: 0 0.2em;
-      line-height: 1;
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    background-color:#F8F8F8;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    padding: 0 0.2em;
+    line-height: 1;
   }
 
   .editor-text-display pre > code {
-      border: 0;
-      margin: 0;
-      padding: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
   }
 
 
@@ -234,11 +238,11 @@
   .editor-text-display a::-moz-selection{background:rgba(255,255,0,0.3);color:#0645ad}
   .editor-text-display a::selection{background:rgba(255,255,0,0.3);color:#0645ad}
 
-  .editor-text-display blockquote{
-      color:#666666;
-      margin:0;
-      padding-left: 3em;
-      border-left: 0.5em #EEE solid;
+  .editor-text-display blockquote {
+    color:#666666;
+    margin:0;
+    /* padding-left: 1em; */
+    border-left: 0.5em #EEE solid;
   }
 
   .editor-text-display ul, .editor-text-display ol { margin: 1em 0; padding: 0 0 0 2em; }
