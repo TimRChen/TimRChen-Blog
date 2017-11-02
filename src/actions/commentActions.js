@@ -1,17 +1,14 @@
 import Vue from 'vue'
 import commentAPIs from '../apis/commentAPIs'
 
-
 /**
  * GET - 获取评论列表
  */
 const getCommentList = function (essayId) {
   return Vue.http.get(
     `${commentAPIs.GET_COMMENT_LIST}?essayId=${essayId}`
-  );
-};
-
-
+  )
+}
 
 /**
  * POST
@@ -23,7 +20,7 @@ const createComment = function (commentInfo) {
     {
       'essayId': commentInfo.essayId,
       'name': commentInfo.name,
-      'content': commentInfo.content,
+      'content': commentInfo.content
     }
   )
 }
