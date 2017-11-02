@@ -5,7 +5,7 @@
       <span class="tag is-black">
         <a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备17058358号-1</a>
       </span>
-      <span class="tag is-black">友情链接：<a href="http://www.kuaidi.com/" target="_blank">快递网-免费快递查询API</a></span>
+      <span class="tag is-black">友情链接：<a href="http://www.kuaidi.com/" target="_blank">快递接口API</a></span>
     </div>
   </footer>
 </template>

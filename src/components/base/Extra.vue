@@ -54,7 +54,7 @@
                 </a>
               </div>
             </div>
-            <span class="tag is-dark">快递查询服务为 <a>快递网</a> 友情提供</span>
+            <span class="tag is-dark">快递查询服务为 <a>快递网</a> 提供</span>
           </div>
         </div>
       </div>
@@ -77,20 +77,9 @@
    * POST
    * request: 
    * {
-   *    RequestData: String, => R, 请求内容需进行URL(utf-8)编码。请求内容JSON格式，须和DataType一致。
-   *    EBusinessID: String, => R, 商户ID
-   *    RequestType: String, => R, 请求指令类型：1002
-   *    DataSign: String, => R, 数据内容签名：把(请求内容(未编码)+ApiKey)进行MD5加密，然后Base64编码，最后 进行URL(utf-8)编码。
-   *    DataType: String => O, 请求、返回数据类型：2-json；
+   *    
    * }
-   * R-必填（Required），O-可选（Optional）
    */
-  import md5 from 'js-md5';
-  let Base64 = require('js-base64').Base64;
-  const logisticsAPI = 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx';
-  const ApiKey = '21c7b20d-5fa5-4bb1-8747-ac888478c7b7';
-  const EBusinessID = '1309806';
-
 
   export default {
     data() {
@@ -131,24 +120,9 @@
         const _self = this;
         let courierNumber = _self.courierNumber;
         if (courierNumber) {
-          // DataSign 生成
-          let originalDataSign = courierNumber + ApiKey;
-          let hashDataSign = md5(originalDataSign);
-          let enCodeDataSign = Base64.encode(hashDataSign);
 
+          // Todo..
 
-          _self.$http.post(
-            logisticsAPI,
-            {
-              "RequestData": encodeURI(courierNumber),
-              "EBusinessID": EBusinessID,
-              "RequestType": '1002',
-              "DataSign": enCodeDataSign
-            }
-          ).then(res => {
-
-            debugger
-          });
         } else {
           alert('请输入需要查询的快递单号~');
         }
