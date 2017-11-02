@@ -116,6 +116,7 @@
 
   import essayActions from '../../actions/essayActions';
   import commentActions from '../../actions/commentActions';
+  import antiXss from '../../utils/antiXss';
   import Moment from 'moment';
   import MarkdownIt from 'markdown-it';
   const md = new MarkdownIt();
@@ -295,10 +296,12 @@
         let essayId = _self.$route.params.id;
         let commentNickName = _self.commentNickName;
         let commentContent = _self.commentContent;
+        let pureComment = antiXss.enCodeHtml(commentContent);
+
         let commentInfo = { // 请求参数
           'essayId': essayId,
           'name': commentNickName,
-          'content': commentContent,
+          'content': pureComment,
         };
         commentActions.createComment(commentInfo).then(res => {
           _self.commentNickName = '';
@@ -359,6 +362,7 @@
 
   .comment-box .comment-content {
     padding: 10px;
+    word-wrap: break-word;
   }
 
 
