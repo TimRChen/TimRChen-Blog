@@ -2,11 +2,20 @@ import Vue from 'vue'
 import commentAPIs from '../apis/commentAPIs'
 
 /**
- * GET - 获取评论列表
+ * GET - 获取文章评论列表
  */
 const getCommentList = function (essayId) {
   return Vue.http.get(
     `${commentAPIs.GET_COMMENT_LIST}?essayId=${essayId}`
+  )
+}
+
+/**
+ * GET - 获取后台评论列表
+ */
+const getAdminList = function () {
+  return Vue.http.get(
+    commentAPIs.GET_ADMIN_LIST
   )
 }
 
@@ -25,7 +34,25 @@ const createComment = function (commentInfo) {
   )
 }
 
+/**
+ * DELETE - 删除评论
+ * @param {String} commentId - 评论Id
+ */
+const deleteComment = function (commentId) {
+  return Vue.http.delete(
+    commentAPIs.DELETE_COMMENT,
+    {
+      'params': {
+        'commentId': commentId
+      }
+    }
+  )
+}
+
+
 export default ({
   getCommentList,
-  createComment
+  getAdminList,
+  createComment,
+  deleteComment
 })
