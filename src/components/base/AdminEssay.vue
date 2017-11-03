@@ -49,7 +49,6 @@
 <script>
 
   import essayActions from '@/actions/essayActions';
-  import Bus from '@/plugins/bus';
 
   export default {
     data() {

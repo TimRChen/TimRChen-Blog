@@ -6,7 +6,7 @@ const { timDomain } = domains
 const APIs = {
   POST_NEW_ESSAY: '/api/essay/new', // 新建文章接口
   GET_ESSAY_LIST: '/api/essay/list', // 初始化文章首页列表
-  GET_ADMIN_LIST: '/api/admin/list', // 获取管理文章列表
+  GET_ADMIN_LIST: '/api/essay/admin/list', // 获取管理文章列表
   POST_ESSAY_PAGE: '/api/essay/page', // 获取某一页文章列表
   GET_ESSAY_DETAILS: '/api/essay/details', // 获取文章详细内容
   DELETE_ESSAY: '/api/essay/delete' // 删除文章

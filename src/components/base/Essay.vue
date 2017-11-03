@@ -5,7 +5,7 @@
 
           <section class="post-content">
             <div class="essay-info">
-              <h1 class="post-essay-title">{{ essayTitle }}</h1>
+              <h1 class="post-essay-title">{{ essayTitle}}</h1>
               <h2 class="post-create-time">{{ createTime }}</h2>
             </div>
             <div
@@ -16,7 +16,7 @@
           </section>
           <div class="postDesc">
             <!-- 阅读量pv计算 -->
-            {{`posted @TimRChen 阅读量(${ pv })`}}
+            {{`${essayId_abstract} by Timrchen 阅读量（${ pv }）`}}
           </div>
 
           <!-- 评论 -->
@@ -30,66 +30,69 @@
                   </p>
                 </header>
                 <div class="card-content">
+                  
+                  <!-- 评论列表 -->
                   <div class="content" v-for="(comment, key) in commentInfo" v-bind:key="key">
                     <div class="comment-box">
                       <div class="comment-index">
-                        {{ `#${key + 1}` }}
+                        #{{ key + 1 }}
                       </div>
                       <div class="comment-info">
-                        <span class="create-man">{{ `${comment.name}:` }}</span>
+                        <span class="create-man">{{ comment.name }}:</span>
                       </div>
                       <p class="comment-content">
                         {{ comment.content }}
                       </p>
-                      <time class="create-time" datetime="2016-1-1">{{ formatCommentTime(comment.meta.createAt) }}</time>
+                      <time class="create-time">{{ formatCommentTime(comment.meta.createAt) }}</time>
                     </div>
                   </div>
+
+                  <!-- 编辑区 -->
+                  <div class="comment-edit" v-show="commentEdit === true">
+                    <div class="field">
+                      <div class="control has-icons-left has-icons-right">
+                        <input class="input" type="text" placeholder="起个炫酷的名字.." v-model="commentNickName">
+                        <span class="icon is-small is-left">
+                          <i class="fa fa-user"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                          <i class="fa fa-check"></i>
+                        </span>
+                      </div>
+                      <p class="help is-success" v-show="nameStatus === true">昵称可用.</p>
+                      <p class="help is-danger" v-show="commentNickName.length > 8 && nameStatus === false">昵称长度超过规定长度.</p>
+                      <p class="help is-danger" v-show="commentNickName.length > 0 && commentNickName.length <= 8 && nameStatus === false">昵称已存在.</p>
+                      <p class="help is-info" v-show="commentNickName.length === 0">起个昵称吧.</p>
+                    </div>        
+                    <div class="field">
+                      <div class="field-body">
+                        <div class="field">
+                          <div class="control">
+                            <textarea class="textarea" placeholder="说说什么吧.." v-model="commentContent"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="field is-grouped is-grouped-right">
+                      <p class="control">
+                        <a class="button is-primary" v-on:click="preSubmit">
+                          Submit
+                        </a>
+                      </p>
+                      <p class="control">
+                        <a class="button is-light" v-on:click="commentEdit = false">
+                          Cancel
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                  
                 </div>
-                <footer class="card-footer">
-                  <a class="card-footer-item" v-on:click="commentEdit = !commentEdit">写下您的评论</a>
+                <footer class="card-footer" v-show="commentEdit === false">
+                  <a class="card-footer-item" v-on:click="commentEdit = true">写下您的评论</a>
                 </footer>
               </div>
             </div>
-
-            <div class="comment-edit" v-show="commentEdit === true">
-              <div class="field">
-                <label class="label">Username</label>
-                <div class="control has-icons-left has-icons-right">
-                  <input class="input" type="text" placeholder="起个属于你的个性网名，一次性的哦" v-model="commentNickName">
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-user"></i>
-                  </span>
-                  <span class="icon is-small is-right">
-                    <i class="fa fa-check"></i>
-                  </span>
-                </div>
-                <p class="help is-success" v-show="nameStatus === true">昵称可用.</p>
-                <p class="help is-danger" v-show="commentNickName.length > 8 && nameStatus === false">昵称长度超过规定长度.</p>
-                <p class="help is-danger" v-show="commentNickName.length > 0 && commentNickName.length <= 8 && nameStatus === false">昵称已存在.</p>
-                <p class="help is-info" v-show="commentNickName.length === 0">起个昵称吧.</p>
-              </div>        
-              <div class="field">
-                <div class="field-body">
-                  <div class="field">
-                    <div class="control">
-                      <textarea class="textarea" placeholder="请输入您的评论" v-model="commentContent"></textarea>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="field is-grouped is-grouped-right">
-                <p class="control">
-                  <a class="button is-primary" v-on:click="preSubmit">
-                    Submit
-                  </a>
-                </p>
-                <p class="control">
-                  <a class="button is-light" v-on:click="commentEdit = false">
-                    Cancel
-                  </a>
-                </p>
-              </div>
-            </div>            
 
           </div>
 
@@ -97,12 +100,13 @@
           <div class="author-field">
             <img src="../../assets/timrchen_head.jpeg" class="avatar avatar-64 photo">
             <h3>timrchen</h3>
-            <p>年轻的意志</p>
-            <a class="button is-dark" href="https://github.com/TimRChen/TimRChen-Blog" target="_blank">
+            <p>一生想做浪漫极客.</p>
+            <br>
+            <a class="button is-dark" href="https://github.com/TimRChen" target="_blank">
               <span class="icon">
                 <i class="fa fa-github"></i>
               </span>
-              <span>Star</span>
+              <span>Follow</span>
             </a>
           </div>
 
@@ -130,13 +134,14 @@
         picUrl: '',
         essayTitle: '',
         essayContent: '',
+        essayId_abstract: '', // 文章Id简短标识
         createTime: '',
         pv: '',
         commentInfo: [{
           name: '黄睿晨',
-          content: '宇宙第一无敌吉他手，（看到这个时，说明评论加载失败了，请刷新页面重新加载）',
+          content: '一生想做浪漫极客.（看到这个时，说明尚未有评论，快留下您的第一条评论~）',
           meta: {
-            createAt: '2017/10/30'
+            createAt: '2048/10/24'
           }
         }],
         existName: [], // 昵称列表
@@ -166,15 +171,15 @@
           }, 15);
 
       const essayId = _self.$route.params.id; // 通过router params获取文章id
-
       if (essayId) {
         essayActions.getEssayDetails(essayId).then(res => {
           if (res.status === 200) {
             const essayObj = res.body.essay;
             _self.picUrl = essayObj.picUrl;
-            _self.essayTitle = essayObj.title;
+            _self.essayTitle = essayObj.title;;
             _self.essayContent = md.render(essayObj.content);
             _self.createTime = Moment(essayObj.meta.createAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
+            _self.essayId_abstract = essayObj._id.substr(-6, essayObj._id.length - 1); // 生成文章Id简短标识，用于评论管理
             _self.pv = essayObj.pv;
           }
         }).catch(err => {
@@ -379,10 +384,8 @@
   .author-field {
       font-family: exoregular;
       text-align: center;
-      border-top: 1px solid #eee;
-      margin-bottom: 25px;
-      padding-top: 25px;
-      padding-bottom: 25px;
+      margin-top: 40px;
+      margin-bottom: 40px;
   }
   .author-field .avatar {
       border-radius: 100%;
@@ -469,6 +472,7 @@
     }
     .text-display {
       margin-top: 0!important;
+      background-color: #fff;
     }
     .comment-edit {
       padding: 0 12px 0 12px;

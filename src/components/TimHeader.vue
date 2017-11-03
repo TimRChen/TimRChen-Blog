@@ -23,7 +23,8 @@
               </div>
               <a href="#/edit" class="dropdown-item" v-if="loginStatus === 'logged'">Edit</a>
               <hr class="dropdown-divider">
-              <a href="#/admin" class="dropdown-item" v-if="loginStatus === 'logged'">Admin</a>
+              <a href="#/admin-essay" class="dropdown-item" v-if="loginStatus === 'logged'">Essay</a>
+              <a href="#/admin-comment" class="dropdown-item" v-if="loginStatus === 'logged'">Comment</a>
             </div>
           </div>
         </div>
@@ -177,7 +178,7 @@
           _self.loginStatus = res.body.state;
         }
       }).catch(err => {
-        console.error(err);
+        // console.log(err);
       });
 
     },
@@ -370,7 +371,7 @@
   }
 
   /* 竖屏 */
-  @media screen and (orientation:portrait) and (max-width: 720px) {
+  @media screen and (orientation:portrait) and (max-width: 1000px) {
     .return-top-btn {
       display: none;
     }
