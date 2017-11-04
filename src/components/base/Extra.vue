@@ -35,31 +35,6 @@
       </div>
     </div>
 
-    <div class="feature-box">
-      <div class="card">
-        <div class="card-content">
-          <div class="media">
-            <h1 class="title is-4 tag is-dark">查快递服务</h1>
-          </div>
-          <div class="content">
-            <p class="tag is-link">1.查询速度快 2.查询方便</p>
-            <p class="tag is-dark">承诺: 功能安全可靠，此功能不收集任何私人信息！</p>
-            <div class="field has-addons">
-              <div class="control">
-                <input class="input" type="text" placeholder="输入您的快递单号" v-model="courierNumber">
-              </div>
-              <div class="control">
-                <a class="button is-info" v-on:click="searchLogisticsInfomation">
-                  查询物流
-                </a>
-              </div>
-            </div>
-            <span class="tag is-dark">快递查询服务为 <a>快递网</a> 提供</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -72,21 +47,11 @@
    */
   const shortUrlAPI = 'http://suo.im/api.php?format=jsonp&url=';
 
-  /**
-   * 查询物流 API
-   * POST
-   * request: 
-   * {
-   *    
-   * }
-   */
-
   export default {
     data() {
       return {
         longUrl: '', // 输入长链接
-        shorUrl: '', // 输出短链
-        courierNumber: '', // 快递单号
+        shorUrl: '' // 输出短链
       }
     },
     methods: {
@@ -115,18 +80,6 @@
         } else {
           alert('请输入需要转换的链接!');
         }
-      },
-      searchLogisticsInfomation: function () { // 查询物流信息
-        const _self = this;
-        let courierNumber = _self.courierNumber;
-        if (courierNumber) {
-
-          // Todo..
-
-        } else {
-          alert('请输入需要查询的快递单号~');
-        }
-
       }
     }
   };
