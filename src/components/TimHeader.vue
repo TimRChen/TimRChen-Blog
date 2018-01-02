@@ -371,8 +371,9 @@
   }
 
   /* 竖屏 */
-  @media screen and (orientation:portrait) and (max-width: 1000px) {
+  @media screen and (orientation:portrait) and (max-width: 720px) {
     .return-top-btn {
+      opacity: 0;
       display: none;
     }
   }
