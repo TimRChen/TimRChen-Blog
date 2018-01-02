@@ -1,8 +1,9 @@
 <template>
     <div class="page-detail">
       <div class="content-area detail-container">
-        <div class="site-content">
+        <div class="essay-content">
 
+          <!-- 文章内容 -->
           <section class="post-content">
             <div class="essay-info">
               <h1 class="post-essay-title">{{ essayTitle}}</h1>
@@ -12,7 +13,7 @@
               class="pic-header"
               v-bind:style="{ backgroundImage: `url(${ picUrl })`, backgroundSize: 'cover', backgroundPosition: '50%' }">
             </div>
-            <div class="single-post-inner text-display" v-html="essayContent"></div>
+            <div class="text-display" v-html="essayContent"></div>
           </section>
           <div class="postDesc">
             <!-- 阅读量pv计算 -->
@@ -332,7 +333,7 @@
     width: 90%!important;
   }
 
-  .site-content {
+  .essay-content {
     padding-top: 50px;
   }
 
@@ -370,7 +371,6 @@
     word-wrap: break-word;
   }
 
-
   .comment-box .create-time {
     color: #808080;
     font-size: 14px;
@@ -382,31 +382,31 @@
 
   /* --author */
   .author-field {
-      font-family: exoregular;
-      text-align: center;
-      margin-top: 40px;
-      margin-bottom: 40px;
+    font-family: exoregular;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
   }
   .author-field .avatar {
-      border-radius: 100%;
-      padding: 4px;
-      border: 1px solid #ccc;
-      height: 64px;
-      width: 64px;
+    border-radius: 100%;
+    padding: 4px;
+    border: 1px solid #ccc;
+    height: 64px;
+    width: 64px;
   }
   .author-field img {
-      max-width: 100%;
-      height: auto;
+    max-width: 100%;
+    height: auto;
   }
   .author-field h3 {
-      font-size: 18px;
-      margin-bottom: 5px;
-      color: rgba(0,0,0,.44);
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: rgba(0,0,0,.44);
   }
   .author-field p {
-      font-size: 14px;
-      line-height: 1.6;
-      padding: 0 30px;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 0 30px;
   }
 
   .post-content {
@@ -441,11 +441,10 @@
 
   .pic-header {
     height: 440px;
-    border-radius: 4px;
-    /* -webkit-filter: blur(4px);
+    -webkit-filter: blur(4px);
     -moz-filter: blur(4px);
     -ms-filter: blur(4px);
-    filter: blur(4px); */
+    filter: blur(4px);
     -webkit-filter: grayscale(100%);
     -moz-filter: grayscale(100%);
     -ms-filter: grayscale(100%);
@@ -458,16 +457,26 @@
     .detail-container {
       width: 100%!important;
     }
+    .essay-content {
+      padding-top: 0px;
+    }
+    .pic-header {
+      height: 90px;
+      outline: 12px solid #e2e2e2;
+    }
+    .essay-info {
+      top: 5px;
+    }
     .post-essay-title {
       color: #fff;
-      font-size: 38px;
-      font-weight: 200!important;
+      font-size: 26px;
+      font-weight: 100!important;
       z-index: 1;
     }
     .post-create-time {
       color: #fff;
-      font-size: 14px;
-      font-weight: 300!important;
+      font-size: 12px;
+      font-weight: 100!important;
       z-index: 1;
     }
     .text-display {
@@ -483,8 +492,8 @@
     margin-top: 5%;
     margin-bottom: 5%;
     padding: 20px;
-    box-shadow: 0px 0px 15px #888888;
-    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
   }
 
   .text-display h1 {
@@ -535,31 +544,26 @@
     margin: 15px 0;
   }
 
-  .text-display p{
+  .text-display p {
     margin: 1em 0;
   }
 
   .text-display pre { 
-    background-color: #F8F8F8;
-    border: 1px solid #CCCCCC;
-    border-radius: 3px;
-    overflow: auto;
-    padding: 5px;
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+    display: block;
+    line-height: 16px;
+    font-size: 11px;
+    page-break-inside: avoid;
   }
 
   .text-display pre code {
-    background-color: #F8F8F8;
-    border: none;
-    padding: 0;
-  }
-
-  .text-display code {
-    font-family: Consolas, Monaco, Andale Mono, monospace;
-    background-color:#F8F8F8;
-    border: 1px solid #CCCCCC;
+    background-color: #fffffc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
     border-radius: 3px;
-    padding: 0 0.2em;
-    line-height: 1;
   }
 
   .text-display pre > code {
