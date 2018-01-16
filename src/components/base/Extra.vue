@@ -1,10 +1,10 @@
 <template>
   <div class="extra-feature container">
-    <section class="hero is-dark is-bold">
+    <section class="hero is-info is-warning">
       <div class="hero-body">
         <div class="container">
           <h2 class="subtitle">
-            额外的一些小功能，辛苦开发，不打算试试啊？~
+            新的一天！{{ nowDate }}
           </h2>
         </div>
       </div>
@@ -12,26 +12,10 @@
 
     <div class="feature-box">
       <div class="card">
-        <div class="card-content">
-          <div class="media">
-            <h1 class="title is-4 tag is-dark">短链接服务</h1>
-          </div>
-          <div class="content">
-            <p class="tag is-link">1.内容需要 2.用户友好 3.便于管理</p>
-            <div class="field has-addons">
-              <div class="control">
-                <input class="input" type="text" placeholder="输入将要缩短的长网址" v-model="longUrl">
-              </div>
-              <div class="control">
-                <a class="button is-info" v-on:click="generateShortUrl">
-                  生成短链
-                </a>
-              </div>
-            </div>
-            <span class="tag is-dark show-short-url" v-show="shorUrl.length > 0">{{ shorUrl }}</span>
-            <span class="tag is-dark">短链服务api为 <a href="http://suo.im/">http://suo.im/</a> 提供</span>
-          </div>
-        </div>
+        <!-- 新闻资讯服务 START -->
+        <news></news>
+        <!-- 短链接服务 START -->
+        <short-url></short-url>
       </div>
     </div>
 
@@ -39,47 +23,19 @@
 </template>
 
 <script>
+  import Moment from 'moment';
 
-  /**
-   * 短链生成 API
-   * JSONP
-   * request: queryString:  url=urlencode('输入链接');
-   */
-  const shortUrlAPI = 'http://suo.im/api.php?format=jsonp&url=';
+  import News from '@/components/base/news/News';
+  import ShortUrl from '@/components/base/shortUrl/ShortUrl';
 
   export default {
-    data() {
-      return {
-        longUrl: '', // 输入长链接
-        shorUrl: '' // 输出短链
-      }
+    components: {
+      News,
+      ShortUrl
     },
-    methods: {
-      generateShortUrl: function () { // 生成短链接
-        const _self = this;
-        let longUrl = _self.longUrl;
-        if (longUrl) {
-          _self.$http.jsonp(
-            shortUrlAPI + encodeURIComponent(longUrl), // encodeURIComponent可将 # 号进行编码，这样就能将 # 传入服务器中
-            {
-              jsonp: 'callback',
-              jsonpCallback: "jsonPCallback"
-            }
-          ).then((data) => {
-            let url = data.body.url;
-            let err = data.body.err;
-            if (url) {
-              _self.shorUrl = url;
-              alert('短链接已生成，感谢使用服务!');
-               _self.longUrl = '';
-            } else if (err) {
-              alert(err);
-              _self.longUrl = '';
-            }
-          })
-        } else {
-          alert('请输入需要转换的链接!');
-        }
+    computed: {
+      nowDate: function () {
+        return Moment(new Date()).format('YYYY年MM月DD日')
       }
     }
   };

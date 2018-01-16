@@ -4,6 +4,10 @@
 ## 技术栈
 >   Vue + Express + MongoDB
 
+## 1.6.0
+
+-  增加新闻模块`new!`
+
 ## 1.5.7
 
 -  增加CORS匹配多个URL逻辑
