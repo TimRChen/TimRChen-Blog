@@ -45,44 +45,32 @@
 </template>
 <script>
 
-  /**
-   * 新闻 API
-   * GET/POST
-   * API DOC https://www.juhe.cn/docs/api/id/235
-   * request: {
-   *   params: {
-   *     type: top(头条，默认),shehui(社会),guonei(国内),guoji(国际),yule(娱乐),tiyu(体育)junshi(军事),keji(科技),caijing(财经),shishang(时尚)
-   *     key: APPKEY
-   *   }
-   * }
-   */
-  const shortUrlAPI = 'http://v.juhe.cn/toutiao/index?type=:newsType&key=:APPKEY';
-  const APPKEY = 'bf881b7e3a5f864df4964d1456f50899';
-  const newsType = {
-    top: 'top',
-    shehui: 'shehui',
-    guonei: 'guonei',
-    guoji: 'guoji',
-    yule: 'yule',
-    tiyu: 'tiyu',
-    junshi: 'junshi',
-    keji: 'keji',
-    caijing: 'caijing',
-    shishang: 'shishang'
-  };
+  import extraActions from '@/actions/extraActions';
 
   export default {
     data () {
       return {
-        newsList: []
+        newsList: [{ // 初始化数据
+          url: 'http://mini.eastday.com/mobile/170105110355287.html?qid=juheshuju',
+          thumbnail_pic_s: 'http://03.imgmini.eastday.com/mobile/20170105/20170105110355_806f4ed3fe71d04fa452783d6736a02b_1_mwpm_03200403.jpeg',
+          author_name: '腾讯娱乐',
+          title: '杨幂的发际线再也回不去了么？网友吐槽像半秃',
+          date: '2017-01-05 11:03'
+        }]
       }
     },
     methods: {
       initialNews: function () {
         const _self = this;
-        let reqURL = shortUrlAPI.replace(':APPKEY', APPKEY).replace(':newsType', newsType.top);
-        _self.$http.get(reqURL).then(res => {
-          _self.newsList = res.data;
+        extraActions.getNewsList().then(res => {
+          let data = res.data;
+          if (data.error_code !== void 0 && data.error_code === 10012) {
+            alert(data.reason);
+          } else {
+            _self.newsList = data;
+          }
+        }).catch(err => {
+          console.error(err);
         });
       }
     },
@@ -129,7 +117,6 @@
     .news-item .news-time {
       color: gray;
       font-size: 13px;
-      float: right;
     }
   }
 

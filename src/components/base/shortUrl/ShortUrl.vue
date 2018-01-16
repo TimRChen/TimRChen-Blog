@@ -44,7 +44,7 @@
             shortUrlAPI + encodeURIComponent(longUrl), // encodeURIComponent可将 # 号进行编码，这样就能将 # 传入服务器中
             {
               jsonp: 'callback',
-              jsonpCallback: "jsonPCallback"
+              jsonpCallback: 'jsonPCallback'
             }
           ).then((data) => {
             let url = data.body.url;
@@ -57,7 +57,7 @@
               alert(err);
               _self.longUrl = '';
             }
-          })
+          });
         } else {
           alert('请输入需要转换的链接!');
         }
