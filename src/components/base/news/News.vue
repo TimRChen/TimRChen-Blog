@@ -63,7 +63,7 @@
       initialNews: function () {
         const _self = this;
         extraActions.getNewsList().then(res => {
-          let data = res.data;
+          let data = res.body.result.data;
           if (data.error_code !== void 0 && data.error_code === 10012) {
             alert(data.reason);
           } else {
