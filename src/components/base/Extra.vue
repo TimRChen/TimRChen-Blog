@@ -23,6 +23,16 @@
           </div>
         </a>
         <!-- 2 -->
+        <a v-on:click="opened = 'qrcode'">
+          <div class="card" v-show="opened === 'normal'">
+            <div class="card-content">
+              <div class="media">
+                <h1 class="title is-5">二维码生成工具</h1>
+              </div>
+            </div>
+          </div>
+        </a>
+        <!-- 3 -->
         <a v-on:click="opened = 'shortUrl'">
           <div class="card" v-show="opened === 'normal'">
             <div class="card-content">
@@ -51,14 +61,21 @@
         </transition>
 
         <transition name="component-jump" mode="out-in">
+          <!-- 二维码生成工具 START -->
+          <div class="qrcode" v-show="opened === 'qrcode'">
+            <qrcode></qrcode>
+          </div>
+        </transition>
+
+        <transition name="component-jump" mode="out-in">
           <!-- 短链接服务 START -->
           <div class="short-url" v-show="opened === 'shortUrl'">
             <short-url></short-url>
           </div>
         </transition>
 
-        <a class="back-to-main" v-on:click="opened = 'normal'">
-          <div class="card" v-show="opened !== 'normal' && opened !== 'shortUrl'">
+        <a class="back-to-main" v-on:click="opened = 'normal'" v-show="opened !== 'normal' && opened !== 'shortUrl' && opened !== 'qrcode'">
+          <div class="card">
             <div class="card-content">
               <div class="media">
                 <h1 class="title is-5">点击此处进行返回</h1>
@@ -77,6 +94,7 @@
   import Moment from 'moment';
 
   import News from '@/components/base/news/News';
+  import Qrcode from '@/components/base/qrcode/Qrcode';
   import ShortUrl from '@/components/base/shortUrl/ShortUrl';
 
   export default {
@@ -87,6 +105,7 @@
     },
     components: {
       News,
+      Qrcode,
       ShortUrl
     },
     computed: {
@@ -109,12 +128,12 @@
 
   /* Vue 多组件切换过渡动画 */
   .component-jump-enter-active, .component-jump-leave-active {
-    transition: transform .5s ease-in;
+    transition: opacity .3s ease-in;
   }
   .component-jump-enter, .component-jump-leave-to
   /* .component-jump-leave-active for below version 2.1.8 */ {
-    /* opacity: 0; */
-    transform: scale(2, 2)
+    opacity: 0;
+    /* transform: scale(2, 2) */
   }
 
 
