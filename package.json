@@ -1,6 +1,6 @@
 {
   "name": "timrchen",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "blog page",
   "author": "Tim <timrchen@foxmail.com>",
   "private": true,
@@ -12,6 +12,7 @@
     "fix": "standard --fix"
   },
   "dependencies": {
+    "anti-key-words": "^1.0.3",
     "bulma": "^0.5.1",
     "font-awesome": "^4.7.0",
     "markdown-it": "^8.4.0",
