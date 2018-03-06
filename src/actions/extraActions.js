@@ -10,6 +10,17 @@ const getNewsList = function (token) {
   );
 };
 
+/**
+ * 生成二维码
+ */
+const getQrcode = function (textContent) {
+  return Vue.http.get(
+    `${extraAPIs.GET_QRCODE}?textContent=${textContent}`
+  );
+};
+
+
 export default ({
-    getNewsList
+    getNewsList,
+    getQrcode
 });

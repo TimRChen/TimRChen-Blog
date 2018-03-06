@@ -4,7 +4,8 @@ const addDomain = domain => path => domain + path
 const { timDomain } = domains
 
 const APIs = {
-    GET_NEWS_LIST: '/api/extra/news'
+  GET_NEWS_LIST: '/api/extra/news',
+  GET_QRCODE: '/api/extra/qrcode'
 };
 
 export default _.each(APIs, (path, key) => {
