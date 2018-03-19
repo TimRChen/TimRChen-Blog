@@ -17,7 +17,8 @@
           </section>
           <div class="postDesc">
             <!-- 阅读量pv计算 -->
-            {{`${essayId_abstract} by Timrchen 阅读量（${ pv }）`}}
+            <span>{{ essayId_abstract }} by Timrchen 阅读量（</span>
+            <span>{{ pv }} ）</span>
           </div>
 
           <!-- 评论 -->
@@ -36,22 +37,24 @@
                   <div class="content" v-for="(comment, key) in commentInfo" v-bind:key="key">
                     <div class="comment-box">
                       <div class="comment-index">
-                        #{{ key + 1 }}
+                        {{ key + 1 }}楼
                       </div>
                       <div class="comment-info">
-                        <span class="create-man">{{ comment.name }}:</span>
+                        <span class="create-man has-text-info">{{ comment.name }}:</span>
                       </div>
                       <p class="comment-content">
                         {{ comment.content }}
                       </p>
                       <time class="create-time">{{ formatCommentTime(comment.meta.createAt) }}</time>
+                      <button id="comment-reply-btn" class="button is-small is-inverted is-primary" v-on:click="reply(comment.name)">回复</button>
                     </div>
                   </div>
 
                   <!-- 编辑区 -->
                   <div class="comment-edit" v-show="commentEdit === true">
                     <div class="field">
-                      <div class="control has-icons-left has-icons-right">
+                      <!-- 昵称不存在时 -->
+                      <div class="control has-icons-left has-icons-right" v-show="nickNameInLocal === false">
                         <input class="input" type="text" placeholder="起个炫酷的名字.." v-model="commentNickName">
                         <span class="icon is-small is-left">
                           <i class="fa fa-user"></i>
@@ -59,12 +62,19 @@
                         <span class="icon is-small is-right">
                           <i class="fa fa-check"></i>
                         </span>
+                        <p class="help is-success" v-show="nameStatus === true">昵称可用.</p>
+                        <p class="help is-danger" v-show="commentNickName.length > 8 && nameStatus === false">昵称长度超过规定长度.</p>
+                        <p class="help is-danger" v-show="commentNickName.length > 0 && commentNickName.length <= 8 && nameStatus === false">昵称已存在.</p>
+                        <p class="help is-info" v-show="commentNickName.length === 0">起个昵称吧.</p>
                       </div>
-                      <p class="help is-success" v-show="nameStatus === true">昵称可用.</p>
-                      <p class="help is-danger" v-show="commentNickName.length > 8 && nameStatus === false">昵称长度超过规定长度.</p>
-                      <p class="help is-danger" v-show="commentNickName.length > 0 && commentNickName.length <= 8 && nameStatus === false">昵称已存在.</p>
-                      <p class="help is-info" v-show="commentNickName.length === 0">起个昵称吧.</p>
-                    </div>        
+                      <!-- 本地有昵称 -->
+                      <div class="control" v-show="nickNameInLocal === true">
+                        <p class="help">
+                          <button class="button is-link is-small has-text-primary" v-on:click="changeNickname">换个昵称?</button>
+                        </p>
+                        <span class="has-text-info">{{ commentNickName }}：</span>
+                      </div>
+                    </div>
                     <div class="field">
                       <div class="field-body">
                         <div class="field">
@@ -77,12 +87,12 @@
                     <div class="field is-grouped is-grouped-right">
                       <p class="control">
                         <a class="button is-primary" v-on:click="preSubmit">
-                          Submit
+                          提交
                         </a>
                       </p>
                       <p class="control">
-                        <a class="button is-light" v-on:click="commentEdit = false">
-                          Cancel
+                        <a class="button is-light" v-on:click="cancleSubmit">
+                          取消
                         </a>
                       </p>
                     </div>
@@ -135,63 +145,24 @@
         picUrl: '',
         essayTitle: '',
         essayContent: '',
-        essayId_abstract: '', // 文章Id简短标识
+        essayId_abstract: '', // 文章id简短标识，方便查找文章对应评论
         createTime: '',
         pv: '',
         commentInfo: [{
           name: '黄睿晨',
-          content: '一生想做浪漫极客.（看到这个时，说明尚未有评论，快留下您的第一条评论~）',
+          content: '一生想做浪漫极客，看到这个时，快快写下您的第一条评论:)',
           meta: {
             createAt: '2048/10/24'
           }
         }],
         existName: [], // 昵称列表
         nameStatus: false, // 昵称存在状态，false - 不存在， true - 已存在
-        commentEdit: false,
+        commentEdit: false, // 评论状态
+        nickNameInLocal: false, // 本地之前是否有昵称
         commentNickName: '',
         commentContent: '',
+        replyGuideNickName: '', // 回复开头 @人名
       }
-    },
-    beforeCreate: function () {
-      const _self = this;
-
-      // 进入页面时，自动置最顶
-      const scrollHeight = window.scrollY,
-            scrollStep = Math.PI / ( 1000 / 15 ),
-            cosParameter = scrollHeight / 2;
-      let scrollCount = 0,
-          scrollMargin,
-          scrollInterval = setInterval(function () {
-            if ( window.scrollY != 0 ) {
-              scrollCount = scrollCount + 1;  
-              scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
-              window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
-            } else {
-              clearInterval(scrollInterval);
-            }
-          }, 15);
-
-      const essayId = _self.$route.params.id; // 通过router params获取文章id
-      if (essayId) {
-        essayActions.getEssayDetails(essayId).then(res => {
-          if (res.status === 200) {
-            const essayObj = res.body.essay;
-            _self.picUrl = essayObj.picUrl;
-            _self.essayTitle = essayObj.title;;
-            _self.essayContent = md.render(essayObj.content);
-            _self.createTime = Moment(essayObj.meta.createAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
-            _self.essayId_abstract = essayObj._id.substr(-6, essayObj._id.length - 1); // 生成文章Id简短标识，用于评论管理
-            _self.pv = essayObj.pv;
-          }
-        }).catch(err => {
-          console.error(err);
-        });
-      }
-
-    },
-    mounted: function () {
-      const _self = this;
-      _self.getCommentList();
     },
     watch: {
       commentNickName: function (val, oldVal) {
@@ -208,21 +179,13 @@
         if (name.length === 0) _self.nameStatus = false;
 
         if (name.length > 8) _self.nameStatus = false;
-
       }
     },
     methods: {
-      formatCommentTime: function (time) { // 格式化评论时间
-        return Moment(time).format('ddd, YYYY/MM/DD, h:mm:ss a');
-      },
-      splitStringToArray: function (originalString) { // 将字符串分离成数组
-        let splitArray = [];
-        for(let i = 0; i < originalString.length; i++) {
-          splitArray.push(originalString[i].toLowerCase());
-        }
-        return Array.from(new Set(splitArray));
-      },
-      getCommentList: function () { // 获取评论列表
+      /**
+       * 获取评论列表
+       */
+      getCommentList: function () {
         const _self = this;
         let essayId = _self.$route.params.id;
         
@@ -246,9 +209,29 @@
           });
         }
       },
-      preSubmit: function () { // 提交前预处理评论
+      /**
+       * 格式化评论时间
+       */
+      formatCommentTime: function (time) {
+        return Moment(time).format('ddd, YYYY/MM/DD, h:mm:ss a');
+      },
+      /**
+       * 将字符串分离成数组
+       */
+      splitStringToArray: function (originalString) {
+        let splitArray = [];
+        for(let i = 0; i < originalString.length; i++) {
+          splitArray.push(originalString[i].toLowerCase());
+        }
+        return Array.from(new Set(splitArray));
+      },
+      /**
+       * 提交前评论预处理
+       */
+      preSubmit: function () {
         const _self = this;
         let nameStatus = _self.nameStatus;
+        let nickNameInLocal = _self.nickNameInLocal;
         let commentNickName = _self.commentNickName;
         let commentContent = _self.commentContent;
 
@@ -282,22 +265,34 @@
         if (evilNameWordAmonut > 0 || evilContentWordAmonut > 0) {
           alert('您输入的评论/昵称中有违规词汇，请重新输入!');
           return;
-        } else {
-          if (commentNickName.length > 0 && commentNickName.length <= 8 && commentContent.length >= 3 && nameStatus === true) {
-            _self.submitComment();
-          } else if (commentNickName.length === 0) {
-            alert('您似乎忘了姓名?');
-          } else if (commentNickName.length > 8) {
-            alert('昵称最多8个字哦~');
-          } else if (commentContent.length < 3) {
+        }
+
+        // 综合输入处理
+        if (commentNickName.length > 0 && commentNickName.length <= 8 && commentContent.length >= 3 && nameStatus === true && nickNameInLocal === false) {
+          _self.submitComment();
+        } else if (commentNickName.length === 0) {
+          alert('您似乎忘了姓名?');
+        } else if (commentNickName.length > 8) {
+          alert('昵称最多8个字哦~');
+        } else if (commentContent.length < 3 && nickNameInLocal === false) {
+          alert('评论最少3个字以上~');
+        } else if (nameStatus === false && nickNameInLocal === false) {
+          alert('您起的昵称在评论中已使用过，请重新输入~');
+        }
+
+        // 判断本地是否有昵称存在
+        if (nickNameInLocal === true) {
+          if (commentContent === _self.replyGuideNickName) {
             alert('评论最少3个字以上~');
-          } else if (nameStatus === false) {
-            alert('您起的昵称在评论中已使用过，请重新输入~');
+          } else {
+            _self.submitComment();
           }
         }
-        
       },
-      submitComment: function () { // 提交评论
+      /**
+       * 提交评论
+       */
+      submitComment: function () {
         const _self = this;
         let essayId = _self.$route.params.id;
         let commentNickName = _self.commentNickName;
@@ -310,16 +305,100 @@
           'content': pureComment,
         };
         commentActions.createComment(commentInfo).then(res => {
-          _self.commentNickName = '';
           _self.commentContent = '';
           _self.commentEdit = false; // 关闭编辑界面
           alert(res.body.message);
           _self.getCommentList();
+          // 将昵称存入localStorage，对用户做持久化处理
+          localStorage.setItem('commentNickName', commentNickName);
+          _self.commentNickName = commentNickName;
+          _self.nickNameInLocal = true;
         }).catch(err => {
           console.error(err);
           alert('出错了');
         });
+      },
+      /**
+       * 取消评论
+       */
+      cancleSubmit: function () {
+        this.commentContent = '';
+        this.commentEdit = false;
+      },
+      /**
+       * 回复某人
+       * @argument respondent 被回复人
+       */
+      reply: function (respondent) {
+        const _self = this;
+        // 生成回复开头
+        let replyGuideNickName = `@${respondent}\n`;
+        // 打开评论输入框
+        _self.commentEdit = true;
+        // 将开头注入评论内容中
+        _self.commentContent = replyGuideNickName;
+        _self.replyGuideNickName = replyGuideNickName;
+      },
+      /**
+       * 更换昵称
+       */
+      changeNickname: function () {
+        const _self = this;
+        if (confirm('确认放弃这个昵称？')) {
+          localStorage.removeItem('commentNickName');
+          _self.commentNickName = '';
+          _self.nickNameInLocal = false;
+          alert('为了更美好的将来:)');
+        } else {
+          alert('从一而终是不是更好:)');
+        }
       }
+    },
+    mounted() {
+      const _self = this;
+      _self.getCommentList();
+      // 取出本地存入的用户昵称
+      let commentNickName = localStorage.getItem('commentNickName');
+      if (commentNickName) {
+        _self.commentNickName = commentNickName;
+        _self.nickNameInLocal = true;
+      }
+    },
+    beforeCreate() {
+      const _self = this;
+      // 进入页面时，自动置最顶
+      const scrollHeight = window.scrollY,
+            scrollStep = Math.PI / ( 1000 / 15 ),
+            cosParameter = scrollHeight / 2;
+      let scrollCount = 0,
+          scrollMargin,
+          scrollInterval = setInterval(function () {
+            if ( window.scrollY != 0 ) {
+              scrollCount = scrollCount + 1;  
+              scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
+              window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
+            } else {
+              clearInterval(scrollInterval);
+            }
+          }, 15);
+
+      const essayId = _self.$route.params.id; // 通过router params获取文章id
+      if (essayId) {
+        essayActions.getEssayDetails(essayId).then(res => {
+          if (res.status === 200) {
+            const essayObj = res.body.essay;
+            _self.picUrl = essayObj.picUrl;
+            _self.essayTitle = essayObj.title;;
+            _self.essayContent = md.render(essayObj.content);
+            _self.createTime = Moment(essayObj.meta.createAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
+            _self.essayId_abstract = essayObj._id.substr(-6, essayObj._id.length - 1); // 生成文章Id简短标识，用于评论管理
+            _self.pv = essayObj.pv;
+          }
+        }).catch(err => {
+          console.error(err);
+        });
+      }
+
     }
   }
 </script>
@@ -362,7 +441,7 @@
 
   .comment-box .comment-info .create-man {
     font-size: 18px;
-    color: #4093c6;
+    /* color: #4093c6; */
     /* font-style: italic; */
   }
 
