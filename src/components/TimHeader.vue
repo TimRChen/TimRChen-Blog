@@ -34,14 +34,14 @@
         <!-- 额外功能页 -->
         <a href="#/extra" class="button is-dark is-inverted is-outlined">Extra</a>
 
-        <!-- <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true" v-if="loginStatus === 'noLogged'">SignUp</a> -->
+        <a class="signUp button is-dark is-inverted is-outlined" v-on:click="showSignUpModal = true" v-if="loginStatus === 'noLogged'">SignUp</a>
         <a class="login button is-dark is-inverted is-outlined" v-on:click="showLoginModal = true" v-if="loginStatus === 'noLogged'">Login</a>
         <a class="login button is-dark is-inverted is-outlined" v-on:click="logout()" v-if="loginStatus === 'logged'">Logout</a>
       </div>
     </div>
 
     <!-- signUp modal todo: 注册完后需要将相关注册逻辑隐藏!!! -->
-    <!-- <div class="modal" v-bind:class="{'is-active': showSignUpModal === true}">
+    <div class="modal" v-bind:class="{'is-active': showSignUpModal === true}">
       <div class="modal-background" v-on:click="showSignUpModal = false"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -82,7 +82,7 @@
           <button class="button" v-on:click="showSignUpModal = false">Cancel</button>
         </footer>
       </div>
-    </div> -->
+    </div>
 
 
     <!-- login modal -->
@@ -161,7 +161,7 @@
     data() {
       return {
         // todo: 注册完后需要将相关注册逻辑隐藏!!!
-        // showSignUpModal: false,
+        showSignUpModal: false,
         showLoginModal: false,
         username: '',
         password: '',
@@ -184,28 +184,28 @@
     },
     methods: {
       // todo: 注册完后需要将相关注册逻辑隐藏!!!
-      // signUp: function () {
-      //   const _self = this;
-      //   let username = _self.username;
-      //   let password = _self.password;
-      //   if (username.length !== 0 && password !== 0) {
-      //     userActions.signUp(username, password).then(res => {
-      //       if (res.ok) {
-      //         alert(res.body.message);
-      //         _self.username = '';
-      //         _self.password = '';
-      //         _self.showSignUpModal = false;
-      //       }
-      //     }).catch(err => {
-      //       alert(err.body.message);
-      //       _self.username = '';
-      //       _self.password = '';
-      //       console.error(err);
-      //     })
-      //   } else {
-      //     alert('情输入完整用户账号/密码!');
-      //   }
-      // },
+      signUp: function () {
+        const _self = this;
+        let username = _self.username;
+        let password = _self.password;
+        if (username.length !== 0 && password !== 0) {
+          userActions.signUp(username, password).then(res => {
+            if (res.ok) {
+              alert(res.body.message);
+              _self.username = '';
+              _self.password = '';
+              _self.showSignUpModal = false;
+            }
+          }).catch(err => {
+            alert(err.body.message);
+            _self.username = '';
+            _self.password = '';
+            console.error(err);
+          })
+        } else {
+          alert('情输入完整用户账号/密码!');
+        }
+      },
       login: function () {
         const _self = this;
         let username = _self.username;

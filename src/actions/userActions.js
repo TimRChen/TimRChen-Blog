@@ -27,7 +27,8 @@ const signUp = function (username, password) {
     userAPIs.POST_SIGNUP,
     {
       'username': username,
-      'password': password
+      'password': password,
+      'secretOrPrivateKey': 'timrchenqian'
     }
   )
 }
