@@ -22,16 +22,16 @@ const logout = function () {
 /**
  * Signup
  */
-const signUp = function (username, password) {
-  return Vue.http.post(
-    userAPIs.POST_SIGNUP,
-    {
-      'username': username,
-      'password': password,
-      'secretOrPrivateKey': 'timrchenqian'
-    }
-  )
-}
+// const signUp = function (username, password) {
+//   return Vue.http.post(
+//     userAPIs.POST_SIGNUP,
+//     {
+//       'username': username,
+//       'password': password,
+//       'secretOrPrivateKey': 'timrchenqian'
+//     }
+//   )
+// }
 
 /**
  * Login
