@@ -520,7 +520,7 @@
 
   .pic-header {
     height: 440px;
-    -webkit-filter: blur(4px);
+    /* -webkit-filter: blur(4px);
     -moz-filter: blur(4px);
     -ms-filter: blur(4px);
     filter: blur(4px);
@@ -528,7 +528,7 @@
     -moz-filter: grayscale(100%);
     -ms-filter: grayscale(100%);
     -o-filter: grayscale(100%);
-    filter: grayscale(100%);
+    filter: grayscale(100%); */
   }
 
   /* 竖屏 */
