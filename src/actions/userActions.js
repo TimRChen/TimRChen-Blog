@@ -49,6 +49,6 @@ const login = function (username, password) {
 export default ({
   getAuth,
   logout,
-  signUp,
+  // signUp,
   login
 })
