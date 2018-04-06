@@ -42,6 +42,16 @@
             </div>
           </div>
         </a>
+        <!-- 4 -->
+        <a v-on:click="opened = 'robot'">
+          <div class="card" v-show="opened === 'normal'">
+            <div class="card-content">
+              <div class="media">
+                <h1 class="title is-5">聊天机器人</h1>
+              </div>
+            </div>
+          </div>
+        </a>
 
         <a class="back-to-main" v-on:click="opened = 'normal'">
           <div class="card" v-show="opened !== 'normal'">
@@ -74,6 +84,14 @@
           </div>
         </transition>
 
+        <transition name="component-jump" mode="out-in">
+          <!-- ROBOT START -->
+          <div class="robot" v-show="opened === 'robot'">
+            <robot></robot>
+          </div>
+        </transition>
+
+        <!-- 此处返回按钮是为了方便篇幅过长的应用 -->
         <a class="back-to-main" v-on:click="opened = 'normal'" v-show="opened !== 'normal' && opened !== 'shortUrl' && opened !== 'qrcode'">
           <div class="card">
             <div class="card-content">
@@ -94,6 +112,7 @@
   import Moment from 'moment';
 
   import News from '@/components/base/news/News';
+  import Robot from '@/components/base/robot/Robot';
   import Qrcode from '@/components/base/qrcode/Qrcode';
   import ShortUrl from '@/components/base/shortUrl/ShortUrl';
 
@@ -105,6 +124,7 @@
     },
     components: {
       News,
+      Robot,
       Qrcode,
       ShortUrl
     },
