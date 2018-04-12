@@ -1,9 +1,6 @@
 # TimRChen 个人小站
 >   “生活的乐趣在于自己动手。”
 
-## 技术栈
->   Vue + Express + MongoDB
-
 ##  Todo
 
 - [x]   评论系统设计
