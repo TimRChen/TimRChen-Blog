@@ -114,6 +114,8 @@
     width: 100%;
     height: 100px;
     display: inline-block;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
     overflow: auto;
   }
 
