@@ -10,15 +10,15 @@
       </div>
     </section>
     <br>
-    <table class="table is-bordered">
+    <table class="table">
       <thead>
         <tr>
           <th>标题</th>
-          <th>内容概要</th>
           <th>创建时间</th>
+          <th>内容概要</th>
+          <th>访问量</th>
           <th>编辑</th>
           <th>删除</th>
-          <th>访问量</th>
         </tr>
       </thead>
       <tbody>
@@ -26,19 +26,26 @@
           v-for="(essay, key) in essayList"
           v-bind:key="key"
         >
-          <td>{{ essay.title }}</td>
-          <td class="content-abstract">{{ essay.content }}</td>
+          <td>
+            <tr class="has-text-info">{{ essay.title }}</tr>
+            <tr>
+              <span class="tag">{{ essay._id.substr(-6, essay._id.length - 1) }}</span>
+            </tr>
+          </td>
           <td>{{ new Date(essay.meta.createAt).toLocaleDateString() }}</td>
+          <td class="content-abstract">{{ essay.content }}</td>
           <td>
-            <router-link to="/edit" v-on:click.native="editEssay(essay._id)">编辑</router-link>
-          </td>
-          <td>
-            <button class="button is-danger" v-on:click="deleteEssay(essay._id)">删除</button>
-          </td>
-          <td>
-            <span class="tag is-success is-medium">
+            <span class="tag is-rounded is-success">
               {{ essay.pv }}
             </span>
+          </td>
+          <td>
+            <router-link to="/edit" v-on:click.native="editEssay(essay._id)">
+              <button class="button">编辑</button>
+            </router-link>
+          </td>
+          <td>
+            <button class="button is-info is-focused" v-bind:class="{ 'is-loading': deleteLoading }" v-on:click="deleteEssay(essay._id)">删除</button>
           </td>
         </tr>
       </tbody>
@@ -53,29 +60,39 @@
   export default {
     data() {
       return {
-        essayList: {}
+        essayList: {},
+        deleteLoading: false
       }
     },
-    beforeCreate: function () {
+    mounted: function () {
       const _self = this;
       // 获取文章列表
-      essayActions.getAdminList().then(res => _self.essayList = res.body.essays);
+      essayActions.getAdminList().then(res => {
+        const essays = res.body.essays
+        // a > b return -1 | a < b return 1
+        essays.sort((a, b) => a.meta.createAt > b.meta.createAt ? -1 : 1);
+        _self.essayList = essays
+      });
     },
     methods: {
       deleteEssay: function (essayId) {
         const _self = this;
-
-        if (essayId) {
-          if (confirm('确定删除文章?')) {
+        if (confirm('确定删除文章?')) {
+          _self.deleteLoading = true; // 启用等待动画
+          if (essayId) {
             essayActions.deleteEssay(essayId).then(res => {
               _self.essayList = _self.essayList.filter(essay => essay._id !== essayId);
-              alert(res.body.message);
+              _self.deleteLoading = false; // 关闭等待动画
+              console.log(res.body.message);
+            }).catch(error => {
+              _self.deleteLoading = false; // 关闭等待动画
+              console.error(`Error:\n${error}`);
             });
+          } else {
+            _self.deleteLoading = false; // 关闭等待动画
+            alert('Error: essayId not found.');
           }
-        } else {
-          alert('Error: essayId not found.')
         }
-
       },
       editEssay: function (essayId) {
         const _self = this;
@@ -84,7 +101,6 @@
       }
     }
   };
-
 
 </script>
 
@@ -96,12 +112,9 @@
 
   .content-abstract {
     width: 100%;
-    display: -webkit-box;
-    min-height: 100px;
+    height: 100px;
+    display: inline-block;
     overflow: auto;
-    -webkit-line-clamp: 8;
-    -webkit-box-orient: vertical;
   }
-
 
 </style>
