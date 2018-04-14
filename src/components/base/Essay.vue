@@ -21,9 +21,22 @@
             <span>{{ pv }} ）</span>
           </div>
 
+          <!-- Star -->
+          <div class="author-field">
+            <img src="../../assets/timrchen_head.jpeg" class="avatar avatar-64 photo">
+            <h3>timrchen</h3>
+            <p>一生想做浪漫极客.</p>
+            <br>
+            <a class="button is-dark" href="https://github.com/TimRChen" target="_blank">
+              <span class="icon">
+                <i class="fa fa-github"></i>
+              </span>
+              <span>Follow</span>
+            </a>
+          </div>
+
           <!-- 评论 -->
           <div class="comment-area">
-
             <div class="comment-list">
               <div class="card">
                 <header class="card-header">
@@ -104,21 +117,6 @@
                 </footer>
               </div>
             </div>
-
-          </div>
-
-          <!-- Star -->
-          <div class="author-field">
-            <img src="../../assets/timrchen_head.jpeg" class="avatar avatar-64 photo">
-            <h3>timrchen</h3>
-            <p>一生想做浪漫极客.</p>
-            <br>
-            <a class="button is-dark" href="https://github.com/TimRChen" target="_blank">
-              <span class="icon">
-                <i class="fa fa-github"></i>
-              </span>
-              <span>Follow</span>
-            </a>
           </div>
 
         </div>
@@ -418,7 +416,7 @@
 
   .postDesc {
     text-align: right;
-    padding: 5px 0px;
+    padding: 0px;
     color: #999999;
     font-size: 12px;
   }

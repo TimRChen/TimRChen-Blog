@@ -10,7 +10,7 @@
       </div>
     </section>
     <br>
-    <table class="table is-bordered">
+    <table class="table">
       <thead>
         <tr>
           <th>文章ID</th>
@@ -22,12 +22,14 @@
       </thead>
       <tbody>
         <tr v-for="(comment, key) in commentList" v-bind:key="key">
-          <td>{{ comment.essayId.substr(-6, comment.essayId.length - 1) }}</td>
+          <td>
+            <h6 class="title is-6">{{ comment.essayId.substr(-6, comment.essayId.length - 1) }}</h6>
+          </td>
           <td>{{ comment.name }}</td>
-          <td class="content-abstract">{{ comment.content }}</td>
+          <td class="content-abstract has-text-info">{{ comment.content }}</td>
           <td>{{ new Date(comment.meta.createAt).toLocaleDateString() }}</td>
           <td>
-            <button class="button is-danger" v-on:click="deleteComment(comment._id)">删除</button>
+            <button class="button is-info is-focused" v-bind:class="{ 'is-loading': deleteLoading }" v-on:click="deleteComment(comment._id)">删除</button>
           </td>
         </tr>
       </tbody>
@@ -42,26 +44,38 @@
   export default {
     data() {
       return {
-        commentList: []
+        commentList: [],
+        deleteLoading: false
       }
     },
-    beforeCreate: function () {
+    mounted: function () {
       const _self = this;
       // 获取文章列表
-      commentActions.getAdminList().then(res => _self.commentList = res.body.comments);
+      commentActions.getAdminList().then(res => {
+        const comments = res.body.comments;
+        // a > b return -1 | a < b return 1
+        comments.sort((a, b) => a.meta.createAt > b.meta.createAt ? -1 : 1);
+        _self.commentList = comments;
+      });
     },
     methods: {
       deleteComment: function (commentId) {
         const _self = this;
-        if (commentId) {
-          if (confirm('确定删除该条评论?')) {
+        if (confirm('确定删除该条评论?')) {
+          _self.deleteLoading = true; // 启用等待动画
+          if (commentId) {
             commentActions.deleteComment(commentId).then(res => {
               _self.commentList = _self.commentList.filter(comment => comment._id !== commentId);
-              alert(res.body.message);
+              _self.deleteLoading = false; // 关闭等待动画
+              console.log(res.body.message);
+            }).catch(error => {
+              _self.deleteLoading = false; // 关闭等待动画
+              console.error(`Error:\n${error}`);
             });
+          } else {
+            _self.deleteLoading = false; // 关闭等待动画
+            alert('Error: commentId not found.');
           }
-        } else {
-          alert('Error: commentId not found.');
         }
       }
     }
