@@ -10,30 +10,34 @@
       </div>
     </section>
     <br>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>文章ID</th>
-          <th>评论昵称</th>
-          <th>评论内容</th>
-          <th>创建时间</th>
-          <th>删除</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(comment, key) in commentList" v-bind:key="key">
-          <td>
-            <h6 class="title is-6">{{ comment.essayId.substr(-6, comment.essayId.length - 1) }}</h6>
-          </td>
-          <td>{{ comment.name }}</td>
-          <td class="content-abstract has-text-info">{{ comment.content }}</td>
-          <td>{{ new Date(comment.meta.createAt).toLocaleDateString() }}</td>
-          <td>
-            <button class="button is-info is-focused" v-bind:class="{ 'is-loading': deleteLoading }" v-on:click="deleteComment(comment._id)">删除</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="main-content">
+      <table class="table is-striped is-hoverable table-box">
+        <thead>
+          <tr>
+            <th>文章ID</th>
+            <th>评论昵称</th>
+            <th>评论内容</th>
+            <th>创建时间</th>
+            <th>删除</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(comment, key) in commentList" v-bind:key="key">
+            <td>
+              <h6 class="title is-6">{{ comment.essayId.substr(-6, comment.essayId.length - 1) }}</h6>
+            </td>
+            <td>{{ comment.name }}</td>
+            <td class="has-text-info">
+              <div class="content-abstract">{{ comment.content }}</div>
+            </td>
+            <td>{{ new Date(comment.meta.createAt).toLocaleDateString() }}</td>
+            <td>
+              <button class="button is-info is-focused" v-bind:class="{ 'is-loading': deleteLoading }" v-on:click="deleteComment(comment._id)">删除</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -84,20 +88,26 @@
 
 </script>
 
-<style>
+<style scoped>
 
   .admin-comment-list {
     margin-top: 5%!important;
   }
 
-  .content-abstract {
-    width: 538px;
-    display: -webkit-box;
-    min-height: 100px;
+  .main-content {
     overflow: auto;
-    -webkit-line-clamp: 8;
-    -webkit-box-orient: vertical;
+  }
+
+  .main-content .table-box {
+    width: 100%;
+  }
+
+  .content-abstract {
+    width: 400px;
+    max-height: 100px;
+    display: inline-block;
     word-wrap: break-word;
+    overflow: auto;
   }
 
 

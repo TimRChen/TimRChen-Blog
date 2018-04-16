@@ -4,52 +4,53 @@
       <div class="hero-body">
         <div class="container">
           <h2 class="subtitle">
-            您可以在此对您的文章进行修改及查看访问量，甚至可以更改文章banner图片资源
+            在此对您的文章进行修改及查看访问量。
           </h2>
         </div>
       </div>
     </section>
     <br>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>标题</th>
-          <th>创建时间</th>
-          <th>内容概要</th>
-          <th>访问量</th>
-          <th>编辑</th>
-          <th>删除</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(essay, key) in essayList"
-          v-bind:key="key"
-        >
-          <td>
-            <tr class="has-text-info">{{ essay.title }}</tr>
-            <tr>
-              <span class="tag">{{ essay._id.substr(-6, essay._id.length - 1) }}</span>
-            </tr>
-          </td>
-          <td>{{ new Date(essay.meta.createAt).toLocaleDateString() }}</td>
-          <td class="content-abstract">{{ essay.content }}</td>
-          <td>
-            <span class="tag is-rounded is-success">
-              {{ essay.pv }}
-            </span>
-          </td>
-          <td>
-            <router-link to="/edit" v-on:click.native="editEssay(essay._id)">
-              <button class="button">编辑</button>
-            </router-link>
-          </td>
-          <td>
-            <button class="button is-info is-focused" v-bind:class="{ 'is-loading': deleteLoading }" v-on:click="deleteEssay(essay._id)">删除</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="main-content">
+      <table class="table is-striped is-hoverable table-box">
+        <thead>
+          <tr>
+            <th>标题</th>
+            <th>创建时间</th>
+            <th>内容概要</th>
+            <th>访问量</th>
+            <th>编辑</th>
+            <th>删除</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="essay in essayList" v-bind:key="essay._id">
+            <td>
+              <tr class="has-text-info essay-title">{{ essay.title }}</tr>
+              <tr>
+                <span class="tag">{{ essay._id.substr(-6, essay._id.length - 1) }}</span>
+              </tr>
+            </td>
+            <td>{{ new Date(essay.meta.createAt).toLocaleDateString() }}</td>
+            <td class="has-text-dark">
+              <div class="content-abstract">{{ essay.content }}</div>
+            </td>
+            <td>
+              <span class="tag is-warning">
+                {{ essay.pv }}
+              </span>
+            </td>
+            <td>
+              <router-link to="/edit" v-on:click.native="editEssay(essay._id)">
+                <button class="button is-focused is-info">编辑</button>
+              </router-link>
+            </td>
+            <td>
+              <button class="button is-danger is-outlined" v-bind:class="{ 'is-loading': deleteLoading }" v-on:click="deleteEssay(essay._id)">删除</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -104,18 +105,33 @@
 
 </script>
 
-<style>
+<style scoped>
 
   .admin-essay-list {
     margin-top: 5%!important;
   }
 
-  .content-abstract {
+  .main-content {
+    overflow: auto;
+  }
+
+  .main-content .table-box {
     width: 100%;
-    height: 100px;
-    display: inline-block;
-    -webkit-line-clamp: 8;
+  }
+
+  .essay-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
     -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .content-abstract {
+    width: 400px;
+    max-height: 100px;
+    display: inline-block;
+    word-wrap: break-word;
     overflow: auto;
   }
 
