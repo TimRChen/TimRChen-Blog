@@ -1,13 +1,10 @@
 <template>
   <div id="main" class="content homepage">
-
     <div class="content-area container">
-
       <!-- 文章列表 -->
       <div class="site-content">
         <article
           class="post-item"
-          v-scroll-show
           v-for="(essay, key) in essayObj"
           v-bind:key="key"
           v-bind:class="{'scrollAnimate': scrollListen}">
@@ -44,18 +41,13 @@
           <!-- <li><span class="pagination-ellipsis">&hellip;</span></li> -->
         </ul>
       </nav>
-
     </div>
-
   </div>
 </template>
 
 <script>
-
   import essayActions from '../actions/essayActions';
-
   const ctx = '@@ctx'; // 用于标记el元素的key值
-
   let component; // 申请 component 变量用于存储 组件 this 变量
 
   export default {
@@ -82,15 +74,25 @@
         console.error(err);
       });
     },
+    mounted: function () {
+      const lastPage = sessionStorage.getItem('lastPage');
+      this.getPage(Number(lastPage));
+    },
     methods: {
-      getPage: function (nextPage) {  // 获取页面列表函数
+      /**
+       * 获取页面列表函数
+       * @argument choosePage 选择页码
+       */
+      getPage: function (choosePage) {
         const _self = this;
+
+        sessionStorage.setItem('lastPage', choosePage); // 记录上次浏览页码
 
         _self.scrollToTop(1000); // 跳回顶部
 
-        _self.currentPage = nextPage; // 记录当前点击页码
+        _self.currentPage = choosePage; // 记录当前点击页码
 
-        essayActions.getPage(nextPage).then(res => {
+        essayActions.getPage(choosePage).then(res => {
           let essaySum = res.body.essaySum;
           _self.essayObj = res.body.essays;
           _self.totalPages = Math.ceil(essaySum / 4); // 当新增文章时，更新总页数
@@ -133,31 +135,7 @@
     },
     updated: function () {
       component = this; // 组件更新时，保证component不丢失
-    },
-    // 注册自定义指令 v-scroll-show 监听滚动条
-    directives: {
-        scrollShow: {
-            bind: (el) => {
-              let listenScroll = function (e) {
-                if (document.body.scrollTop + 340 > el.offsetTop && component.scrollListen === false) {
-                  console.log('listening Scroll...');
-                  component.scrollListen = true;
-                }
-              }
-
-              el[ctx] = {
-                listenScroll
-              };
-
-              window.addEventListener('scroll', listenScroll);
-            },
-            unbind: (el) => { // 移除scroll监听事件
-              window.removeEventListener('scroll', el[ctx].listenScroll);
-              component = null; // 释放 component 变量
-            }
-        }
     }
-
   }
 </script>
 
@@ -167,8 +145,8 @@
   @keyframes comeIn {
     from {
       /* margin-left: 10%; */
-      /* filter: blur(20px); */
       opacity: 0.4;
+      /* filter: blur(20px); */
       transform: translate3d(100px, 0, 0);
     }
     to {

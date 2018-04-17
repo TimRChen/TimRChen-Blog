@@ -1,7 +1,7 @@
 <template>
   <div class="about-me container">
     
-    <section class="hero is-dark is-bold">
+    <section class="hero is-link is-bold">
       <div class="hero-body">
         <div class="container">
           <h2 class="subtitle">
@@ -19,30 +19,30 @@
     <br>
 
     <div class="card">
-      <div class="card-image">
-        <figure class="image is-3by4">
-          <img v-bind:style="{ filter: 'grayscale(100%)' }" src="../../assets/space.jpeg" alt="Placeholder image">
-        </figure>
-      </div>
       <div class="card-content">
         <p class="title">
-          “一生想做浪漫极客.”
+          “创造的乐趣。”
         </p>
         <div class="content">
-          <p>Name: <a class="tag is-info">黄睿晨</a></p>
-          <p>I'm: <a class="tag is-info">male</a></p>
-          <p>Age: <a class="tag is-info">22</a></p>
-          <p>Emotion: <a class="tag is-dark">single dog</a></p>
-          <p>Current Status: <a class="tag is-dark">Busy</a></p>
-          <p>Hobit: <a class="tag is-dark">guitar - contact me.</a></p>
-          <p>Dream: <a class="tag is-dark">do anything.</a></p>
-          <p>Email: <a class="tag is-info">timrchen@foxmail.com</a></p>
-          <p>GitHub: <a class="tag is-info" href="https://github.com/TimRChen" target="_blank">https://github.com/TimRChen</a></p>
-          <p>Time: <a class="tag is-info">2017.11.03</a></p>
+          <p>Name: <a class="tag is-warning">黄睿晨</a></p>
+          <p>I'm: <a class="tag is-link">male</a></p>
+          <p>Age: <a class="tag is-link">23</a></p>
+          <p>Emotion: <a class="tag is-danger">In love</a></p>
+          <p>Current Status: <a class="tag is-danger">Busy</a></p>
+          <p>Hobit: <a class="tag is-info">guitar</a></p>
+          <p>Dream: <a class="tag is-primary">be great.</a></p>
+          <p>Email: <a class="tag is-white" href="mailto:timrchen@foxmail.com">timrchen@foxmail.com</a></p>
+          <p>GitHub: <a class="tag is-white" href="https://github.com/TimRChen" target="_blank">https://github.com/TimRChen</a></p>
+          <p>Time: <a class="tag">2018.04.17</a></p>
           <p>
             <strong>"Programming is the art of telling another human what one wants the computer to do."</strong>
           </p>
         </div>
+      </div>
+      <div class="card-image">
+        <figure class="image is-16by9">
+          <img v-bind:style="{ filter: 'grayscale(100%)' }" src="http://p55j3yvgo.bkt.clouddn.com/component/space.jpeg" alt="Placeholder image">
+        </figure>
       </div>
     </div>
 

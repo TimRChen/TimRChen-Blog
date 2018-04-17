@@ -1,10 +1,10 @@
 <template>
   <div class="extra-feature container">
-    <section class="hero is-info is-warning">
+    <section class="hero is-link is-bold">
       <div class="hero-body">
         <div class="container">
           <h2 class="subtitle">
-            新的一天！{{ nowDate }}
+            每一天都值得被珍惜！{{ nowDate }}
           </h2>
         </div>
       </div>
@@ -17,7 +17,7 @@
           <div class="card" v-show="opened === 'normal'">
             <div class="card-content">
               <div class="media">
-                <h1 class="title is-5">军事新闻资讯</h1>
+                <h1 class="title is-5">新闻资讯</h1>
               </div>
             </div>
           </div>
@@ -53,6 +53,7 @@
           </div>
         </a>
 
+        <!-- 内容部分 -->
         <a class="back-to-main" v-on:click="opened = 'normal'">
           <div class="card" v-show="opened !== 'normal'">
             <div class="card-content">
@@ -92,7 +93,7 @@
         </transition>
 
         <!-- 此处返回按钮是为了方便篇幅过长的应用 -->
-        <a class="back-to-main" v-on:click="opened = 'normal'" v-show="opened !== 'normal' && opened !== 'shortUrl' && opened !== 'qrcode'">
+        <a class="back-to-main" v-on:click="opened = 'normal'" v-show="opened === 'news'">
           <div class="card">
             <div class="card-content">
               <div class="media">
@@ -136,7 +137,7 @@
   };
 </script>
 
-<style>
+<style scoped>
 
   .extra-feature {
     margin-top: 5%!important;

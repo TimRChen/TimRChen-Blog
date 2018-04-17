@@ -5,14 +5,6 @@
 
           <!-- 文章内容 -->
           <section class="post-content">
-            <div class="essay-info">
-              <h1 class="post-essay-title">{{ essayTitle}}</h1>
-              <h2 class="post-create-time">{{ createTime }}</h2>
-            </div>
-            <div
-              class="pic-header"
-              v-bind:style="{ backgroundImage: `url(${ picUrl })`, backgroundSize: 'cover', backgroundPosition: '50%' }">
-            </div>
             <div class="text-display" v-html="essayContent"></div>
           </section>
           <div class="postDesc">
@@ -36,16 +28,16 @@
                   <div class="content" v-for="(comment, key) in commentInfo" v-bind:key="key">
                     <div class="comment-box">
                       <div class="comment-index">
-                        {{ key + 1 }}楼
+                        #{{ key + 1 }}
                       </div>
                       <div class="comment-info">
-                        <span class="create-man has-text-info">{{ comment.name }}:</span>
+                        <span class="create-man has-text-link">{{ comment.name }}:</span>
                       </div>
                       <p class="comment-content">
                         {{ comment.content }}
                       </p>
                       <time class="create-time">{{ formatCommentTime(comment.meta.createAt) }}</time>
-                      <button id="comment-reply-btn" class="button is-small is-inverted is-primary" v-on:click="reply(comment.name)">回复</button>
+                      <button id="comment-reply-btn" class="button is-small is-inverted is-black" v-on:click="reply(comment.name)">回复</button>
                     </div>
                   </div>
 
@@ -69,23 +61,23 @@
                       <!-- 本地有昵称 -->
                       <div class="control" v-show="nickNameInLocal === true">
                         <p class="help">
-                          <button class="button is-link is-small has-text-primary" v-on:click="changeNickname">换个昵称?</button>
+                          <button class="button is-white is-small has-text-danger" v-on:click="changeNickname">换个昵称?</button>
                         </p>
-                        <span class="has-text-info">{{ commentNickName }}：</span>
+                        <span class="has-text-link">{{ commentNickName }}：</span>
                       </div>
                     </div>
                     <div class="field">
                       <div class="field-body">
                         <div class="field">
                           <div class="control">
-                            <textarea class="textarea" placeholder="说说什么吧.." v-model="commentContent"></textarea>
+                            <textarea class="textarea is-dark" placeholder="赠人玫瑰，手留余香. say something.." v-model="commentContent"></textarea>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="field is-grouped is-grouped-right">
                       <p class="control">
-                        <a class="button is-primary" v-on:click="preSubmit">
+                        <a class="button is-dark" v-on:click="preSubmit">
                           提交
                         </a>
                       </p>
@@ -99,7 +91,7 @@
                   
                 </div>
                 <footer class="card-footer" v-show="commentEdit === false">
-                  <a class="card-footer-item" v-on:click="commentEdit = true">写下您的评论</a>
+                  <a class="card-footer-item has-text-link" v-on:click="commentEdit = true">留下您的足迹</a>
                 </footer>
               </div>
             </div>
@@ -111,7 +103,7 @@
             <h3>timrchen</h3>
             <p>一生想做浪漫极客.</p>
             <br>
-            <a class="button is-dark" href="https://github.com/TimRChen" target="_blank">
+            <a class="button is-dark is-outlined" href="https://github.com/TimRChen" target="_blank">
               <span class="icon">
                 <i class="fa fa-github"></i>
               </span>
@@ -127,6 +119,7 @@
 
 <script>
 
+  import Bus from '../../plugins/bus';
   import essayActions from '../../actions/essayActions';
   import commentActions from '../../actions/commentActions';
   import antiXss from '../../utils/antiXss';
@@ -140,17 +133,14 @@
   export default {
     data() {
       return {
-        picUrl: '',
-        essayTitle: '',
         essayContent: '',
         essayId_abstract: '', // 文章id简短标识，方便查找文章对应评论
-        createTime: '',
         pv: '',
         commentInfo: [{
           name: '黄睿晨',
           content: '一生想做浪漫极客，看到这个时，快快写下您的第一条评论:)',
           meta: {
-            createAt: '2048/10/24'
+            createAt: '2048-10-24T12:12:12.000Z'
           }
         }],
         existName: [], // 昵称列表
@@ -211,7 +201,7 @@
        * 格式化评论时间
        */
       formatCommentTime: function (time) {
-        return Moment(time).format('ddd, YYYY/MM/DD, h:mm:ss a');
+        return Moment(time, Moment.ISO_8601).format('dddd, YYYY-MM-DD, h:mm:ss A');
       },
       /**
        * 将字符串分离成数组
@@ -364,7 +354,9 @@
     },
     beforeCreate() {
       const _self = this;
-      // 进入页面时，自动置最顶
+      /**
+       * 进入页面时，自动置顶
+       */
       const scrollHeight = window.scrollY,
             scrollStep = Math.PI / ( 1000 / 15 ),
             cosParameter = scrollHeight / 2;
@@ -379,24 +371,34 @@
               clearInterval(scrollInterval);
             }
           }, 15);
-
-      const essayId = _self.$route.params.id; // 通过router params获取文章id
+      /**
+       * 通过router params获取文章id
+       */
+      const essayId = _self.$route.params.id;
       if (essayId) {
         essayActions.getEssayDetails(essayId).then(res => {
           if (res.status === 200) {
             const essayObj = res.body.essay;
-            _self.picUrl = essayObj.picUrl;
-            _self.essayTitle = essayObj.title;;
             _self.essayContent = md.render(essayObj.content);
-            _self.createTime = Moment(essayObj.meta.createAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
             _self.essayId_abstract = essayObj._id.substr(-6, essayObj._id.length - 1); // 生成文章Id简短标识，用于评论管理
             _self.pv = essayObj.pv;
+            /**
+             * 将当前banner数据注册至bug，分发在TimHeader中使用
+             */
+            Bus.$emit('current-banner-data', {
+              "picUrl": essayObj.picUrl,
+              "essayTitle": essayObj.title,
+              "createTime": Moment(essayObj.meta.createAt, Moment.ISO_8601).format('YYYY.MM.DD hh:mm a')
+            });
           }
         }).catch(err => {
           console.error(err);
         });
       }
-
+    },
+    destroyed() {
+      // 组件毁灭时唤起Bus将banner图片替换为默认
+      Bus.$emit('banner-change-to-default', true);
     }
   }
 </script>
@@ -408,10 +410,6 @@
     margin-right: auto!important;
     margin-left: auto!important;
     width: 90%!important;
-  }
-
-  .essay-content {
-    padding-top: 50px;
   }
 
   .postDesc {
@@ -490,45 +488,6 @@
     position: relative;
   }
 
-  .essay-info {
-    position: absolute;
-    top: 300px;
-    left: 3%;
-  }
-
-  .post-essay-title {
-    position: relative;
-    color: #fff;
-    font-size: 60px;
-    font-weight: 200!important;
-    z-index: 1;
-  }
-
-  .post-create-time {
-    position: relative;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 300!important;
-    z-index: 1;
-  }
-
-  .post-create-time:hover {
-    color: #bc403e;
-  }
-
-  .pic-header {
-    height: 440px;
-    /* -webkit-filter: blur(4px);
-    -moz-filter: blur(4px);
-    -ms-filter: blur(4px);
-    filter: blur(4px);
-    -webkit-filter: grayscale(100%);
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
-    -o-filter: grayscale(100%);
-    filter: grayscale(100%); */
-  }
-
   /* 竖屏 */
   @media screen and (orientation:portrait) and (max-width: 720px) {
     .detail-container {
@@ -536,25 +495,6 @@
     }
     .essay-content {
       padding-top: 0px;
-    }
-    .pic-header {
-      height: 90px;
-      outline: 12px solid #e2e2e2;
-    }
-    .essay-info {
-      top: 5px;
-    }
-    .post-essay-title {
-      color: #fff;
-      font-size: 26px;
-      font-weight: 100!important;
-      z-index: 1;
-    }
-    .post-create-time {
-      color: #fff;
-      font-size: 12px;
-      font-weight: 100!important;
-      z-index: 1;
     }
     .text-display {
       margin-top: 0!important;
@@ -627,6 +567,7 @@
 
   .text-display pre { 
     font-family: Monaco, Andale Mono, Courier New, monospace;
+    background-color: #fff;
     display: block;
     line-height: 16px;
     font-size: 11px;
