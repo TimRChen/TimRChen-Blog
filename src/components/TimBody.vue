@@ -76,7 +76,7 @@
     },
     mounted: function () {
       const lastPage = sessionStorage.getItem('lastPage');
-      this.getPage(Number(lastPage));
+      if (lastPage) this.getPage(Number(lastPage));
     },
     methods: {
       /**
