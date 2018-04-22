@@ -1,11 +1,14 @@
 <template>
   <div class="card-content">
     <div class="media">
-      <h1 class="title is-4 is-dark">摩斯电码加密/解密工具</h1>
+      <h1 class="title is-4 is-dark">摩斯电码加密工具</h1>
     </div>
     <div class="content">
       <p class="tag is-warning">@作者: TimRChen</p>
       <p class="tag is-success">仅支持英文字符加密</p>
+      <div class="field">
+        <span class="help">摩斯电码使用 '_' 和 '.' 及英文标点符号作为码元</span>
+      </div>
       <div class="field has-addons">
         <div class="control">
           <input class="input" type="text" placeholder="请输入待加密字符.." v-model="textContent" style="ime-mode:disabled">
@@ -62,9 +65,6 @@
           }
         }
         this.encodeText = encodeText.join('');
-      },
-      decode: function () {
-        // TODO:..
       }
     }
   };
