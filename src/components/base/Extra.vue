@@ -12,6 +12,16 @@
 
     <div class="feature-box">
       <div class="card">
+        <!-- 0 -->
+        <a v-on:click="opened = 'morseCode'">
+          <div class="card" v-show="opened === 'normal'">
+            <div class="card-content">
+              <div class="media">
+                <h1 class="title is-5">摩斯电码加密/解密工具</h1>
+              </div>
+            </div>
+          </div>
+        </a>
         <!-- 1 -->
         <a v-on:click="opened = 'news'">
           <div class="card" v-show="opened === 'normal'">
@@ -65,6 +75,13 @@
         </a>
 
         <transition name="component-jump" mode="out-in">
+          <!-- 摩斯电码加密/解密服务 START -->
+          <div class="morseCode" v-show="opened === 'morseCode'">
+            <morse-code></morse-code>
+          </div>
+        </transition>    
+
+        <transition name="component-jump" mode="out-in">
           <!-- 新闻资讯服务 START -->
           <div class="news" v-show="opened === 'news'">
             <news></news>
@@ -116,6 +133,7 @@
   import Robot from '@/components/base/robot/Robot';
   import Qrcode from '@/components/base/qrcode/Qrcode';
   import ShortUrl from '@/components/base/shortUrl/ShortUrl';
+  import MorseCode from '@/components/base/morseCode/MorseCode';
 
   export default {
     data() {
@@ -127,7 +145,8 @@
       News,
       Robot,
       Qrcode,
-      ShortUrl
+      ShortUrl,
+      MorseCode
     },
     computed: {
       nowDate: function () {
