@@ -2,25 +2,27 @@
   <header id="header" class="banner-mask" v-bind:style="bannerStyle">
 
     <!-- 导航栏 -->
-    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-fixed-top is-black" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="http://www.timrchen.site">
           <img src="http://p55j3yvgo.bkt.clouddn.com/logo/timrchen_logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
         </a>
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" v-bind:class="{ 'is-active': dropDownStatus && dropDownDevice === 'mobile' }" v-on:click="clickDropdown('mobile')">
+        <a role="button" class="navbar-burger has-text-white" aria-label="menu" aria-expanded="false" v-bind:class="{ 'is-active': dropDownStatus && dropDownDevice === 'mobile' }" v-on:click="clickDropdown('mobile')">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
       </div>
-      <div class="navbar-item" v-show="dropDownStatus && dropDownDevice === 'mobile'">
-        <div class="navbar-dropdown">
-          <a class="navbar-item" href="#/" v-on:click="dropDownStatus = false">Home</a>
-          <a class="navbar-item" href="#/about" v-on:click="dropDownStatus = false">About</a>
-          <a class="navbar-item" href="#/extra" v-on:click="dropDownStatus = false">Extra</a>
-          <a class="navbar-item" v-on:click="scrollToTop(1000); dropDownStatus = false">返回顶部</a>
+      <transition name="component-jump" mode="out-in">
+        <div class="navbar-item has-text-white" v-show="dropDownStatus && dropDownDevice === 'mobile'">
+          <div class="navbar-dropdown">
+            <a class="navbar-item has-text-white" href="#/" v-on:click="dropDownStatus = false">主页</a>
+            <a class="navbar-item has-text-white" href="#/about" v-on:click="dropDownStatus = false">关于我</a>
+            <a class="navbar-item has-text-white" href="#/extra" v-on:click="dropDownStatus = false">有趣的应用</a>
+            <a class="navbar-item has-text-white" v-on:click="scrollToTop(2000); dropDownStatus = false">返回顶部</a>
+          </div>
         </div>
-      </div>
+      </transition>
       <div class="navbar-menu">
         <div class="navbar-start">
           <a class="navbar-item" href="#/">Home</a>
@@ -93,8 +95,11 @@
     <!-- 大标题 -->
     <div class="header-wrap">
       <div class="home-info-container">
-        <h2>{{ bannerTitle }}</h2>
-        <h3>{{ bannerSubtitle }}</h3>
+        <div class="foo">
+          <div class="letter" v-bind:data-letter="bannerTitle">{{ bannerTitle }}</div>
+          <br>
+          <div class="letter subtitle-letter" v-bind:data-letter="bannerSubtitle">{{ bannerSubtitle }}</div>
+        </div>
       </div>
     </div>
 
@@ -312,7 +317,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 
   .banner-mask {
     background-position: 50%!important;
@@ -370,7 +375,78 @@
     position: relative;
     text-align: center;
     color: #fff;
-    margin-top: 12%;
+    font-family: 'Lato', sans-serif;
+  }
+  .header-wrap .foo {
+    width: 90%;
+    margin: 20vh auto;
+    text-align: center;
+  }
+  .header-wrap .letter {
+    display: inline-block;
+    font-weight: 900;
+    font-size: 2em;
+    position: relative;
+    color: #000;
+    transform-style: preserve-3d;
+    perspective: 400;
+    z-index: 1;
+  }
+  .header-wrap .subtitle-letter {
+    font-size: 1em;
+  }
+  .header-wrap .letter:before, .letter:after {
+    position: absolute;
+    content: attr(data-letter);
+    transform-origin: top left;
+    top:0;
+    left:0;
+  }
+  /* .header-wrap .letter, .letter:before, .letter:after {
+    transition: all 0.3s ease-in-out;
+  } */
+  .header-wrap .letter:before {
+    color: #fff;
+    text-shadow: 
+      -1px 0px 1px rgba(255,255,255,.8),
+      1px 0px 1px rgba(0,0,0,.8);
+    z-index: 3;
+    transform:
+      rotateX(0deg)
+      rotateY(-15deg)
+      rotateZ(0deg);
+  }
+  .header-wrap .letter:after {
+    color: rgba(0,0,0,.11);
+    z-index:2;
+    transform:
+      scale(1.08,1)
+      rotateX(0deg)
+      rotateY(0deg)
+      rotateZ(0deg)
+      skew(0deg,1deg);
+  }
+  /* .header-wrap .letter:hover:before{
+    color: #fafafa;
+    transform:
+      rotateX(0deg)
+      rotateY(-40deg)
+      rotateZ(0deg);
+  }
+  .header-wrap .letter:hover:after{
+    transform:
+      scale(1.08,1)
+      rotateX(0deg)
+      rotateY(40deg)
+      rotateZ(0deg)
+      skew(0deg,22deg);
+  } */
+
+  .return-top-btn {
+    position: fixed;
+    right: 2%;
+    bottom: 10%;
+    z-index: 999;
   }
 
   /* 竖屏 */
@@ -382,37 +458,23 @@
       text-align: center;
       margin-top: 42%;
     }
-  }
-
-  .home-info-container a {
-    color: inherit;
-  }
-  .home-info-container a:hover {
-    color:#fff;
-  }
-  .header-wrap h2 {
-    font-size: 42px!important;
-    font-weight: 200!important;
-  }
-
-  .header-wrap h3 {
-    font-weight: 200!important;
-  }
-
-  .return-top-btn {
-    position: fixed;
-    right: 2%;
-    bottom: 10%;
-    z-index: 999;
-  }
-
-  /* 竖屏 */
-  @media screen and (orientation:portrait) and (max-width: 720px) {
+    .header-wrap .foo {
+      width: 80%;
+    }
     .return-top-btn {
       opacity: 0;
       display: none;
     }
   }
 
+  /* Vue 多组件切换过渡动画 */
+  .component-jump-enter-active, .component-jump-leave-active {
+    transition: opacity .5s ease-in-out;
+  }
+  .component-jump-enter, .component-jump-leave-to
+  /* .component-jump-leave-active for below version 2.1.8 */ {
+    opacity: 0;
+    /* transform: scale(2, 2) */
+  }
 
 </style>

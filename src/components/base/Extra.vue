@@ -1,6 +1,6 @@
 <template>
   <div class="extra-feature container">
-    <section class="hero is-link is-bold">
+    <section class="hero is-info is-bold">
       <div class="hero-body">
         <div class="container">
           <h2 class="subtitle">
@@ -12,17 +12,27 @@
 
     <div class="feature-box">
       <div class="card">
-        <!-- 0 -->
-        <a v-on:click="opened = 'morseCode'">
+
+        <a v-on:click="opened = 'oneArticle'">
           <div class="card" v-show="opened === 'normal'">
             <div class="card-content">
               <div class="media">
-                <h1 class="title is-5">摩斯电码加密/解密工具</h1>
+                <h1 class="title is-5">每日一文</h1>
               </div>
             </div>
           </div>
         </a>
-        <!-- 1 -->
+
+        <a v-on:click="opened = 'morseCode'">
+          <div class="card" v-show="opened === 'normal'">
+            <div class="card-content">
+              <div class="media">
+                <h1 class="title is-5">摩斯电码加密工具</h1>
+              </div>
+            </div>
+          </div>
+        </a>
+
         <a v-on:click="opened = 'news'">
           <div class="card" v-show="opened === 'normal'">
             <div class="card-content">
@@ -32,7 +42,7 @@
             </div>
           </div>
         </a>
-        <!-- 2 -->
+
         <a v-on:click="opened = 'qrcode'">
           <div class="card" v-show="opened === 'normal'">
             <div class="card-content">
@@ -42,7 +52,7 @@
             </div>
           </div>
         </a>
-        <!-- 3 -->
+
         <a v-on:click="opened = 'shortUrl'">
           <div class="card" v-show="opened === 'normal'">
             <div class="card-content">
@@ -52,7 +62,7 @@
             </div>
           </div>
         </a>
-        <!-- 4 -->
+
         <a v-on:click="opened = 'robot'">
           <div class="card" v-show="opened === 'normal'">
             <div class="card-content">
@@ -75,36 +85,43 @@
         </a>
 
         <transition name="component-jump" mode="out-in">
+          <!-- 每日一文 START -->
+          <div class="oneArticle" v-if="opened === 'oneArticle'">
+            <one-article></one-article>
+          </div>
+        </transition>
+
+        <transition name="component-jump" mode="out-in">
           <!-- 摩斯电码加密/解密服务 START -->
-          <div class="morseCode" v-show="opened === 'morseCode'">
+          <div class="morseCode" v-if="opened === 'morseCode'">
             <morse-code></morse-code>
           </div>
-        </transition>    
+        </transition>
 
         <transition name="component-jump" mode="out-in">
           <!-- 新闻资讯服务 START -->
-          <div class="news" v-show="opened === 'news'">
+          <div class="news" v-if="opened === 'news'">
             <news></news>
           </div>
         </transition>
 
         <transition name="component-jump" mode="out-in">
           <!-- 二维码生成工具 START -->
-          <div class="qrcode" v-show="opened === 'qrcode'">
+          <div class="qrcode" v-if="opened === 'qrcode'">
             <qrcode></qrcode>
           </div>
         </transition>
 
         <transition name="component-jump" mode="out-in">
           <!-- 短链接服务 START -->
-          <div class="short-url" v-show="opened === 'shortUrl'">
+          <div class="short-url" v-if="opened === 'shortUrl'">
             <short-url></short-url>
           </div>
         </transition>
 
         <transition name="component-jump" mode="out-in">
           <!-- ROBOT START -->
-          <div class="robot" v-show="opened === 'robot'">
+          <div class="robot" v-if="opened === 'robot'">
             <robot></robot>
           </div>
         </transition>
@@ -134,6 +151,7 @@
   import Qrcode from '@/components/base/qrcode/Qrcode';
   import ShortUrl from '@/components/base/shortUrl/ShortUrl';
   import MorseCode from '@/components/base/morseCode/MorseCode';
+  import OneArticle from '@/components/base/oneArticle/OneArticle';
 
   export default {
     data() {
@@ -146,7 +164,8 @@
       Robot,
       Qrcode,
       ShortUrl,
-      MorseCode
+      MorseCode,
+      OneArticle
     },
     computed: {
       nowDate: function () {
@@ -159,11 +178,22 @@
 <style scoped>
 
   .extra-feature {
-    margin-top: 5%!important;
+    margin-top: 5%;
   }
 
   .feature-box {
     margin-top: 10px;
+  }
+
+  /* 竖屏 */
+  @media screen and (orientation:portrait) and (max-width: 720px) {
+    .extra-feature {
+      margin-top: 10px!important;
+    }
+
+    .feature-box {
+      margin-top: 10px;
+    }
   }
 
   /* Vue 多组件切换过渡动画 */

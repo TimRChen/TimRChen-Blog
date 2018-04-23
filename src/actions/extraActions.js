@@ -3,10 +3,15 @@ import extraAPIs from '../apis/extraAPIs'
 
 /**
  * 获取新闻列表
+ * request: {
+ *   query: {
+ *     type: 新闻类型
+ *   }
+ * }
  */
-const getNewsList = function (token) {
+const getNewsList = function (type) {
   return Vue.http.get(
-    extraAPIs.GET_NEWS_LIST
+    `${extraAPIs.GET_NEWS_LIST}?type=${type}`
   );
 };
 
@@ -19,8 +24,27 @@ const getQrcode = function (textContent) {
   );
 };
 
+/**
+ * 获取每日一文
+ */
+const getOneArticle = function () {
+  return Vue.http.get(
+    `${extraAPIs.GET_ONE_ARTICLE}`
+  );
+};
+
+/**
+ * 获取随机每日一文
+ */
+const getOneRandomArticle = function () {
+  return Vue.http.get(
+    `${extraAPIs.GET_ONE_ARTICLE}/random`
+  );
+};
 
 export default ({
     getNewsList,
-    getQrcode
+    getQrcode,
+    getOneArticle,
+    getOneRandomArticle
 });
