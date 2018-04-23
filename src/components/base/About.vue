@@ -1,7 +1,7 @@
 <template>
   <div class="about-me container">
     
-    <section class="hero is-link is-bold">
+    <section class="hero is-info is-bold">
       <div class="hero-body">
         <div class="container">
           <h2 class="subtitle">
@@ -16,7 +16,6 @@
         </div>
       </div>
     </section>
-    <br>
 
     <div class="card">
       <div class="card-content">
@@ -53,10 +52,10 @@
 
 </script>
 
-<style>
-  .about-me {
-    margin-top: 5%!important;
-  }
+<style scoped>
 
+  .about-me {
+    margin-top: 8px!important;
+  }
 
 </style>

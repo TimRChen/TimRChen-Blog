@@ -62,7 +62,8 @@
     methods: {
       initialNews: function () {
         const _self = this;
-        extraActions.getNewsList().then(res => {
+        const type = 'top'; // top(头条，默认),shehui(社会),guonei(国内),guoji(国际),yule(娱乐),tiyu(体育),junshi(军事),keji(科技),caijing(财经),shishang(时尚)
+        extraActions.getNewsList(type).then(res => {
           let data = res.body.result.data;
           if (data.error_code !== void 0 && data.error_code === 10012) {
             alert(data.reason);
