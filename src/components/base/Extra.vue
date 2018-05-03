@@ -1,14 +1,5 @@
 <template>
   <div class="extra-feature container">
-    <section class="hero is-info is-bold">
-      <div class="hero-body">
-        <div class="container">
-          <h2 class="subtitle">
-            每一天都值得被珍惜！{{ nowDate }}
-          </h2>
-        </div>
-      </div>
-    </section>
 
     <div class="feature-box">
       <div class="card">
@@ -140,6 +131,16 @@
       </div>
     </div>
 
+    <section class="hero is-link">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="subtitle">
+            人生如若不去追求梦想，那还有什么意义呢？ {{ nowDate }}
+          </h2>
+        </div>
+      </div>
+    </section>
+
   </div>
 </template>
 
@@ -182,17 +183,17 @@
   }
 
   .feature-box {
-    margin-top: 10px;
+    margin-bottom: 5%;
   }
 
   /* 竖屏 */
-  @media screen and (orientation:portrait) and (max-width: 720px) {
+  @media screen and (max-width: 768px) {
     .extra-feature {
-      margin-top: 10px!important;
+      margin-top: 0;
     }
 
     .feature-box {
-      margin-top: 10px;
+      margin-bottom: 0;
     }
   }
 

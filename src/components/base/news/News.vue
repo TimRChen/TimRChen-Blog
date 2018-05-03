@@ -104,7 +104,7 @@
   }
 
   /* 竖屏 */
-  @media screen and (orientation:portrait) and (max-width: 720px) {
+  @media screen and (max-width: 768px) {
     .news-item {
       margin-bottom: 10px;
     }

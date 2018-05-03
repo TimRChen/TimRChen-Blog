@@ -35,7 +35,6 @@
     background-image: url('./assets/bg.gif');
     background-repeat: repeat;
     background-color: #FFFDFA;
-
   }
 
   /* Vue 多组件切换过渡动画 */

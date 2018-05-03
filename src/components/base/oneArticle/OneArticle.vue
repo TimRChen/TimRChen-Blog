@@ -109,7 +109,7 @@
     color: #fff;
   }
   /* 竖屏 */
-  @media screen and (orientation:portrait) and (max-width: 720px) {
+  @media screen and (max-width: 768px) {
     #change-background-color {
       width: 40px;
       height: 40px;

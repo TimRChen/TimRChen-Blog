@@ -37,7 +37,7 @@
   }
 
   /* 竖屏 */
-  @media screen and (orientation:portrait) and (max-width: 720px) {
+  @media screen and (max-width: 768px) {
     .site-footer {
       font-size: 14px;
       padding: 30px 0 0 0;

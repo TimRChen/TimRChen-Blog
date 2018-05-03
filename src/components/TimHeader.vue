@@ -2,24 +2,24 @@
   <header id="header" class="banner-mask" v-bind:style="bannerStyle">
 
     <!-- 导航栏 -->
-    <nav class="navbar is-fixed-top is-black" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="http://www.timrchen.site">
           <img src="http://p55j3yvgo.bkt.clouddn.com/logo/timrchen_logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
         </a>
-        <a role="button" class="navbar-burger has-text-white" aria-label="menu" aria-expanded="false" v-bind:class="{ 'is-active': dropDownStatus && dropDownDevice === 'mobile' }" v-on:click="clickDropdown('mobile')">
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" v-bind:class="{ 'is-active': dropDownStatus && dropDownDevice === 'mobile' }" v-on:click="clickDropdown('mobile')">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
       </div>
       <transition name="component-jump" mode="out-in">
-        <div class="navbar-item has-text-white" v-show="dropDownStatus && dropDownDevice === 'mobile'">
+        <div class="navbar-item" v-show="dropDownStatus && dropDownDevice === 'mobile'">
           <div class="navbar-dropdown">
-            <a class="navbar-item has-text-white" href="#/" v-on:click="dropDownStatus = false">主页</a>
-            <a class="navbar-item has-text-white" href="#/about" v-on:click="dropDownStatus = false">关于我</a>
-            <a class="navbar-item has-text-white" href="#/extra" v-on:click="dropDownStatus = false">有趣的应用</a>
-            <a class="navbar-item has-text-white" v-on:click="scrollToTop(2000); dropDownStatus = false">返回顶部</a>
+            <a class="navbar-item" href="#/" v-on:click="dropDownStatus = false">主页</a>
+            <a class="navbar-item" href="#/about" v-on:click="dropDownStatus = false">关于我</a>
+            <a class="navbar-item" href="#/extra" v-on:click="dropDownStatus = false">有趣的应用</a>
+            <a class="navbar-item" v-on:click="scrollToTop(2000); dropDownStatus = false">返回顶部</a>
           </div>
         </div>
       </transition>
@@ -450,7 +450,7 @@
   }
 
   /* 竖屏 */
-  @media screen and (orientation:portrait) and (max-width: 720px) {
+  @media screen and (max-width: 768px) {
     .header-wrap {
       position: relative;
       text-align: center;
