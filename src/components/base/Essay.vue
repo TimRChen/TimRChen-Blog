@@ -511,7 +511,7 @@
 
   .card-define-by-timrchen {
     border-radius: 8px;
-    box-shadow: 0px 0px 8px 0 rgba(0,0,0,.3);
+    box-shadow: 0px 0px 8px 0 rgba(0,0,0,.3)!important;
   }
 
   /* 竖屏 */
