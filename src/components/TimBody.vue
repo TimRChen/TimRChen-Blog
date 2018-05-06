@@ -9,7 +9,7 @@
           v-bind:key="key"
           v-bind:class="{'scrollAnimate': scrollListen}">
           <router-link v-bind:to="{name: 'essay', params: {id: essay._id}}">
-            <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
+            <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%', backgroundAttachment: 'fixed' }">
               <div class="info-mask">
                 <div class="mask-wrapper">
                   <h2 class="post-title">{{ essay.title }}</h2>
@@ -167,16 +167,13 @@
     width: 90%!important;
   }
 
-
-  .site-content {
-    padding-top: 50px;
-  }
-
   .post-item {
     position: relative;
     margin-bottom: 30px;
     background-color: #fff;
     box-shadow: 10px 10px 14px #888888;
+    border-radius: 10px;
+    overflow: hidden;
   }
 
   .post-image {
@@ -202,7 +199,6 @@
   }
   
   .post-item:hover .info-mask {
-    background: transparent -webkit-linear-gradient(top,transparent,rgba(0,0,0,.8)) repeat scroll 0 0;
     background: transparent linear-gradient(180deg,transparent 0,rgba(0,0,0,.8)) repeat scroll 0 0;
   }
 
@@ -215,18 +211,15 @@
   }
 
   .mask-wrapper .post-title {
+    font-family: 'Lato', sans-serif;
     font-size: 36px;
-    font-weight: 200!important;
+    font-weight: 200;
     line-height: 1.4;
     color: #fff;
   }
 
   .post-item:hover .info-mask .mask-wrapper .post-title {
-    color: #bc403e;
-  }
-
-  .mask-wrapper .post-title {
-    color: inherit;
+    color: greenyellow;
   }
 
   .mask-wrapper .post-info {

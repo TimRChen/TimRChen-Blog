@@ -1,8 +1,8 @@
 <template>
-  <header id="header" class="banner-mask" v-bind:style="bannerStyle">
+  <header id="header" class="banner">
 
     <!-- 导航栏 -->
-    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-fixed-top navbar-define-by-timrchen" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="http://www.timrchen.site">
           <img src="http://p55j3yvgo.bkt.clouddn.com/logo/timrchen_logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
@@ -43,6 +43,24 @@
         </div>
       </div>
     </nav>
+
+    <!-- 文章背景 -->
+    <div class="bk-image-container" v-show="currentHeaderStatus === 'essay'" v-bind:style="{'background': bkImage}">
+      <!-- 文章标题 -->
+      <div class="essay-title-wrap" v-show="currentHeaderStatus === 'essay'">
+        <div class="essay-title">{{ essayTitle }}</div>
+        <div class="essay-subtitle">Post by TimRChen on {{ essaySubtitle }}</div>
+      </div>
+    </div>
+
+    <!-- 主页大标题 -->
+    <div class="main-title-container" v-show="currentHeaderStatus === 'other'">
+      <div class="main-title-wrap">
+        <div class="letter" data-letter="一方净土">一方净土</div>
+        <br>
+        <div class="letter subtitle-letter" data-letter="Life is Art.">Life is Art.</div>
+      </div>
+    </div>
 
     <!-- login modal -->
     <div class="modal" v-bind:class="{ 'is-active': showLoginModal === true }">
@@ -92,20 +110,9 @@
       </div>
     </div>
 
-    <!-- 大标题 -->
-    <div class="header-wrap">
-      <div class="home-info-container">
-        <div class="foo">
-          <div class="letter" v-bind:data-letter="bannerTitle">{{ bannerTitle }}</div>
-          <br>
-          <div class="letter subtitle-letter" v-bind:data-letter="bannerSubtitle">{{ bannerSubtitle }}</div>
-        </div>
-      </div>
-    </div>
-
     <!-- 返回顶部 -->
     <div class="return-top-btn" v-once>
-      <button class="button is-outlined is-black" v-on:click="scrollToTop(1000)">TOP</button>
+      <button class="button is-focused is-dark" v-on:click="scrollToTop(1000)">↑</button>
     </div>
 
     <!-- signUp modal TODO: 注册完后需要将相关注册逻辑隐藏!!! -->
@@ -167,11 +174,10 @@
         // warning: 注册完后需要将相关注册逻辑隐藏!!!
         // showSignUpModal: false,
         showLoginModal: false,
-        bannerStyle: {
-          'background': 'url(http://p55j3yvgo.bkt.clouddn.com/component/banner.jpeg)'
-        },
-        bannerTitle: 'Timrchen',
-        bannerSubtitle: 'Life is Art.',
+        bkImage: '',
+        essayTitle: 'test',
+        essaySubtitle: 'testtest',
+        currentHeaderStatus: 'other', // other | essay
         username: '',
         password: '',
         loginStatus: 'noLogged',
@@ -197,18 +203,18 @@
     mounted: function () {
       const _self = this;
       Bus.$on('current-banner-data', (bannerData) => {
-        _self.bannerStyle.background = `url(${bannerData.picUrl})`;
-        _self.bannerTitle = bannerData.essayTitle;
-        _self.bannerSubtitle = bannerData.createTime;
+        _self.currentHeaderStatus = 'essay';
+        _self.bkImage = `url(${bannerData.picUrl})`;
+        _self.essayTitle = bannerData.essayTitle;
+        _self.essaySubtitle = bannerData.createTime;
       });
     },
     updated: function () {
         const _self = this;
         // 返回默认页时替换banner图片
         Bus.$on('banner-change-to-default', (value) => {
-          _self.bannerStyle.background = 'url(http://p55j3yvgo.bkt.clouddn.com/component/banner.jpeg)';
-          _self.bannerTitle = 'Timrchen';
-          _self.bannerSubtitle = 'Life is Art.';
+          _self.bkImage = '';
+          _self.currentHeaderStatus = 'other';
         });
     },
     methods: {
@@ -319,128 +325,94 @@
 
 <style scoped>
 
-  .banner-mask {
+  .banner {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .navbar-define-by-timrchen {
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.12);
+  }
+
+  .bk-image-container {
     background-position: 50%!important;
     background-size: cover!important;
-    position: relative;
-    padding: 20px 0 0;
-    height: 360px;
+    height: 400px;
+    margin-top: 52px;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
   }
 
-  .banner-mask:before {
-    position: absolute;
-    background-color: rgba(0,0,0,.15);
-    content: "";
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-
-  .container {
-    max-width: 900px!important;
-    margin-right: auto!important;
-    margin-left: auto!important;
-    width: 90%!important;
-  }
-  .nav-header {
-    padding-top: 30px;
-    font-family: exoregular;
-    position: relative;
-  }
-
-  .nav-header .nav-header-container .login {
-    position: absolute;
-    right: 0px;
-  }
-
-  .nav-header .nav-header-container .tips {
-    position: absolute;
-    right: 110px;
+  .bk-image-container .essay-title-wrap {
     color: #fff;
-    font-size: 16px;
+    background-image: linear-gradient(-180deg,transparent,#000 180%);
+    padding-bottom: 60px;
   }
 
-  .nav-header .nav-header-container .signUp {
-    position: absolute;
-    right: 80px;
+  .bk-image-container .essay-title-wrap .essay-title {
+    font-family: -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB",STHeiti,"Microsoft YaHei","Microsoft JhengHei","Source Han Sans SC","Noto Sans CJK SC","Source Han Sans CN","Noto Sans SC","Source Han Sans TC","Noto Sans CJK TC","WenQuanYi Micro Hei",SimSun,sans-serif;
+    font-size: 55px;
+    font-weight: 500;
+    margin: 0 200px;
+    text-align: left;
   }
 
-  .nav-header .nav-header-container .logout {
-    position: absolute;
-    right: 0px;
+  .bk-image-container .essay-title-wrap .essay-subtitle {
+    font-family: Lora,'Times New Roman',serif;
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 200px;
+    text-align: left;
   }
 
-  .header-wrap {
-    position: relative;
-    text-align: center;
+  .main-title-container {
     color: #fff;
     font-family: 'Lato', sans-serif;
+    height: 300px;
+    margin-top: 52px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
   }
-  .header-wrap .foo {
-    width: 90%;
-    margin: 20vh auto;
+
+  .main-title-container .main-title-wrap {
     text-align: center;
   }
-  .header-wrap .letter {
+
+  .main-title-container .letter {
     display: inline-block;
     font-weight: 900;
-    font-size: 2em;
+    font-size: 3em;
     position: relative;
-    color: #000;
+    color: #fff;
     transform-style: preserve-3d;
     perspective: 400;
-    z-index: 1;
   }
-  .header-wrap .subtitle-letter {
+
+  .main-title-container .subtitle-letter {
     font-size: 1em;
   }
-  .header-wrap .letter:before, .letter:after {
+
+  .main-title-container .letter:before, .letter:after {
     position: absolute;
     content: attr(data-letter);
     transform-origin: top left;
     top:0;
     left:0;
   }
-  /* .header-wrap .letter, .letter:before, .letter:after {
-    transition: all 0.3s ease-in-out;
-  } */
-  .header-wrap .letter:before {
-    color: #fff;
+
+  .main-title-container .letter:before {
+    color: #008000;
     text-shadow: 
       -1px 0px 1px rgba(255,255,255,.8),
       1px 0px 1px rgba(0,0,0,.8);
-    z-index: 3;
     transform:
       rotateX(0deg)
       rotateY(-15deg)
       rotateZ(0deg);
   }
-  .header-wrap .letter:after {
-    color: rgba(0,0,0,.11);
-    z-index:2;
-    transform:
-      scale(1.08,1)
-      rotateX(0deg)
-      rotateY(0deg)
-      rotateZ(0deg)
-      skew(0deg,1deg);
-  }
-  /* .header-wrap .letter:hover:before{
-    color: #fafafa;
-    transform:
-      rotateX(0deg)
-      rotateY(-40deg)
-      rotateZ(0deg);
-  }
-  .header-wrap .letter:hover:after{
-    transform:
-      scale(1.08,1)
-      rotateX(0deg)
-      rotateY(40deg)
-      rotateZ(0deg)
-      skew(0deg,22deg);
-  } */
 
   .return-top-btn {
     position: fixed;
@@ -449,16 +421,36 @@
     z-index: 999;
   }
 
+  .return-top-btn button {
+    border-radius: 8px;
+  }
+
   /* 竖屏 */
   @media screen and (max-width: 768px) {
-    .header-wrap {
+    .bk-image-container {
+      justify-content: flex-end;
+    }
+    .bk-image-container .essay-title-wrap {
+      background-image: linear-gradient(-180deg,transparent,#000 180%);
+      padding-bottom: 10px;
+    }
+    .bk-image-container .essay-title-wrap .essay-title {
+      font-size: 2em;
+      margin: 0 40px;
+      text-align: left;
+    }
+    .bk-image-container .essay-title-wrap .essay-subtitle {
+      font-size: 16px;
+      margin: 0 0 0 40px;
+    }
+    .main-title-container {
       position: relative;
       text-align: center;
       color: #fff;
       text-align: center;
-      margin-top: 42%;
+      margin-top: 52px;
     }
-    .header-wrap .foo {
+    .main-title-container .foo {
       width: 80%;
     }
     .return-top-btn {
@@ -469,12 +461,10 @@
 
   /* Vue 多组件切换过渡动画 */
   .component-jump-enter-active, .component-jump-leave-active {
-    transition: opacity .5s ease-in-out;
+    transition: opacity .6s ease-out;
   }
-  .component-jump-enter, .component-jump-leave-to
-  /* .component-jump-leave-active for below version 2.1.8 */ {
+  .component-jump-enter, .component-jump-leave-to {
     opacity: 0;
-    /* transform: scale(2, 2) */
   }
 
 </style>

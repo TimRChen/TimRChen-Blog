@@ -1,22 +1,22 @@
 <template>
     <div class="page-detail">
-      <div class="content-area detail-container">
+      <div class="content-area detail-container" v-show="loadingStatus === 'success'">
         <div class="essay-content">
 
           <!-- 文章内容 -->
           <section class="post-content">
             <div class="text-display" v-html="essayContent"></div>
+            <div class="post-description">
+              <!-- 阅读量pv计算 -->
+              <span class="abstract">{{ essayId_abstract }}</span>
+              <span class="post-number">阅读量 {{ pv }}</span>
+            </div>
           </section>
-          <div class="postDesc">
-            <!-- 阅读量pv计算 -->
-            <span>{{ essayId_abstract }} by Timrchen 阅读量（</span>
-            <span>{{ pv }} ）</span>
-          </div>
 
           <!-- 评论 -->
           <div class="comment-area">
             <div class="comment-list">
-              <div class="card">
+              <div class="card card-define-by-timrchen">
                 <header class="card-header">
                   <p class="card-header-title">
                     评论
@@ -28,10 +28,10 @@
                   <div class="content" v-for="(comment, key) in commentInfo" v-bind:key="key">
                     <div class="comment-box">
                       <div class="comment-index">
-                        #{{ key + 1 }}
+                        {{ key + 1 }}F
                       </div>
                       <div class="comment-info">
-                        <span class="create-man has-text-link">{{ comment.name }}:</span>
+                        <span class="create-man">{{ comment.name }}:</span>
                       </div>
                       <p class="comment-content">
                         {{ comment.content }}
@@ -70,7 +70,7 @@
                       <div class="field-body">
                         <div class="field">
                           <div class="control">
-                            <textarea class="textarea is-dark" placeholder="赠人玫瑰，手留余香. say something.." v-model="commentContent"></textarea>
+                            <textarea class="textarea is-dark" autofocus placeholder="赠人玫瑰，手留余香. say something.." v-model="commentContent"></textarea>
                           </div>
                         </div>
                       </div>
@@ -113,8 +113,10 @@
 
         </div>
       </div>
+      <div class="blank-loading-container" v-show="loadingStatus === 'loading'">
+        <div class="loading-txt">loading...</div>
+      </div>
     </div>
-
 </template>
 
 <script>
@@ -133,12 +135,13 @@
   export default {
     data() {
       return {
+        loadingStatus: 'loading', // loading | success
         essayContent: '',
         essayId_abstract: '', // 文章id简短标识，方便查找文章对应评论
         pv: '',
         commentInfo: [{
           name: '黄睿晨',
-          content: '一生想做浪漫极客，看到这个时，快快写下您的第一条评论:)',
+          content: '赶快留言吧，当前暂时没有评论哦.',
           meta: {
             createAt: '2048-10-24T12:12:12.000Z'
           }
@@ -342,58 +345,44 @@
         }
       }
     },
-    mounted() {
-      const _self = this;
-      _self.getCommentList();
-      // 取出本地存入的用户昵称
-      let commentNickName = localStorage.getItem('commentNickName');
-      if (commentNickName) {
-        _self.commentNickName = commentNickName;
-        _self.nickNameInLocal = true;
-      }
-    },
     beforeCreate() {
       const _self = this;
-      /**
-       * 进入页面时，自动置顶
-       */
-      const scrollHeight = window.scrollY,
-            scrollStep = Math.PI / ( 1000 / 15 ),
-            cosParameter = scrollHeight / 2;
-      let scrollCount = 0,
-          scrollMargin,
-          scrollInterval = setInterval(function () {
-            if ( window.scrollY != 0 ) {
-              scrollCount = scrollCount + 1;  
-              scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
-              window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
-            } else {
-              clearInterval(scrollInterval);
-            }
-          }, 15);
-      /**
-       * 通过router params获取文章id
-       */
+      _self.loadingStatus = 'loading';
+      // 进入页面时，自动置顶
+      window.scrollTo(0, document.body.offsetHeight);
+      // 通过router params获取文章id
       const essayId = _self.$route.params.id;
       if (essayId) {
-        essayActions.getEssayDetails(essayId).then(res => {
-          if (res.status === 200) {
+        let loadingTimer = setTimeout(() => {
+          essayActions.getEssayDetails(essayId).then(res => {
+            _self.loadingStatus = 'success';
             const essayObj = res.body.essay;
             _self.essayContent = md.render(essayObj.content);
             _self.essayId_abstract = essayObj._id.substr(-6, essayObj._id.length - 1); // 生成文章Id简短标识，用于评论管理
             _self.pv = essayObj.pv;
-            /**
-             * 将当前banner数据注册至bug，分发在TimHeader中使用
-             */
+            // 将当前banner数据注册至bug，分发在TimHeader中使用
             Bus.$emit('current-banner-data', {
               "picUrl": essayObj.picUrl,
               "essayTitle": essayObj.title,
               "createTime": Moment(essayObj.meta.createAt, Moment.ISO_8601).format('YYYY.MM.DD hh:mm a')
             });
-          }
-        }).catch(err => {
-          console.error(err);
-        });
+            // 获取文章评论
+            _self.getCommentList();
+            clearTimeout(loadingTimer);
+          }).catch(err => {
+            console.error(err);
+            clearTimeout(loadingTimer);
+          });
+        }, 500);
+      }
+    },
+    mounted() {
+      const _self = this;
+      // 取出本地存入的用户昵称
+      let commentNickName = localStorage.getItem('commentNickName');
+      if (commentNickName) {
+        _self.commentNickName = commentNickName;
+        _self.nickNameInLocal = true;
       }
     },
     destroyed() {
@@ -405,18 +394,28 @@
 
 <style>
 
+  .blank-loading-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    opacity: 0.7;
+    line-height: 100vh;
+    text-align: center;
+    z-index: 9999;
+  }
+  .blank-loading-container .loading-txt {
+    color: #fff;
+    font-size: 30px;
+  }
+
   .detail-container {
     max-width: 900px!important;
     margin-right: auto!important;
     margin-left: auto!important;
     width: 90%!important;
-  }
-
-  .postDesc {
-    text-align: right;
-    padding: 0px;
-    color: #999999;
-    font-size: 12px;
   }
 
   .comment-box {
@@ -437,7 +436,7 @@
 
   .comment-box .comment-info .create-man {
     font-size: 18px;
-    /* color: #4093c6; */
+    color: darkcyan;
     /* font-style: italic; */
   }
 
@@ -486,6 +485,33 @@
 
   .post-content {
     position: relative;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px 0 rgba(0,0,0,.3);
+  }
+
+  .post-description {
+    text-align: right;
+    font-size: 14px;
+    margin-top: 5%;
+    margin-right: 10px;
+  }
+
+  .post-description .abstract {
+    color: #fff;
+  }
+
+  .post-description .post-number {
+    color: darkcyan;
+  }
+
+  .card-define-by-timrchen {
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px 0 rgba(0,0,0,.3);
   }
 
   /* 竖屏 */
@@ -498,19 +524,20 @@
     }
     .text-display {
       margin-top: 0!important;
-      background-color: #fff;
     }
     .comment-edit {
       padding: 0 12px 0 12px;
     }
-  }
-
-  .text-display {
-    margin-top: 5%;
-    margin-bottom: 5%;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #e2e2e2;
+    .post-content {
+      margin-top: 0;
+      margin-bottom: 0;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .card-define-by-timrchen {
+      border-radius: 0;
+    }
   }
 
   .text-display h1 {
@@ -619,15 +646,5 @@
 
   .text-display table { border-collapse: collapse; border-spacing: 0; }
   .text-display td { vertical-align: top; }
-
-  @media only screen and (min-width: 480px) {
-    body{font-size:14px;}
-  }
-
-  @media only screen and (min-width: 768px) {
-    body{font-size:16px;}
-  } 
-
-
 
 </style>
