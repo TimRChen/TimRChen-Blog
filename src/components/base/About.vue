@@ -22,11 +22,6 @@
           </p>
         </div>
       </div>
-      <!-- <div class="card-image">
-        <figure class="image is-16by9">
-          <img v-bind:style="{ filter: 'grayscale(100%)' }" src="http://p55j3yvgo.bkt.clouddn.com/component/space.jpeg" alt="Placeholder image">
-        </figure>
-      </div> -->
     </div>
 
     <section class="hero is-link">
