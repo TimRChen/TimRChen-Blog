@@ -21,7 +21,7 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report,
     timDomain: function (timDomain) {
-      return 'http://' + timDomain + ':3000' // 上线地址: www.timrchen.site | blog.timrchen.site
+      return 'https://' + timDomain + ':3000' // 上线地址: www.timrchen.site | blog.timrchen.site
     }
   },
   dev: {
