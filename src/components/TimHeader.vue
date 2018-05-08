@@ -5,7 +5,7 @@
     <nav class="navbar is-fixed-top navbar-define-by-timrchen" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="http://www.timrchen.site">
-          <img src="https://www.timrchen.site.qiniudns.com/logo/timrchen_logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+          <img src="https://image.timrchen.site/logo/timrchen_logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
         </a>
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" v-bind:class="{ 'is-active': dropDownStatus && dropDownDevice === 'mobile' }" v-on:click="clickDropdown('mobile')">
           <span aria-hidden="true"></span>
