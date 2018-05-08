@@ -20,9 +20,7 @@ module.exports = {
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report,
-    timDomain: function (timDomain) {
-      return 'https://' + timDomain + ':3000' // 上线地址: www.timrchen.site | blog.timrchen.site
-    }
+    timDomain: 'http://api.timrchen.site:3000'
   },
   dev: {
     env: require('./dev.env'),
