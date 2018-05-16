@@ -6,8 +6,7 @@
         <article
           class="post-item"
           v-for="(essay, key) in essayObj"
-          v-bind:key="key"
-          v-bind:class="{'scrollAnimate': scrollListen}">
+          v-bind:key="key">
           <router-link v-bind:to="{name: 'essay', params: {id: essay._id}}">
             <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%', backgroundAttachment: 'fixed' }">
               <div class="info-mask">
@@ -53,7 +52,6 @@
   export default {
     data() {
       return {
-        scrollListen: false,
         essayObj: {},
         totalPages: "", // 总页数
         currentPage: 1  // 记录当前点击页码
@@ -140,25 +138,6 @@
 </script>
 
 <style scoped>
-
-  /* 列表动画 */
-  @keyframes comeIn {
-    from {
-      /* margin-left: 10%; */
-      opacity: 0.4;
-      /* filter: blur(20px); */
-      transform: translate3d(100px, 0, 0);
-    }
-    to {
-      /* margin-left: 0%; */
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-    }
-  }
-
-  .scrollAnimate {
-    animation: comeIn .3s ease-out;
-  }
 
   .container {
     max-width: 900px!important;
