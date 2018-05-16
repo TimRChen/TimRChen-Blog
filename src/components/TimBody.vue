@@ -46,8 +46,6 @@
 
 <script>
   import essayActions from '../actions/essayActions';
-  const ctx = '@@ctx'; // 用于标记el元素的key值
-  let component; // 申请 component 变量用于存储 组件 this 变量
 
   export default {
     data() {
@@ -59,7 +57,6 @@
     },
     beforeCreate: function () {
       const _self = this;
-      component = this;
 
       // 获取文章列表
       essayActions.getEssayList().then(res => {
@@ -85,9 +82,7 @@
         const _self = this;
 
         sessionStorage.setItem('lastPage', choosePage); // 记录上次浏览页码
-
-        _self.scrollToTop(1000); // 跳回顶部
-
+        window.scrollTo(0, 0); // 跳回顶部
         _self.currentPage = choosePage; // 记录当前点击页码
 
         essayActions.getPage(choosePage).then(res => {
@@ -112,27 +107,7 @@
         let nextPage = (currentPage - 1 > 0) ? currentPage - 1 : 1;
 
         _self.getPage(nextPage);
-      },
-      // return to top
-      scrollToTop: function (scrollDuration) {
-        const scrollHeight = window.scrollY,
-              scrollStep = Math.PI / ( scrollDuration / 15 ),
-              cosParameter = scrollHeight / 2;
-        let scrollCount = 0,
-            scrollMargin,
-            scrollInterval = setInterval(function () {
-              if ( window.scrollY != 0 ) {
-                scrollCount = scrollCount + 1;  
-                scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
-                window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
-              } else {
-                clearInterval(scrollInterval);
-              }
-            }, 1);
       }
-    },
-    updated: function () {
-      component = this; // 组件更新时，保证component不丢失
     }
   }
 </script>
