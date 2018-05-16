@@ -396,12 +396,12 @@
 
   .blank-loading-container {
     position: absolute;
-    top: 0;
+    top: 52px;
     left: 0;
     width: 100vw;
     height: 100vh;
     background: #000;
-    opacity: 0.7;
+    opacity: 0.2;
     line-height: 100vh;
     text-align: center;
     z-index: 9999;
