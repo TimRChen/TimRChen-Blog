@@ -4,8 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
-import '../node_modules/bulma/css/bulma.css'
-import '../node_modules/font-awesome/css/font-awesome.css'
+import 'bulma.css'
+import 'font-awesome.css'
 import httpInterceptor from './plugins/httpInterceptor'
 
 Vue.config.productionTip = false

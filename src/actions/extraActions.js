@@ -12,8 +12,8 @@ import extraAPIs from '../apis/extraAPIs'
 const getNewsList = function (type) {
   return Vue.http.get(
     `${extraAPIs.GET_NEWS_LIST}?type=${type}`
-  );
-};
+  )
+}
 
 /**
  * 生成二维码
@@ -21,8 +21,8 @@ const getNewsList = function (type) {
 const getQrcode = function (textContent) {
   return Vue.http.get(
     `${extraAPIs.GET_QRCODE}?textContent=${textContent}`
-  );
-};
+  )
+}
 
 /**
  * 获取每日一文
@@ -30,8 +30,8 @@ const getQrcode = function (textContent) {
 const getOneArticle = function () {
   return Vue.http.get(
     `${extraAPIs.GET_ONE_ARTICLE}`
-  );
-};
+  )
+}
 
 /**
  * 获取随机每日一文
@@ -39,12 +39,12 @@ const getOneArticle = function () {
 const getOneRandomArticle = function () {
   return Vue.http.get(
     `${extraAPIs.GET_ONE_ARTICLE}/random`
-  );
-};
+  )
+}
 
 export default ({
-    getNewsList,
-    getQrcode,
-    getOneArticle,
-    getOneRandomArticle
-});
+  getNewsList,
+  getQrcode,
+  getOneArticle,
+  getOneRandomArticle
+})

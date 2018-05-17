@@ -349,7 +349,7 @@
       const _self = this;
       _self.loadingStatus = 'loading';
       // 进入页面时，自动置顶
-      window.scrollTo(0, document.body.offsetHeight);
+      window.scrollTo(0, 0);
       // 通过router params获取文章id
       const essayId = _self.$route.params.id;
       if (essayId) {
@@ -386,7 +386,7 @@
       }
     },
     destroyed() {
-      // 组件毁灭时唤起Bus将banner图片替换为默认
+      // 组件毁灭时唤起Bus将banner图片移除并显示默认banner标题
       Bus.$emit('banner-change-to-default', true);
     }
   }

@@ -49,7 +49,6 @@ const deleteComment = function (commentId) {
   )
 }
 
-
 export default ({
   getCommentList,
   getAdminList,
