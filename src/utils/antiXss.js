@@ -1,7 +1,7 @@
 let antiXss = {}
 
 /**
- *
+ * 防XSS的一种方法：转义法
  * @param str - 编码html
  */
 antiXss.enCodeHtml = function (str) {
