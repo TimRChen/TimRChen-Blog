@@ -25,7 +25,7 @@
       </div>
 
       <!-- 分页组件 -->
-      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      <nav class="pagination is-centered is-rounded is-small" role="navigation" aria-label="pagination">
         <a class="pagination-previous" v-on:click="getPreviousPage">Previous</a>
         <a class="pagination-next" v-on:click="getNextPage">Next page</a>
         <ul class="pagination-list">
@@ -88,7 +88,7 @@
         essayActions.getPage(choosePage).then(res => {
           let essaySum = res.body.essaySum;
           _self.essayObj = res.body.essays;
-          _self.totalPages = Math.ceil(essaySum / 4); // 当新增文章时，更新总页数
+          _self.totalPages = Math.ceil(essaySum / 6); // 当新增文章时，更新总页数
         }).catch(err => {
           err.body.message ? alert(err.body.message) : console.error(err);
         });
@@ -119,16 +119,48 @@
 
   .post-item {
     position: relative;
-    margin-bottom: 30px;
     background-color: #fff;
     box-shadow: 10px 10px 14px #888888;
+    margin-bottom: 30px;
     border-radius: 10px;
     overflow: hidden;
+    height: 340px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .site-content {
+      display: flex;
+      flex-flow: wrap;
+    }
+    .post-item {
+      width: 28%;
+      height: 300px;
+      transform: skew(-2deg);
+      margin: 10px 2.5% 80px;
+      box-shadow: 0 10px 20px #888888;
+    }
+    .post-item:hover {
+      animation: scaleBoom 2s ease-in-out infinite;
+    }
+    @keyframes scaleBoom {
+      0% {
+        transform: skew(-2deg) scale(1, 1);
+      }
+      50% {
+        transform: skew(-2deg) scale(.9, .9);
+      }
+      100% {
+        transform: skew(-2deg) scale(1, 1);
+      }
+    }
+    .info-mask {
+      transform: skew(2deg);
+    }
   }
 
   .post-image {
+    height: 100%;
     display: block;
-    height: 340px;
     position: relative;
   }
 
