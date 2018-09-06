@@ -185,7 +185,6 @@
         inputMissThree: false // 账号密码输入错误3次以上
       }
     },
-    // initial
     beforeCreate: function () {
       const _self = this;
       const auth = localStorage.getItem('Authorization');
@@ -222,10 +221,9 @@
        * 点击下拉
        */
       clickDropdown: function (device) {
-        const _self = this;
-        let dropDownStatus = _self.dropDownStatus;
-        _self.dropDownStatus = !dropDownStatus;
-        _self.dropDownDevice = device;
+        let dropDownStatus = this.dropDownStatus;
+        this.dropDownStatus = !dropDownStatus;
+        this.dropDownDevice = device;
       },
       /**
         todo: 注册完后需要将相关注册逻辑隐藏!!!
@@ -254,8 +252,8 @@
       */
       login: function () {
         const _self = this;
-        let username = _self.username;
-        let password = _self.password;
+        let username = this.username;
+        let password = this.password;
         if (username.length !== 0 && password !== 0) {
           userActions.login(username, password).then(res => {
             if (res.ok) {
@@ -300,7 +298,6 @@
           console.error(err);
         });
       },
-
       // return to top
       scrollToTop: function (scrollDuration) {
         const scrollHeight = window.scrollY,

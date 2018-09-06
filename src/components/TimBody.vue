@@ -83,7 +83,7 @@
 
         sessionStorage.setItem('lastPage', choosePage); // 记录上次浏览页码
         window.scrollTo(0, 0); // 跳回顶部
-        _self.currentPage = choosePage; // 记录当前点击页码
+        this.currentPage = choosePage; // 记录当前点击页码
 
         essayActions.getPage(choosePage).then(res => {
           let essaySum = res.body.essaySum;
@@ -94,19 +94,15 @@
         });
       },
       getNextPage: function () {
-        const _self = this;
-        let currentPage = _self.currentPage;
-        let totalPages =  _self.totalPages;
+        let currentPage = this.currentPage;
+        let totalPages =  this.totalPages;
         let nextPage = (currentPage + 1) <= totalPages ? currentPage + 1 : totalPages;
-
-        _self.getPage(nextPage);
+        this.getPage(nextPage);
       },
       getPreviousPage: function () {
-        const _self = this;
-        let currentPage = _self.currentPage;
+        let currentPage = this.currentPage;
         let nextPage = (currentPage - 1 > 0) ? currentPage - 1 : 1;
-
-        _self.getPage(nextPage);
+        this.getPage(nextPage);
       }
     }
   }

@@ -79,15 +79,14 @@
     },
     methods: {
       sendEssay: function () {
-        const _self = this;
-        if (!_self.title.length || !_self.content.length || !_self.picUrl.length) {
+        if (!this.title.length || !this.content.length || !this.picUrl.length) {
           alert('请输入完整的标题、内容以及图片链接!');
-        } else if (_self.title.length > 0) {
+        } else if (this.title.length > 0) {
           let essayInfo = {
-            essayId: _self.essayId,
-            title: _self.title,
-            content: _self.content,
-            picUrl: _self.picUrl
+            essayId: this.essayId,
+            title: this.title,
+            content: this.content,
+            picUrl: this.picUrl
           };
           essayActions.newEssay(essayInfo).then(res => {
             if (res.status === 200) {
@@ -96,13 +95,11 @@
           }).catch(err => {
             console.error(err);
           });
-
         }
       }
     },
     beforeUpdate: function () {
-      const _self = this;
-      _self.displayText = md.render(_self.content);
+      this.displayText = md.render(this.content);
     },
     destroyed: function () {
       window.sessionStorage.removeItem('essayId');

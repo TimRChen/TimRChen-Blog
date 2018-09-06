@@ -1,6 +1,6 @@
 <template>
     <div class="page-detail">
-      <div class="content-area detail-container" v-show="loadingStatus === 'success'">
+      <div class="content-area detail-container">
         <div class="essay-content">
 
           <!-- 文章内容 -->
@@ -113,8 +113,8 @@
 
         </div>
       </div>
-      <div class="blank-loading-container" v-show="loadingStatus === 'loading'">
-        <div class="loading-txt">loading...</div>
+      <div class="blank-loading-container fade-in" v-show="loadingStatus === 'loading'">
+        <div class="loading-txt">一方净土</div>
       </div>
     </div>
 </template>
@@ -170,6 +170,49 @@
         if (name.length === 0) _self.nameStatus = false;
 
         if (name.length > 8) _self.nameStatus = false;
+      }
+    },
+    beforeCreate() {
+      const _self = this;
+      this.loadingStatus = 'loading';
+      // 进入页面时，自动置顶
+      window.scrollTo(0, 0);
+      // 通过router params获取文章id
+      const essayId = this.$route.params.id;
+      if (essayId) {
+        let loadingTimer = setTimeout(() => {
+          essayActions.getEssayDetails(essayId).then(res => {
+            // 淡出过场动画
+            const timer = setTimeout(() => {
+              _self.loadingStatus = 'success';
+              clearTimeout(timer);
+            }, 2999);
+            const essayObj = res.body.essay;
+            _self.essayContent = md.render(essayObj.content);
+            _self.essayId_abstract = essayObj._id.substr(-6, essayObj._id.length - 1); // 生成文章Id简短标识，用于评论管理
+            _self.pv = essayObj.pv;
+            // 将当前banner数据注册至bug，分发在TimHeader中使用
+            Bus.$emit('current-banner-data', {
+              "picUrl": essayObj.picUrl,
+              "essayTitle": essayObj.title,
+              "createTime": Moment(essayObj.meta.createAt, Moment.ISO_8601).format('YYYY.MM.DD hh:mm a')
+            });
+            // 获取文章评论
+            _self.getCommentList();
+            clearTimeout(loadingTimer);
+          }).catch(err => {
+            console.error(err);
+            clearTimeout(loadingTimer);
+          });
+        }, 500);
+      }
+    },
+    mounted() {
+      // 取出本地存入的用户昵称
+      let commentNickName = localStorage.getItem('commentNickName');
+      if (commentNickName) {
+        this.commentNickName = commentNickName;
+        this.nickNameInLocal = true;
       }
     },
     methods: {
@@ -285,9 +328,9 @@
        */
       submitComment: function () {
         const _self = this;
-        let essayId = _self.$route.params.id;
-        let commentNickName = _self.commentNickName;
-        let commentContent = _self.commentContent;
+        let essayId = this.$route.params.id;
+        let commentNickName = this.commentNickName;
+        let commentContent = this.commentContent;
         let pureComment = antiXss.enCodeHtml(commentContent);
 
         let commentInfo = { // 请求参数
@@ -321,68 +364,26 @@
        * @argument respondent 被回复人
        */
       reply: function (respondent) {
-        const _self = this;
         // 生成回复开头
         let replyGuideNickName = `@${respondent}\n`;
         // 打开评论输入框
-        _self.commentEdit = true;
+        this.commentEdit = true;
         // 将开头注入评论内容中
-        _self.commentContent = replyGuideNickName;
-        _self.replyGuideNickName = replyGuideNickName;
+        this.commentContent = replyGuideNickName;
+        this.replyGuideNickName = replyGuideNickName;
       },
       /**
        * 更换昵称
        */
       changeNickname: function () {
-        const _self = this;
         if (confirm('确认放弃这个昵称？')) {
           localStorage.removeItem('commentNickName');
-          _self.commentNickName = '';
-          _self.nickNameInLocal = false;
+          this.commentNickName = '';
+          this.nickNameInLocal = false;
           alert('为了更美好的将来:)');
         } else {
           alert('从一而终是不是更好:)');
         }
-      }
-    },
-    beforeCreate() {
-      const _self = this;
-      _self.loadingStatus = 'loading';
-      // 进入页面时，自动置顶
-      window.scrollTo(0, 0);
-      // 通过router params获取文章id
-      const essayId = _self.$route.params.id;
-      if (essayId) {
-        let loadingTimer = setTimeout(() => {
-          essayActions.getEssayDetails(essayId).then(res => {
-            _self.loadingStatus = 'success';
-            const essayObj = res.body.essay;
-            _self.essayContent = md.render(essayObj.content);
-            _self.essayId_abstract = essayObj._id.substr(-6, essayObj._id.length - 1); // 生成文章Id简短标识，用于评论管理
-            _self.pv = essayObj.pv;
-            // 将当前banner数据注册至bug，分发在TimHeader中使用
-            Bus.$emit('current-banner-data', {
-              "picUrl": essayObj.picUrl,
-              "essayTitle": essayObj.title,
-              "createTime": Moment(essayObj.meta.createAt, Moment.ISO_8601).format('YYYY.MM.DD hh:mm a')
-            });
-            // 获取文章评论
-            _self.getCommentList();
-            clearTimeout(loadingTimer);
-          }).catch(err => {
-            console.error(err);
-            clearTimeout(loadingTimer);
-          });
-        }, 500);
-      }
-    },
-    mounted() {
-      const _self = this;
-      // 取出本地存入的用户昵称
-      let commentNickName = localStorage.getItem('commentNickName');
-      if (commentNickName) {
-        _self.commentNickName = commentNickName;
-        _self.nickNameInLocal = true;
       }
     },
     destroyed() {
@@ -395,20 +396,30 @@
 <style>
 
   .blank-loading-container {
-    position: absolute;
+    position: fixed;
     top: 52px;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #000;
-    opacity: 0.2;
     line-height: 100vh;
     text-align: center;
     z-index: 9999;
+    opacity: 0;
   }
   .blank-loading-container .loading-txt {
     color: #fff;
     font-size: 30px;
+    font-weight: 200;
+  }
+  .fade-in {
+    animation: fadeIn 3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    0% { background: rgba(0, 0, 0, 0.9); opacity: 1; }
+    50% { background: rgba(0, 0, 0, 0.85); }
+    65% { background: rgba(0, 0, 0, 0.65); }
+    75% { background: rgba(0, 0, 0, 0.45); }
+    100% { background: rgba(0, 0, 0, 0); opacity: 0; }
   }
 
   .detail-container {

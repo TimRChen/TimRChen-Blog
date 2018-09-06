@@ -66,7 +66,7 @@
       deleteComment: function (commentId) {
         const _self = this;
         if (confirm('确定删除该条评论?')) {
-          _self.deleteLoading = true; // 启用等待动画
+          this.deleteLoading = true; // 启用等待动画
           if (commentId) {
             commentActions.deleteComment(commentId).then(res => {
               _self.commentList = _self.commentList.filter(comment => comment._id !== commentId);

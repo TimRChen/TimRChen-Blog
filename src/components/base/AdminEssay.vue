@@ -96,7 +96,6 @@
         }
       },
       editEssay: function (essayId) {
-        const _self = this;
         window.sessionStorage.removeItem('essayId');
         window.sessionStorage.setItem('essayId', essayId);
       }
