@@ -10,7 +10,6 @@
           <p>Name: <a class="tag is-warning">黄睿晨</a></p>
           <p>I'm: <a class="tag is-link">male</a></p>
           <p>Age: <a class="tag is-link">23</a></p>
-          <p>Emotion: <a class="tag is-danger">In love</a></p>
           <p>Current Status: <a class="tag is-danger">Busy</a></p>
           <p>Hobit: <a class="tag is-info">guitar</a></p>
           <p>Dream: <a class="tag is-primary">be great.</a></p>
