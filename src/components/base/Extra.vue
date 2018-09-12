@@ -4,6 +4,16 @@
     <div class="feature-box">
       <div class="card">
 
+        <a v-on:click="opened = 'zhihuHot'">
+          <div class="card" v-show="opened === 'normal'">
+            <div class="card-content">
+              <div class="media">
+                <h1 class="title is-5">知乎日报</h1>
+              </div>
+            </div>
+          </div>
+        </a>
+
         <a v-on:click="opened = 'oneArticle'">
           <div class="card" v-show="opened === 'normal'">
             <div class="card-content">
@@ -76,6 +86,13 @@
         </a>
 
         <transition name="component-jump" mode="out-in">
+          <!-- 知乎热点 START -->
+          <div class="zhihuHot" v-if="opened === 'zhihuHot'">
+            <zhihu-hot></zhihu-hot>
+          </div>
+        </transition>
+
+        <transition name="component-jump" mode="out-in">
           <!-- 每日一文 START -->
           <div class="oneArticle" v-if="opened === 'oneArticle'">
             <one-article></one-article>
@@ -118,7 +135,7 @@
         </transition>
 
         <!-- 此处返回按钮是为了方便篇幅过长的应用 -->
-        <a class="back-to-main" v-on:click="opened = 'normal'" v-show="opened === 'news'">
+        <a class="back-to-main" v-on:click="opened = 'normal'" v-show="opened === 'news' ||  opened === 'oneArticle' || opened === 'zhihuHot'">
           <div class="card">
             <div class="card-content">
               <div class="media">
@@ -150,6 +167,7 @@
   import News from '@/components/base/news/News';
   import Robot from '@/components/base/robot/Robot';
   import Qrcode from '@/components/base/qrcode/Qrcode';
+  import ZhihuHot from '@/components/base/zhihuHot/ZhihuHot';
   import ShortUrl from '@/components/base/shortUrl/ShortUrl';
   import MorseCode from '@/components/base/morseCode/MorseCode';
   import OneArticle from '@/components/base/oneArticle/OneArticle';
@@ -164,9 +182,10 @@
       News,
       Robot,
       Qrcode,
+      ZhihuHot,
       ShortUrl,
       MorseCode,
-      OneArticle
+      OneArticle,
     },
     computed: {
       nowDate: function () {

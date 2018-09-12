@@ -6,7 +6,8 @@ const { timDomain } = domains
 const APIs = {
   GET_NEWS_LIST: '/api/extra/news',
   GET_QRCODE: '/api/extra/qrcode',
-  GET_ONE_ARTICLE: '/api/extra/oneArticle'
+  GET_ONE_ARTICLE: '/api/extra/oneArticle',
+  GET_RSS_READER: '/api/extra/rss-timrchen'
 }
 
 export default _.each(APIs, (path, key) => {

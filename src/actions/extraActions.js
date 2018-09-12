@@ -42,7 +42,18 @@ const getOneRandomArticle = function () {
   )
 }
 
+/**
+ * 获取RSSHub订阅内容
+ */
+const getRssReader = function (rssURI) {
+  return Vue.http.post(
+    `${extraAPIs.GET_RSS_READER}`,
+    { rssURI }
+  )
+}
+
 export default ({
+  getRssReader,
   getNewsList,
   getQrcode,
   getOneArticle,
