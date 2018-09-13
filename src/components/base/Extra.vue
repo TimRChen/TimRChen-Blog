@@ -167,7 +167,7 @@
   import News from '@/components/base/news/News';
   import Robot from '@/components/base/robot/Robot';
   import Qrcode from '@/components/base/qrcode/Qrcode';
-  import RssHub from '@/components/base/rssHub/RssHub';
+  import RssHub from '@/components/base/rssHub/RSSHub';
   import ShortUrl from '@/components/base/shortUrl/ShortUrl';
   import MorseCode from '@/components/base/morseCode/MorseCode';
   import OneArticle from '@/components/base/oneArticle/OneArticle';
