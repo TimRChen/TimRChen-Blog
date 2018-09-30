@@ -196,7 +196,7 @@
               "createTime": Moment(essayObj.meta.createAt, Moment.ISO_8601).format('YYYY.MM.DD hh:mm a')
             });
             // 获取文章评论
-            _self.getCommentList();
+            this.getCommentList();
             clearTimeout(loadingTimer);
           }).catch(err => {
             console.error(err);
@@ -218,8 +218,7 @@
        * 获取评论列表
        */
       getCommentList: function () {
-        const _self = this;
-        let essayId = _self.$route.params.id;
+        let essayId = this.$route.params.id;
         
         if (essayId) {
           commentActions.getCommentList(essayId).then(res => {
@@ -227,13 +226,13 @@
             const commentSum = res.body.commentSum;
 
             if (comments.length !== 0) {
-              _self.commentInfo = comments;
+              this.commentInfo = comments;
               // 记录评论昵称
               let existName = [];
               comments.forEach(comment => {
                 existName.push(comment.name);
               });
-              _self.existName = existName;
+              this.existName = existName;
             }
 
           }).catch(err => {
@@ -261,23 +260,22 @@
        * 提交前评论预处理
        */
       preSubmit: function () {
-        const _self = this;
-        let nameStatus = _self.nameStatus;
-        let nickNameInLocal = _self.nickNameInLocal;
-        let commentNickName = _self.commentNickName;
-        let commentContent = _self.commentContent;
+        let nameStatus = this.nameStatus;
+        let nickNameInLocal = this.nickNameInLocal;
+        let commentNickName = this.commentNickName;
+        let commentContent = this.commentContent;
 
         // 先将输入内容进行筛选看是否有违规词汇
         if (filterList.indexOf(commentNickName.toLowerCase()) !== -1 || filterList.indexOf(commentContent.toLowerCase()) !== -1 ) {
           alert('您输入的评论/昵称中有违规词汇，请重新输入!');
-          _self.commentNickName = '';
-          _self.commentContent = '';
+          this.commentNickName = '';
+          this.commentContent = '';
           return;
         }
 
         // 拆解字符串为数组
-        let to_filter_commentNickName = _self.splitStringToArray(commentNickName);
-        let to_filter_commentContent = _self.splitStringToArray(commentContent);
+        let to_filter_commentNickName = this.splitStringToArray(commentNickName);
+        let to_filter_commentContent = this.splitStringToArray(commentContent);
   
         // 使用单字规则表再次排查违规字
         let evilNameWordAmonut = 0,
@@ -301,7 +299,7 @@
 
         // 综合输入处理
         if (commentNickName.length > 0 && commentNickName.length <= 8 && commentContent.length >= 3 && nameStatus === true && nickNameInLocal === false) {
-          _self.submitComment();
+          this.submitComment();
         } else if (commentNickName.length === 0) {
           alert('您似乎忘了姓名?');
         } else if (commentNickName.length > 8) {
@@ -314,10 +312,10 @@
 
         // 判断本地是否有昵称存在
         if (nickNameInLocal === true) {
-          if (commentContent === _self.replyGuideNickName) {
+          if (commentContent === this.replyGuideNickName) {
             alert('评论最少3个字以上~');
           } else {
-            _self.submitComment();
+            this.submitComment();
           }
         }
       },
@@ -325,7 +323,6 @@
        * 提交评论
        */
       submitComment: function () {
-        const _self = this;
         let essayId = this.$route.params.id;
         let commentNickName = this.commentNickName;
         let commentContent = this.commentContent;
@@ -337,14 +334,14 @@
           'content': pureComment,
         };
         commentActions.createComment(commentInfo).then(res => {
-          _self.commentContent = '';
-          _self.commentEdit = false; // 关闭编辑界面
+          this.commentContent = '';
+          this.commentEdit = false; // 关闭编辑界面
           alert(res.body.message);
-          _self.getCommentList();
+          this.getCommentList();
           // 将昵称存入localStorage，对用户做持久化处理
           localStorage.setItem('commentNickName', commentNickName);
-          _self.commentNickName = commentNickName;
-          _self.nickNameInLocal = true;
+          this.commentNickName = commentNickName;
+          this.nickNameInLocal = true;
         }).catch(err => {
           console.error(err);
           alert('出错了');
