@@ -5,7 +5,7 @@
     <nav class="navbar is-fixed-top navbar-define-by-timrchen" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="http://www.timrchen.site">
-          <img src="https://image.timrchen.site/logo/timrchen_logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+          <img src="../assets/timrchen_logo.png" alt="TIMRCHEN" width="112" height="28">
         </a>
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" v-bind:class="{ 'is-active': dropDownStatus && dropDownDevice === 'mobile' }" v-on:click="clickDropdown('mobile')">
           <span aria-hidden="true"></span>
@@ -56,57 +56,47 @@
     <!-- 主页大标题 -->
     <div class="main-title-container" v-show="currentHeaderStatus === 'other'">
       <div class="main-title-wrap">
-        <div class="letter" data-letter="一方净土">一方净土</div>
+        <div class="letter" data-letter="向死而生">向死而生</div>
         <br>
-        <div class="letter subtitle-letter" data-letter="Life is Art.">Life is Art.</div>
+        <div class="letter subtitle-letter" data-letter="Live to death.">Live to death.</div>
       </div>
     </div>
 
     <!-- login modal -->
     <div class="modal" v-bind:class="{ 'is-active': showLoginModal === true }">
       <div class="modal-background" v-on:click="showLoginModal = false"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Login</p>
-          <button class="delete" aria-label="close" v-on:click="showLoginModal = false"></button>
-        </header>
-        <section class="modal-card-body">
+      <div class="modal-content">
 
-          <div class="filed has-text-danger" v-show="inputMissThree">👁👁请注意，输入超过3次错误禁止输入!</div>
+        <div class="filed has-text-danger" v-show="inputMissThree">👁👁请注意，输入超过3次错误禁止输入!</div>
 
-          <!-- username -->
-          <div class="field" v-show="!inputMissThree">
-            <label class="label">Hi, guys.</label>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input is-dark" type="text" v-model="username" autofocus v-bind:disabled="inputMissThree">
-              <span class="icon is-small is-left">
-                <i class="fa fa-user"></i>
-              </span>
-              <span class="icon is-small is-right">
-                <i class="fa fa-check"></i>
-              </span>
-            </div>
+        <!-- username -->
+        <div class="field" v-show="!inputMissThree">
+          <label class="label">Hi, guys.</label>
+          <div class="control has-icons-left has-icons-right">
+            <input class="input is-small is-rounded" type="text" v-model="username" autofocus v-bind:disabled="inputMissThree">
+            <span class="icon is-small is-left">
+              <i class="fa fa-user"></i>
+            </span>
+            <span class="icon is-small is-right">
+              <i class="fa fa-check"></i>
+            </span>
           </div>
+        </div>
 
-          <!-- password -->
-          <div class="field" v-show="!inputMissThree">
-            <label class="label">Big brother is watching you.</label>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input is-dark" type="password" name="password" v-model="password" v-on:keyup.enter="login" v-bind:disabled="inputMissThree">
-              <span class="icon is-small is-left">
-                <i class="fa fa-key"></i>
-              </span>
-              <span class="icon is-small is-right">
-                <i class="fa fa-check"></i>
-              </span>
-            </div>
+        <!-- password -->
+        <div class="field" v-show="!inputMissThree">
+          <label class="label">Big brother is watching you.</label>
+          <div class="control has-icons-left has-icons-right">
+            <input class="input is-small is-rounded" type="password" name="password" v-model="password" v-on:keyup.enter="login" v-bind:disabled="inputMissThree">
+            <span class="icon is-small is-left">
+              <i class="fa fa-key"></i>
+            </span>
+            <span class="icon is-small is-right">
+              <i class="fa fa-check"></i>
+            </span>
           </div>
+        </div>
 
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-focus is-dark" v-on:click="login">Login</button>
-          <button class="button is-focus" v-on:click="showLoginModal = false">Cancel</button>
-        </footer>
       </div>
     </div>
 
@@ -114,50 +104,6 @@
     <div class="return-top-btn" v-once>
       <button class="button is-focused is-dark" v-on:click="scrollToTop(1000)">↑</button>
     </div>
-
-    <!-- signUp modal TODO: 注册完后需要将相关注册逻辑隐藏!!! -->
-    <!-- <div class="modal" v-bind:class="{'is-active': showSignUpModal === true}">
-      <div class="modal-background" v-on:click="showSignUpModal = false"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">signUp</p>
-          <button class="delete" aria-label="close" v-on:click="showSignUpModal = false"></button>
-        </header>
-        <section class="modal-card-body">
-
-          <div class="field">
-            <label class="label">Username</label>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input" type="text" v-model="username" autofocus>
-              <span class="icon is-small is-left">
-                <i class="fa fa-user"></i>
-              </span>
-              <span class="icon is-small is-right">
-                <i class="fa fa-check"></i>
-              </span>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Password</label>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input" type="password" name="password" v-model="password">
-              <span class="icon is-small is-left">
-                <i class="fa fa-key"></i>
-              </span>
-              <span class="icon is-small is-right">
-                <i class="fa fa-check"></i>
-              </span>
-            </div>
-          </div>
-
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-primary" v-on:click="signUp()">signUp</button>
-          <button class="button" v-on:click="showSignUpModal = false">Cancel</button>
-        </footer>
-      </div>
-    </div> -->
 
   </header>
 </template>
@@ -171,8 +117,6 @@
       return {
         dropDownDevice: 'pc', // 当前进行下拉操作设备 mobile | pc
         dropDownStatus: false, // 下拉状态
-        // warning: 注册完后需要将相关注册逻辑隐藏!!!
-        // showSignUpModal: false,
         showLoginModal: false,
         bkImage: '',
         essayTitle: 'test',
@@ -186,13 +130,12 @@
       }
     },
     beforeCreate: function () {
-      const _self = this;
       const auth = localStorage.getItem('Authorization');
       if (auth) {
         // 初始化验证身份
         userActions.getAuth().then(res => {
           if (res.ok) {
-            _self.loginStatus = res.body.state;
+            this.loginStatus = res.body.state;
           }
         }).catch(error => {
           console.log(error);
@@ -200,20 +143,18 @@
       }
     },
     mounted: function () {
-      const _self = this;
       Bus.$on('current-banner-data', (bannerData) => {
-        _self.currentHeaderStatus = 'essay';
-        _self.bkImage = `url(${bannerData.picUrl})`;
-        _self.essayTitle = bannerData.essayTitle;
-        _self.essaySubtitle = bannerData.createTime;
+        this.currentHeaderStatus = 'essay';
+        this.bkImage = `url(${bannerData.picUrl})`;
+        this.essayTitle = bannerData.essayTitle;
+        this.essaySubtitle = bannerData.createTime;
       });
     },
     updated: function () {
-        const _self = this;
         // 返回默认页时替换banner图片
         Bus.$on('banner-change-to-default', (value) => {
-          _self.bkImage = '';
-          _self.currentHeaderStatus = 'other';
+          this.bkImage = '';
+          this.currentHeaderStatus = 'other';
         });
     },
     methods: {
@@ -225,49 +166,23 @@
         this.dropDownStatus = !dropDownStatus;
         this.dropDownDevice = device;
       },
-      /**
-        todo: 注册完后需要将相关注册逻辑隐藏!!!
-        signUp: function () {
-          const _self = this;
-          let username = _self.username;
-          let password = _self.password;
-          if (username.length !== 0 && password !== 0) {
-            userActions.signUp(username, password).then(res => {
-              if (res.ok) {
-                alert(res.body.message);
-                _self.username = '';
-                _self.password = '';
-                _self.showSignUpModal = false;
-              }
-            }).catch(err => {
-              alert(err.body.message);
-              _self.username = '';
-              _self.password = '';
-              console.error(err);
-            })
-          } else {
-            alert('情输入完整用户账号/密码!');
-          }
-        },
-      */
       login: function () {
-        const _self = this;
-        let username = this.username;
-        let password = this.password;
+        const username = this.username;
+        const password = this.password;
         if (username.length !== 0 && password !== 0) {
           userActions.login(username, password).then(res => {
             if (res.ok) {
               alert(res.body.message);
-              _self.username = '';
-              _self.password = '';
-              _self.showLoginModal = false;
+              this.username = '';
+              this.password = '';
+              this.showLoginModal = false;
               // 返回 JWT Token
               window.localStorage.setItem('Authorization', `Bearer ${res.body.token}`);
 
               // jwt 验证身份，获取登录状态
               userActions.getAuth().then(res => {
                 if (res.ok) {
-                  _self.loginStatus = res.body.state;
+                  this.loginStatus = res.body.state;
                 }
               }).catch(err => {
                 console.error(err);
@@ -275,23 +190,22 @@
             }
           }).catch(err => {
             alert(err.body.message);
-            _self.username = '';
-            _self.password = '';
-            _self.inputMissCount += 1;
+            this.username = '';
+            this.password = '';
+            this.inputMissCount += 1;
             console.error(err);
             // 输入超过3次错误，禁用输入
-            if (_self.inputMissCount >= 3) _self.inputMissThree = true;
+            if (this.inputMissCount >= 3) this.inputMissThree = true;
           });
         } else {
-          _self.inputMissThree ? alert('认真你就输了，请点"cancel"进行退出.') : alert('请输入完整用户账号/密码!');
+          this.inputMissThree ? alert('认真你就输了，请点"cancel"进行退出.') : alert('请输入完整用户账号/密码!');
         }
       },
       logout: function () {
-        const _self = this;
         userActions.logout().then(res => {
           if (res.ok) {
             alert(res.body.message);
-            _self.loginStatus = res.body.state;
+            this.loginStatus = res.body.state;
             window.localStorage.removeItem('Authorization');
           }
         }).catch(err => {
@@ -401,7 +315,7 @@
   }
 
   .main-title-container .letter:before {
-    color: #008000;
+    color: #000;
     text-shadow: 
       -1px 0px 1px rgba(255,255,255,.8),
       1px 0px 1px rgba(0,0,0,.8);

@@ -5,18 +5,18 @@
     </div>
 
     <div class="content">
-      <p class="tag is-dark">看你想看</p>
+      <p class="tag">看世界.</p>
 
-      <div class="tabs is-small">
+      <div class="tabs is-right">
         <ul>
+          <li></li>
+          <li :class="{ 'is-active': rssType === '简书' }" @click="rssType = '简书'"><a>简书</a></li>
           <li :class="{ 'is-active': rssType === '知乎日报' }" @click="rssType = '知乎日报'"><a>知乎日报</a></li>
-          <li :class="{ 'is-active': rssType === '知乎热点' }" @click="rssType = '知乎热点'"><a>知乎热点</a></li>
           <li :class="{ 'is-active': rssType === '掘金' }" @click="rssType = '掘金'"><a>掘金</a></li>
-          <li :class="{ 'is-active': rssType === '今日头条' }" @click="rssType = '今日头条'"><a>今日头条</a></li>
         </ul>
       </div>
 
-      <div class="loading-txt" v-if="loading && loadStatus === 'success'">加载中...</div>
+      <div class="loading-txt" v-if="loading && loadStatus === 'loading'">加载中...</div>
 
       <div class="loading-txt" v-if="loadStatus === 'failed'">加载失败，请刷新页面重试</div>
 
@@ -54,18 +54,24 @@
 <script>
   import extraActions from '@/actions/extraActions'
 
+  const rssURIMap = {
+    '知乎日报': '/zhihu/daily',
+    '掘金': '/juejin/category/frontend',
+    '简书': '/jianshu/trending/weekly'
+  };
+
   export default {
     data () {
       return {
         loading: true,
-        loadStatus: 'success', // success | failed
+        loadStatus: 'loading', // loading | failed
         watchInSite: '',
-        rssType: '今日头条', // 知乎日报 | 掘金 | 知乎热点 | 今日头条
+        rssType: '掘金', // 知乎日报 | 掘金 | 简书
         articleList: []
       }
     },
     mounted () {
-      const rssURI = '/readhub/category/topic';
+      const rssURI = rssURIMap[this.rssType];
       extraActions.getRssReader(rssURI).then(res => {
         this.articleList = res.body;
         this.loading = false;
@@ -82,12 +88,7 @@
     },
     methods: {
       changeContent () {
-        const rssURIMap = {
-          '知乎日报': '/zhihu/daily',
-          '知乎热点': 'zhihu/hotlist',
-          '掘金': '/juejin/category/frontend',
-          '今日头条': '/readhub/category/topic'
-        };
+        this.loadStatus = 'loading';
         const rssURI = rssURIMap[this.rssType];
         extraActions.getRssReader(rssURI).then(res => {
           this.articleList = res.body;

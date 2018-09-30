@@ -114,7 +114,7 @@
         </div>
       </div>
       <div class="blank-loading-container fade-in" v-show="loadingStatus === 'loading'">
-        <div class="loading-txt">一方净土</div>
+        <div class="loading-txt">向死而生</div>
       </div>
     </div>
 </template>
@@ -157,23 +157,21 @@
     },
     watch: {
       commentNickName: function (val, oldVal) {
-        const _self = this;
         let name = val;
-        let existName = _self.existName;
+        let existName = this.existName;
 
         if (existName.indexOf(name) !== -1) { // 比对 输入昵称是否与已存在昵称相同
-          _self.nameStatus = false;
+          this.nameStatus = false;
         } else {
-          _self.nameStatus = true; // 昵称可用
+          this.nameStatus = true; // 昵称可用
         }
 
-        if (name.length === 0) _self.nameStatus = false;
+        if (name.length === 0) this.nameStatus = false;
 
-        if (name.length > 8) _self.nameStatus = false;
+        if (name.length > 8) this.nameStatus = false;
       }
     },
     beforeCreate() {
-      const _self = this;
       this.loadingStatus = 'loading';
       // 进入页面时，自动置顶
       window.scrollTo(0, 0);
@@ -184,13 +182,13 @@
           essayActions.getEssayDetails(essayId).then(res => {
             // 淡出过场动画
             const timer = setTimeout(() => {
-              _self.loadingStatus = 'success';
+              this.loadingStatus = 'success';
               clearTimeout(timer);
             }, 2999);
             const essayObj = res.body.essay;
-            _self.essayContent = md.render(essayObj.content);
-            _self.essayId_abstract = essayObj._id.substr(-6, essayObj._id.length - 1); // 生成文章Id简短标识，用于评论管理
-            _self.pv = essayObj.pv;
+            this.essayContent = md.render(essayObj.content);
+            this.essayId_abstract = essayObj._id.substr(-6, essayObj._id.length - 1); // 生成文章Id简短标识，用于评论管理
+            this.pv = essayObj.pv;
             // 将当前banner数据注册至bug，分发在TimHeader中使用
             Bus.$emit('current-banner-data', {
               "picUrl": essayObj.picUrl,

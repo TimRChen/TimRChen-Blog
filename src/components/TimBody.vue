@@ -8,13 +8,13 @@
           v-for="(essay, key) in essayObj"
           v-bind:key="key">
           <router-link v-bind:to="{name: 'essay', params: {id: essay._id}}">
-            <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%', backgroundAttachment: 'fixed' }">
+            <div class="post-image" v-bind:style="{ backgroundImage: `url(${ essay.picUrl })`,  backgroundSize: 'cover', backgroundPosition: '50%' }">
               <div class="info-mask">
                 <div class="mask-wrapper">
                   <h2 class="post-title">{{ essay.title }}</h2>
                   <div class="post-info">
                     <span class="post-time">
-                      {{ new Date(essay.meta.createAt).toUTCString() }}
+                      {{ formatTime(essay.meta.createAt) }}
                     </span>
                   </div>
                 </div>
@@ -46,6 +46,7 @@
 
 <script>
   import essayActions from '../actions/essayActions';
+  import Moment from 'moment';
 
   export default {
     data() {
@@ -56,14 +57,12 @@
       }
     },
     beforeCreate: function () {
-      const _self = this;
-
       // 获取文章列表
       essayActions.getEssayList().then(res => {
         if (res.status === 200) {
           let essaySum = res.body.essaySum;
-          _self.essayObj = res.body.essays;
-          _self.totalPages = Math.ceil(essaySum / 4);
+          this.essayObj = res.body.essays;
+          this.totalPages = Math.ceil(essaySum / 4);
         }
       }).catch(err => {
         console.error(err);
@@ -75,33 +74,36 @@
     },
     methods: {
       /**
+       * 格式化发布时间
+       */
+      formatTime: function (time) {
+        return Moment(time, Moment.ISO_8601).format('dd. YYYY.MM.DD HH:MM');
+      },
+      /**
        * 获取页面列表函数
        * @argument choosePage 选择页码
        */
       getPage: function (choosePage) {
-        const _self = this;
-
         sessionStorage.setItem('lastPage', choosePage); // 记录上次浏览页码
         window.scrollTo(0, 0); // 跳回顶部
         this.currentPage = choosePage; // 记录当前点击页码
-
         essayActions.getPage(choosePage).then(res => {
-          let essaySum = res.body.essaySum;
-          _self.essayObj = res.body.essays;
-          _self.totalPages = Math.ceil(essaySum / 6); // 当新增文章时，更新总页数
+          const essaySum = res.body.essaySum;
+          this.essayObj = res.body.essays;
+          this.totalPages = Math.ceil(essaySum / 6); // 当新增文章时，更新总页数
         }).catch(err => {
           err.body.message ? alert(err.body.message) : console.error(err);
         });
       },
       getNextPage: function () {
-        let currentPage = this.currentPage;
-        let totalPages =  this.totalPages;
-        let nextPage = (currentPage + 1) <= totalPages ? currentPage + 1 : totalPages;
+        const currentPage = this.currentPage;
+        const totalPages =  this.totalPages;
+        const nextPage = (currentPage + 1) <= totalPages ? currentPage + 1 : totalPages;
         this.getPage(nextPage);
       },
       getPreviousPage: function () {
-        let currentPage = this.currentPage;
-        let nextPage = (currentPage - 1 > 0) ? currentPage - 1 : 1;
+        const currentPage = this.currentPage;
+        const nextPage = (currentPage - 1 > 0) ? currentPage - 1 : 1;
         this.getPage(nextPage);
       }
     }
@@ -152,9 +154,6 @@
       100% {
         transform: skew(-2deg) scale(1, 1);
       }
-    }
-    .info-mask {
-      transform: skew(2deg);
     }
   }
 

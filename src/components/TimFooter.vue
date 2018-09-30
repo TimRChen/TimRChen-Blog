@@ -1,19 +1,13 @@
 <template>
   <footer class="site-footer" v-once>
-    <p class="copyright">Copyright © 2018 享受创造的快乐.</p>
+    <p class="poem">仰天大笑出门去，我辈岂是蓬蒿人。</p>
     <div class="link-group">
       <span class="txt-box">
-        <a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备17058358号-1</a>
+        <a class="copyright" href="http://www.miitbeian.gov.cn" target="_blank">Copyright © 2018 京ICP备17058358号-1</a>
       </span>
     </div>
   </footer>
 </template>
-
-<script>
-  export default {
-
-  }
-</script>
 
 <style scoped>
 /* footer.pug */

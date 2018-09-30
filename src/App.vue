@@ -14,10 +14,7 @@
 
   export default {
     name: 'app',
-    components: {
-      TimHeader,
-      TimFooter
-    }
+    components: { TimHeader, TimFooter }
   }
 
 </script>
