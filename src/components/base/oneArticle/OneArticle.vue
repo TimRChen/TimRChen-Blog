@@ -33,7 +33,7 @@
     },
     methods: {
       changeBKColor: function () {
-        const colorList = ['is-primary', 'is-info', 'is-link', 'is-success', 'is-warning', 'is-danger', 'is-dark', 'is-black'];
+        const colorList = ['is-dark', 'is-black'];
         let changeCount = this.changeCount;
         const maxClick = 9;
         if (changeCount > 0 && changeCount <= maxClick) {
