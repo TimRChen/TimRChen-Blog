@@ -3,7 +3,7 @@
     <p class="poem">仰天大笑出门去，我辈岂是蓬蒿人。</p>
     <div class="link-group">
       <span class="txt-box">
-        <a class="copyright" href="http://www.miitbeian.gov.cn" target="_blank">Copyright © 2018 京ICP备17058358号-1</a>
+        <a class="copyright" href="http://www.miitbeian.gov.cn" target="_blank">Copyright © 2019 京ICP备17058358号-1</a>
       </span>
     </div>
   </footer>
