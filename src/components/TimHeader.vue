@@ -147,6 +147,7 @@
         this.currentHeaderStatus = 'essay';
         this.bkImage = `url(${bannerData.picUrl})`;
         this.essayTitle = bannerData.essayTitle;
+        document.querySelector('title').innerText = bannerData.essayTitle;
         this.essaySubtitle = bannerData.createTime;
       });
     },
